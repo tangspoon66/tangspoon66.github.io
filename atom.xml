@@ -6,7 +6,7 @@
   <link href="http://example.com/atom.xml" rel="self"/>
   
   <link href="http://example.com/"/>
-  <updated>2020-10-13T07:00:02.520Z</updated>
+  <updated>2020-10-13T03:51:26.002Z</updated>
   <id>http://example.com/</id>
   
   <author>
@@ -15,19 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>My first hexo blog</title>
-    <link href="http://example.com/2020/10/13/My-first-hexo-blog/"/>
-    <id>http://example.com/2020/10/13/My-first-hexo-blog/</id>
-    <published>2020-10-13T07:00:02.000Z</published>
-    <updated>2020-10-13T07:00:02.520Z</updated>
-    
-    
-    
-    
-    
-  </entry>
   
   <entry>
     <title>Hello World</title>
@@ -42,27 +29,6 @@
       
       
     <summary type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot;&gt;documentation&lt;/a&gt; for</summary>
-      
-    
-    
-    
-    
-  </entry>
-  
-  <entry>
-    <title></title>
-    <link href="http://example.com/2020/02/20/study/"/>
-    <id>http://example.com/2020/02/20/study/</id>
-    <published>2020-02-20T06:24:46.000Z</published>
-    <updated>2020-10-13T07:23:43.763Z</updated>
-    
-    <content type="html"><![CDATA[<p>title: test<br>date: 2020-10-13 15:00:02<br>tags:</p>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;p&gt;title: test&lt;br&gt;date: 2020-10-13 15:00:02&lt;br&gt;tags:&lt;/p&gt;
-</summary>
       
     
     
