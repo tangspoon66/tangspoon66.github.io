@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-10-21T07:07:25.136Z</updated>
+  <updated>2020-10-21T07:11:08.014Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MySQL 01-基础</title>
+    <link href="https://blog.tangspoon.cn/2020/10/21/MySQL%2001-%E5%9F%BA%E7%A1%80/"/>
+    <id>https://blog.tangspoon.cn/2020/10/21/MySQL%2001-%E5%9F%BA%E7%A1%80/</id>
+    <published>2020-10-21T06:37:29.000Z</published>
+    <updated>2020-10-21T07:11:08.014Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>以下所有操作，务必在选择了数据库后，再操作</strong>。</p><p><img src="https://cdn.jsdelivr.net/gh/tangspoon66/blog_pics@master/uPic/image-20201021134930168.png" alt="image-20201021134930168" /></p><h3 id="单表"><a class="markdownIt-Anchor" href="#单表"></a> 单表</h3><h4 id="增"><a class="markdownIt-Anchor" href="#增"></a> 增</h4><ul><li>基本用法：</li></ul><p><code>select</code> 用法是<code>select 字段 from 表名</code></p><p>例如：<code>select id,name from t_studeng</code>表示从t_student表查找id到name的字段</p><ul><li><code>where</code>查询条件</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select *from t_student where age&#x3D;20 and xueli&#x3D;&#39;本科&#39;;</span><br></pre></td></tr></table></figure><h4 id="增-2"><a class="markdownIt-Anchor" href="#增-2"></a> 增</h4><p>基本用法：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">insert into 表名(&#39;id&#39;,&#39;name&#39;,&#39;age&#39;) values(&#39;10&#39;,&#39;名字&#39;,&#39;20&#39;);</span><br></pre></td></tr></table></figure><h4 id="改"><a class="markdownIt-Anchor" href="#改"></a> 改</h4><p>基本用法</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">update 表名</span><br><span class="line">set 字段1&#x3D;值1</span><br><span class="line">where 条件;</span><br><span class="line"></span><br><span class="line">例如：</span><br><span class="line">update t_student</span><br><span class="line">set age&#x3D;20</span><br><span class="line">where id&#x3D;10;</span><br></pre></td></tr></table></figure><h4 id="删除"><a class="markdownIt-Anchor" href="#删除"></a> 删除</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">delete from 表名 where id&#x3D;1;</span><br></pre></td></tr></table></figure><hr /><h3 id="多表联查"><a class="markdownIt-Anchor" href="#多表联查"></a> 多表联查</h3><h4 id="两个表"><a class="markdownIt-Anchor" href="#两个表"></a> 两个表</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select from t_student join t_class on t_class.id&#x3D;t_student.cid;</span><br></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">A join B &#x3D; 表A+表B</span><br><span class="line">on &#x3D; 表A与表B的连接点cid+表B的id（反正就是表A的尾部和表B头部相连）</span><br></pre></td></tr></table></figure><p><img src="https://cdn.jsdelivr.net/gh/tangspoon66/blog_pics@master/uPic/Xnip2020-10-20_23-56-04.jpg" alt="Xnip2020-10-20_23-56-04" /></p><p>从上图可以看到，两张表关联起来后会出现cid和id和两个remark，这个查询结果显得不够精简。如何选择 关联后新表的部分数据呢？</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select s.id,name,age,classname from  t_student s join t_class c on s.cid&#x3D;c.id;</span><br></pre></td></tr></table></figure><p>注意，可以通过<code>t_student s</code>与<code>t_class c</code>的方式，把冗长的表名用简单的单词替代。另外，上面的<code>s.id,name,classname</code>，不用写成<code>s.id,s.name,c.classname</code>，因为合并后是以<code>t_student</code>的<code>id</code>做为主键的。</p><p><code>select</code>与<code>from</code>之间的内容，永远都作「条件」，<code>from</code>后面的永远为「表」或者「关联的新表」（用<code>join</code>连接），<code>on</code>为「连接点」。</p><h4 id="三个表"><a class="markdownIt-Anchor" href="#三个表"></a> 三个表</h4><p>可以在两个表的基础上，再在后面 <code>join</code>第三个表即可。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select s.id,name,classname,chinese,math,english from t_student s join t_class c on s.cid&#x3D;c.id join t_grade g on c.id&#x3D;g.sid where math&gt;60; </span><br></pre></td></tr></table></figure><hr /><h3 id="数据库常用命令和实际应用"><a class="markdownIt-Anchor" href="#数据库常用命令和实际应用"></a> 数据库常用命令和实际应用</h3>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;&lt;strong&gt;以下所有操作，务必在选择了数据库后，再操作&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;https://cdn.jsdelivr.net/gh/tangspoon66/blog_pics@master/uPic/image-202010211349</summary>
+      
+    
+    
+    
+    <category term="MySQL" scheme="https://blog.tangspoon.cn/categories/MySQL/"/>
+    
+    
+    <category term="MySQL" scheme="https://blog.tangspoon.cn/tags/MySQL/"/>
+    
+  </entry>
   
   <entry>
     <title>软件测试01-基础知识</title>
