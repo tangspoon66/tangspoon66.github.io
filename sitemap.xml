@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.tangspoon.cn/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</loc>
+    
+    <lastmod>2020-10-25</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.tangspoon.cn/2020/10/25/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-01/</loc>
     
     <lastmod>2020-10-25</lastmod>
@@ -119,6 +126,13 @@
   
   <url>
     <loc>https://blog.tangspoon.cn/categories/MySQL/</loc>
+    <lastmod>2020-10-25</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tangspoon.cn/categories/JavaScript/</loc>
     <lastmod>2020-10-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
