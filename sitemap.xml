@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.tangspoon.cn/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</loc>
+    
+    <lastmod>2020-10-27</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.tangspoon.cn/2020/10/28/%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3TCP:IP/</loc>
     
     <lastmod>2020-10-27</lastmod>
@@ -145,6 +152,13 @@
   
   <url>
     <loc>https://blog.tangspoon.cn/tags/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/</loc>
+    <lastmod>2020-10-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tangspoon.cn/tags/%E9%9D%A2%E8%AF%95/</loc>
     <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
