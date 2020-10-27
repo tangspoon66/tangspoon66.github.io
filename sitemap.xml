@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.tangspoon.cn/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</loc>
+    
+    <lastmod>2020-10-27</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.tangspoon.cn/2020/10/20/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0-01/</loc>
     
     <lastmod>2020-10-25</lastmod>
@@ -44,14 +51,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/links/</loc>
+    <loc>https://blog.tangspoon.cn/categories/</loc>
     
     <lastmod>2020-10-13</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/</loc>
+    <loc>https://blog.tangspoon.cn/links/</loc>
     
     <lastmod>2020-10-13</lastmod>
     
@@ -72,14 +79,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/about/</loc>
+    <loc>https://blog.tangspoon.cn/404</loc>
     
     <lastmod>2020-10-13</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/404</loc>
+    <loc>https://blog.tangspoon.cn/about/</loc>
     
     <lastmod>2020-10-13</lastmod>
     
@@ -102,36 +109,43 @@
 
   <url>
     <loc>https://blog.tangspoon.cn/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
 
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/MySQL/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <loc>https://blog.tangspoon.cn/tags/JavaScript/</loc>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/JavaScript/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <loc>https://blog.tangspoon.cn/tags/MySQL/</loc>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.tangspoon.cn/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.tangspoon.cn/tags/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-10-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tangspoon.cn/tags/%E9%9D%A2%E8%AF%95/</loc>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
@@ -139,22 +153,22 @@
 
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/MySQL/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <loc>https://blog.tangspoon.cn/categories/JavaScript/</loc>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/JavaScript/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <loc>https://blog.tangspoon.cn/categories/MySQL/</loc>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
     <loc>https://blog.tangspoon.cn/categories/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/</loc>
-    <lastmod>2020-10-25</lastmod>
+    <lastmod>2020-10-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
