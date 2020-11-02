@@ -73,15 +73,15 @@
     <link href="https://blog.tangspoon.cn/2020/10/29/%E8%A7%A3%E5%86%B3JMeter%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/"/>
     <id>https://blog.tangspoon.cn/2020/10/29/%E8%A7%A3%E5%86%B3JMeter%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</id>
     <published>2020-10-29T09:18:02.000Z</published>
-    <updated>2020-11-02T10:45:08.762Z</updated>
+    <updated>2020-11-02T11:53:39.355Z</updated>
     
-    <content type="html"><![CDATA[<h2 id="解决-jmeter出现页面的脚本发生错误"><a class="markdownIt-Anchor" href="#解决-jmeter出现页面的脚本发生错误"></a> 解决 Jmeter出现“页面的脚本发生错误”</h2><img src="https://raw.githubusercontent.com/tangspoon66/tangspoon66.github.io/master/uPic/image-20201102184342291.png" alt="image-20201102184342291" style="zoom:50%;" /><p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p><img src="https://raw.githubusercontent.com/tangspoon66/tangspoon66.github.io/master/uPic/image-20201102184456118.png" alt="image-20201102184456118" style="zoom:50%;" />]]></content>
+    <content type="html"><![CDATA[<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p><p>![image-20201102194945424](…/…/…/…/Library/Application Support/typora-user-images/image-20201102194945424.png)</p><p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p><p><img src="../../../screenshot/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" /></p>]]></content>
     
     
       
       
-    <summary type="html">&lt;h2 id=&quot;解决-jmeter出现页面的脚本发生错误&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#解决-jmeter出现页面的脚本发生错误&quot;&gt;&lt;/a&gt; 解决 Jmeter出现“页面的脚本发生错误”&lt;/h2&gt;
-&lt;img src=&quot;https://r</summary>
+    <summary type="html">&lt;p&gt;学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。&lt;/p&gt;
+&lt;p&gt;![image-20201102194945424](…/…/…/</summary>
       
     
     
@@ -89,7 +89,7 @@
     <category term="软件测试" scheme="https://blog.tangspoon.cn/categories/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
     
     
-    <category term="JMeter" scheme="https://blog.tangspoon.cn/tags/JMeter/"/>
+    <category term="故障解决" scheme="https://blog.tangspoon.cn/tags/%E6%95%85%E9%9A%9C%E8%A7%A3%E5%86%B3/"/>
     
   </entry>
   
