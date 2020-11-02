@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-11-01T12:22:15.123Z</updated>
+  <updated>2020-11-02T12:06:44.121Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>test-pics</title>
+    <link href="https://blog.tangspoon.cn/2020/11/02/test-pics/"/>
+    <id>https://blog.tangspoon.cn/2020/11/02/test-pics/</id>
+    <published>2020-11-02T12:06:16.000Z</published>
+    <updated>2020-11-02T12:06:44.121Z</updated>
+    
+    <content type="html"><![CDATA[<p>test</p><img src="http://picbed.tangspoon.cn/uPic/image-20201102200637811.png" alt="image-20201102200637811" style="zoom:50%;" />]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;p&gt;test&lt;/p&gt;
+&lt;img src=&quot;http://picbed.tangspoon.cn/uPic/image-20201102200637811.png&quot; alt=&quot;image-20201102200637811&quot; style=&quot;zoom:50%;&quot; /&gt;</summary>
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>简单的“用户登陆”用例设计真的简单吗？</title>
