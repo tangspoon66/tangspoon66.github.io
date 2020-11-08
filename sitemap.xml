@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.tangspoon.cn/categories/index.html</loc>
+    
+    <lastmod>2020-11-08</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.tangspoon.cn/tags/index.html</loc>
+    
+    <lastmod>2020-11-08</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.tangspoon.cn/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</loc>
     
     <lastmod>2020-11-08</lastmod>
@@ -93,13 +107,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/index.html</loc>
-    
-    <lastmod>2020-10-13</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.tangspoon.cn/links/index.html</loc>
     
     <lastmod>2020-10-13</lastmod>
@@ -108,13 +115,6 @@
   
   <url>
     <loc>https://blog.tangspoon.cn/repository/index.html</loc>
-    
-    <lastmod>2020-10-13</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://blog.tangspoon.cn/tags/index.html</loc>
     
     <lastmod>2020-10-13</lastmod>
     
