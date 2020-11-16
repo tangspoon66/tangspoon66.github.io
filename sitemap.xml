@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/index.html</loc>
-    
-    <lastmod>2020-11-16</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://blog.tangspoon.cn/archives/index.html</loc>
     
     <lastmod>2020-11-16</lastmod>
@@ -19,6 +12,13 @@
     <loc>https://blog.tangspoon.cn/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</loc>
     
     <lastmod>2020-11-16</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.tangspoon.cn/categories/index.html</loc>
+    
+    <lastmod>2020-11-08</lastmod>
     
   </url>
   
