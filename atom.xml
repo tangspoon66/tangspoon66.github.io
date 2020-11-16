@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-11-16T07:12:54.560Z</updated>
+  <updated>2020-11-16T07:16:43.459Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://blog.tangspoon.cn/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/"/>
     <id>https://blog.tangspoon.cn/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</id>
     <published>2020-11-16T07:11:13.000Z</published>
-    <updated>2020-11-16T07:12:54.560Z</updated>
+    <updated>2020-11-16T07:16:43.459Z</updated>
     
     <content type="html"><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2><p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p><a id="more"></a><h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2><blockquote><p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p></blockquote><ol><li><p>测试用例是什么？</p><p>测试用例是“一组输入、执行条件、预期结果”</p></li><li><p>什么是一个好的测试用例？</p><p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p></li><li><p>测试用例的预期结果不需要验证吗？</p><p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p></li></ol><h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2><ol><li><p>指导测试的「实施」</p><p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p></li><li><p>「规划」测试数据</p><p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p></li><li><p>评估测试结果的度量基准</p><p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p></li></ol><h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2><h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3><h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4><p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" /><h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4><ol><li><p>分析需求，确定「输入」「数据类型」。</p><p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p><p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p><img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" /><img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" /></li><li><p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p><p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p><img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" /><p>2）「划分」有效等价类与无效等价类</p><img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" /></li><li><p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p></li><li><p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p><img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" /></li></ol><hr /><h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3><blockquote><p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p></blockquote><h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4><p>首先，得明白上点、离点、内点的概念。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" /><h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4><p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p><p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p><img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" /><p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p><hr /><h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3><img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" /><hr /><h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3><p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p><hr /><h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3><p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p><blockquote><p>参考资料：</p><ol><li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li><li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li></ol></blockquote>]]></content>
     
@@ -30,6 +30,8 @@
 &lt;p&gt;很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。&lt;/p&gt;</summary>
     
     
+    
+    <category term="软件测试" scheme="https://blog.tangspoon.cn/categories/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
     
     
     <category term="软件测试" scheme="https://blog.tangspoon.cn/tags/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
