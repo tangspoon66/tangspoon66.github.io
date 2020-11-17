@@ -1343,10 +1343,10 @@
   <entry>
     <title>APP测试需要考虑的点有哪些？</title>
     <url>/2020/11/17/APP%E6%B5%8B%E8%AF%95%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E7%82%B9%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F/</url>
-    <content><![CDATA[<a id="more"></a>
-<blockquote>
+    <content><![CDATA[<blockquote>
 <p>性能测试；适配兼容测试；耗电量测试；中断测试；若网络测试</p>
 </blockquote>
+<a id="more"></a>
 <h3 id="性能测试"><a class="markdownIt-Anchor" href="#性能测试"></a> 性能测试：</h3>
 <p>CPU，内存，耗电量，耗流量，流畅度，APP的安装和卸载和启动的耗时</p>
 <h3 id="适配兼容性"><a class="markdownIt-Anchor" href="#适配兼容性"></a> 适配兼容性：</h3>
@@ -1366,6 +1366,52 @@
       </categories>
       <tags>
         <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>测试功能点总结</title>
+    <url>/2020/11/17/%E6%B5%8B%E8%AF%95%E5%8A%9F%E8%83%BD%E7%82%B9%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>给自己思考的一些功能点做个总结，可以站在更高的角度去看待一个系统、系统中的一个功能，整个过程可谓十分有趣。但因为个人思路有限，感觉始终没有做到让自己很惊艳，还是缺乏经验啊。欢迎各位在下方评论区交流。</p>
+<a id="more"></a>
+<h1 id="功能点列表"><a class="markdownIt-Anchor" href="#功能点列表"></a> 功能点列表</h1>
+<blockquote>
+<p>所有xmind文件都可以在blog的「(文件)[<a href="https://file.tangspoon.cn">https://file.tangspoon.cn</a>]」中下载，但目前使用的是Gcore的俄罗斯的vps搭建的OLAINDEX，所以访问与下载可能会有些慢，日后会进行优化。</p>
+</blockquote>
+<ul>
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%9C%8B%E5%8F%8B%E5%9C%88%E8%AF%84%E8%AE%BA-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">朋友圈点赞-测试点.xmind</a></li>
+</ul>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162135625.png" alt="image-20201117162135625" style="zoom:50%;" />
+<ul>
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E5%BE%AE%E4%BF%A1%E7%BA%A2%E5%8C%85-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">微信红包-测试点.xmind</a></li>
+</ul>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201117162237889.png" alt="image-20201117162237889" /></p>
+<ul>
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%90%9C%E7%B4%A2%E6%A1%86-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">搜索框-测试点.xmind</a></li>
+</ul>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162335854.png" alt="image-20201117162335854" style="zoom:50%;" />
+<ul>
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%9C%8B%E5%8F%8B%E5%9C%88%E8%AF%84%E8%AE%BA-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">朋友圈评论-测试点.xmind</a></li>
+</ul>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162433886.png" alt="image-20201117162433886" style="zoom:50%;" />
+<ul>
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">视频播放器-测试点.xmind</a></li>
+</ul>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162512012.png" alt="image-20201117162512012" style="zoom:50%;" />
+<ul>
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E8%B4%AD%E7%89%A9%E8%BD%A6-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">购物车-测试点.xmind</a></li>
+</ul>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162604959.png" alt="image-20201117162604959" style="zoom:50%;" />
+<blockquote>
+<p>欢迎补充</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>测试点</tag>
       </tags>
   </entry>
 </search>
