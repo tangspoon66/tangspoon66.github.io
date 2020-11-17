@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-11-16T07:17:21.696Z</updated>
+  <updated>2020-11-17T07:56:25.556Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>APP测试需要考虑的点有哪些？</title>
+    <link href="https://blog.tangspoon.cn/2020/11/17/APP%E6%B5%8B%E8%AF%95%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E7%82%B9%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F/"/>
+    <id>https://blog.tangspoon.cn/2020/11/17/APP%E6%B5%8B%E8%AF%95%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E7%82%B9%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F/</id>
+    <published>2020-11-17T07:52:33.000Z</published>
+    <updated>2020-11-17T07:56:25.556Z</updated>
+    
+    <content type="html"><![CDATA[<blockquote><p>性能测试；适配兼容测试；耗电量测试；中断测试；若网络测试</p></blockquote><h3 id="性能测试"><a class="markdownIt-Anchor" href="#性能测试"></a> 性能测试：</h3><p>CPU，内存，耗电量，耗流量，流畅度，APP的安装和卸载和启动的耗时</p><h3 id="适配兼容性"><a class="markdownIt-Anchor" href="#适配兼容性"></a> 适配兼容性：</h3><p>在不同的操作系统上的安装，拉起，点击，和卸载是否正常</p><h3 id="耗电量测试"><a class="markdownIt-Anchor" href="#耗电量测试"></a> 耗电量测试：</h3><p>当手机冲满格电的时候能玩多久，挂机10分钟耗多少电，APP每小时耗电多少</p><h3 id="中断测试"><a class="markdownIt-Anchor" href="#中断测试"></a> 中断测试：</h3><p>app在前台和后台运行状态时与来电，文件下载，音乐等关键运行的交互情况测试，测试电话，短信，微博或其他通知进来是APP的反应</p><h3 id="弱网络测试"><a class="markdownIt-Anchor" href="#弱网络测试"></a> 弱网络测试：</h3><p>​在网络状况不太好的情况下，APP运行情况</p><blockquote><p>转自https://www.cnblogs.com/anliux/p/12571140.html</p></blockquote>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;性能测试；适配兼容测试；耗电量测试；中断测试；若网络测试&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;性能测试&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#性能测试&quot;&gt;&lt;/a&gt; 性能测试：&lt;/h3&gt;
+&lt;p&gt;CP</summary>
+      
+    
+    
+    
+    <category term="软件测试" scheme="https://blog.tangspoon.cn/categories/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
+    
+    
+    <category term="软件测试" scheme="https://blog.tangspoon.cn/tags/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>测试用例-基础知识</title>
