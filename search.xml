@@ -1,36 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title></title>
-    <url>/2020/11/19/Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible%20input%20and%20strict%20mode%20is%20set%20to%20&#39;warn&#39;%20Unicode%20text%20character%20%E5%BC%80%20used%20in%20math%20mo/</url>
-    <content><![CDATA[<h1 id="hexo在generate后出现错误latex-incompatible-input-and-strict-mode-is-set-to-warn-unicode-text-character-开-used-in-math-mode-unicodetextinmathmode"><a class="markdownIt-Anchor" href="#hexo在generate后出现错误latex-incompatible-input-and-strict-mode-is-set-to-warn-unicode-text-character-开-used-in-math-mode-unicodetextinmathmode"></a> Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to ‘warn’: Unicode text character “开” used in math mode [unicodeTextInMathMode]”</h1>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
-<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<blockquote>
-<p>完美主义不允许。</p>
-</blockquote>
-<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
-<a id="more"></a>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
-<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
-<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
-<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
-<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
-<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
-<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
-<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
-<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
-<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
-<ul>
-<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
-<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
-<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
     <title>Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
     <url>/2020/11/19/Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
@@ -472,10 +442,12 @@
 <p>剩下的就都很好理解了吧。</p>
 </li>
 </ol>
+<hr />
 <blockquote>
-<p>参考资料：</p>
+<p>参考资料</p>
 <p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
-<p>最良心的Python教程：<a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
+<p>最良心的Python教程：</p>
+<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
 </blockquote>
 ]]></content>
       <categories>
