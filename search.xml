@@ -336,6 +336,46 @@
       </tags>
   </entry>
   <entry>
+    <title>Python中init方法到底怎么理解？</title>
+    <url>/2020/11/19/Python%E4%B8%ADinit%E6%96%B9%E6%B3%95%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
+<p>首先我们看上面一个简单的例子，从上到下仔细分析。</p>
+<a id="more"></a>
+<ol>
+<li>
+<p>Line1：首先创建一个<code>class Person():</code></p>
+</li>
+<li>
+<p>Line2：在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age``name</code>三个部分来看。</p>
+<ul>
+<li>
+<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
+<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
+</li>
+<li>
+<p>那么<code>self</code>又是什么东西？</p>
+<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
+</li>
+</ul>
+</li>
+<li>
+<p>剩下的就都很好理解了吧。</p>
+</li>
+</ol>
+<blockquote>
+<p>参考资料：</p>
+<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
+<p>最良心的Python教程：<a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux基本操作</title>
     <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
@@ -408,46 +448,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>Python中init方法到底怎么理解？</title>
-    <url>/2020/11/19/python%E4%B8%ADinit%E6%96%B9%E6%B3%95%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
-<p>首先我们看上面一个简单的例子，从上到下仔细分析。</p>
-<a id="more"></a>
-<ol>
-<li>
-<p>Line1：首先创建一个<code>class Person():</code></p>
-</li>
-<li>
-<p>Line2：在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age``name</code>三个部分来看。</p>
-<ul>
-<li>
-<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
-<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
-</li>
-<li>
-<p>那么<code>self</code>又是什么东西？</p>
-<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
-</li>
-</ul>
-</li>
-<li>
-<p>剩下的就都很好理解了吧。</p>
-</li>
-</ol>
-<blockquote>
-<p>参考资料：</p>
-<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
-<p>最良心的 Python 教程：<a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>个人理解TCP/IP</title>
     <url>/2020/10/28/%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3TCP:IP/</url>
     <content><![CDATA[<blockquote>
@@ -502,123 +502,6 @@
       </categories>
       <tags>
         <tag>网络基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>后盾人MySQL-基本操作</title>
-    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<blockquote>
-<p>感谢<a href="https://houdunren.gitee.io/note/mysql/">后盾人</a>的MySQL教程</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="查询数据"><a class="markdownIt-Anchor" href="#查询数据"></a> 查询数据</h2>
-<p>用的两张表：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108122852734.png" alt="image-20201108122852734" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108122922049.png" alt="image-20201108122922049" style="zoom:50%;" />
-<h4 id="字段处理"><a class="markdownIt-Anchor" href="#字段处理"></a> 字段处理</h4>
-<ul>
-<li>查询制定字段，并排序字段</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select description,cname from class;</span><br></pre></td></tr></table></figure>
-<h4 id="条件筛选"><a class="markdownIt-Anchor" href="#条件筛选"></a> 条件筛选</h4>
-<ul>
-<li>根据条件查询</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from class where cname&#x3D;&#39;php&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查询包含关键词的数据</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from class where description like &#39;%p%&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>合并「列」返回查询结果</strong></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select concat(id,cname) as &#39;class_info&#39; from class;</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123002633.png" alt="image-20201108123002633" style="zoom:50%;" />
-<ul>
-<li>介绍中不包含php的班级</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from class where description not like &#39;%php%&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查询学生所在班级编号，并去除重复值</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select distinct class_id from stu;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查询年龄在20~35岁的同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from stu where age between 20 and 35;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查找2、3班的所有同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu where class_id in(2,3);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查找除了1、3班的同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu where class_id not in(1,3);</span><br></pre></td></tr></table></figure>
-<h4 id="null"><a class="markdownIt-Anchor" href="#null"></a> NULL</h4>
-<ul>
-<li>查询没有非配班级的学生姓名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select sname from stu where class_id is null;</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123032831.png" alt="image-20201108123032831" style="zoom:50%;" />
-<ul>
-<li>查询结果中对没分配班级的学生显示未分配</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select sname,ifnull(class_id,&#39;未分配&#39;) from stu;</span><br></pre></td></tr></table></figure>
-<h4 id="排序结果"><a class="markdownIt-Anchor" href="#排序结果"></a> 排序结果</h4>
-<ul>
-<li>按学生年龄从大到小排序</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by age desc;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>班级从大到小排序，相同班级的同学年龄从小到大排序</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by class_id desc,age asc;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>也就是多个条件的罗列。</p>
-</blockquote>
-<ul>
-<li>随机获得一名同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by rand() limit 1;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>最后报名的同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by id desc limit 1;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>第二和第三报名的同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by id asc limit 1,2;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查找2班年龄最小的同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu where class_id&#x3D;2 and age is not null order by age asc limit 1;</span><br><span class="line"># 注意不要忘了order by age中的age</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>综上：排序中选择某个特定对象，可以用limit来限制。但一定要先排好序再使用。</p>
-</blockquote>
-<h2 id="删除记录"><a class="markdownIt-Anchor" href="#删除记录"></a> 删除记录</h2>
-<ul>
-<li>删除所有年龄小于20的同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">delete from stu where age&lt;20;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>删除所有年龄小在30并没有班级的同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">delete from stu where age&#x3D;30 and class_id is null;</span><br></pre></td></tr></table></figure>
-<h2 id="添加记录"><a class="markdownIt-Anchor" href="#添加记录"></a> 添加记录</h2>
-<ul>
-<li>添加一条记录</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">insert into stu SET sname&#x3D;&#39;小明&#39;,age&#x3D;22,class_id&#x3D;1;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>添加多条件记录</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">insert into stu(sname,class_id,age) values(&#39;小明&#39;,2,32),(&#39;小张&#39;,3,45);</span><br><span class="line"># 注意不要忘了values</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -756,6 +639,123 @@
       </tags>
   </entry>
   <entry>
+    <title>后盾人MySQL-基本操作</title>
+    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<blockquote>
+<p>感谢<a href="https://houdunren.gitee.io/note/mysql/">后盾人</a>的MySQL教程</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="查询数据"><a class="markdownIt-Anchor" href="#查询数据"></a> 查询数据</h2>
+<p>用的两张表：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108122852734.png" alt="image-20201108122852734" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108122922049.png" alt="image-20201108122922049" style="zoom:50%;" />
+<h4 id="字段处理"><a class="markdownIt-Anchor" href="#字段处理"></a> 字段处理</h4>
+<ul>
+<li>查询制定字段，并排序字段</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select description,cname from class;</span><br></pre></td></tr></table></figure>
+<h4 id="条件筛选"><a class="markdownIt-Anchor" href="#条件筛选"></a> 条件筛选</h4>
+<ul>
+<li>根据条件查询</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from class where cname&#x3D;&#39;php&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查询包含关键词的数据</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from class where description like &#39;%p%&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>合并「列」返回查询结果</strong></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select concat(id,cname) as &#39;class_info&#39; from class;</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123002633.png" alt="image-20201108123002633" style="zoom:50%;" />
+<ul>
+<li>介绍中不包含php的班级</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from class where description not like &#39;%php%&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查询学生所在班级编号，并去除重复值</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select distinct class_id from stu;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查询年龄在20~35岁的同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select * from stu where age between 20 and 35;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查找2、3班的所有同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu where class_id in(2,3);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查找除了1、3班的同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu where class_id not in(1,3);</span><br></pre></td></tr></table></figure>
+<h4 id="null"><a class="markdownIt-Anchor" href="#null"></a> NULL</h4>
+<ul>
+<li>查询没有非配班级的学生姓名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select sname from stu where class_id is null;</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123032831.png" alt="image-20201108123032831" style="zoom:50%;" />
+<ul>
+<li>查询结果中对没分配班级的学生显示未分配</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select sname,ifnull(class_id,&#39;未分配&#39;) from stu;</span><br></pre></td></tr></table></figure>
+<h4 id="排序结果"><a class="markdownIt-Anchor" href="#排序结果"></a> 排序结果</h4>
+<ul>
+<li>按学生年龄从大到小排序</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by age desc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>班级从大到小排序，相同班级的同学年龄从小到大排序</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by class_id desc,age asc;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>也就是多个条件的罗列。</p>
+</blockquote>
+<ul>
+<li>随机获得一名同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by rand() limit 1;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>最后报名的同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by id desc limit 1;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>第二和第三报名的同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu order by id asc limit 1,2;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查找2班年龄最小的同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select *from stu where class_id&#x3D;2 and age is not null order by age asc limit 1;</span><br><span class="line"># 注意不要忘了order by age中的age</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>综上：排序中选择某个特定对象，可以用limit来限制。但一定要先排好序再使用。</p>
+</blockquote>
+<h2 id="删除记录"><a class="markdownIt-Anchor" href="#删除记录"></a> 删除记录</h2>
+<ul>
+<li>删除所有年龄小于20的同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">delete from stu where age&lt;20;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除所有年龄小在30并没有班级的同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">delete from stu where age&#x3D;30 and class_id is null;</span><br></pre></td></tr></table></figure>
+<h2 id="添加记录"><a class="markdownIt-Anchor" href="#添加记录"></a> 添加记录</h2>
+<ul>
+<li>添加一条记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">insert into stu SET sname&#x3D;&#39;小明&#39;,age&#x3D;22,class_id&#x3D;1;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加多条件记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">insert into stu(sname,class_id,age) values(&#39;小明&#39;,2,32),(&#39;小张&#39;,3,45);</span><br><span class="line"># 注意不要忘了values</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>测试功能点总结</title>
     <url>/2020/11/17/%E6%B5%8B%E8%AF%95%E5%8A%9F%E8%83%BD%E7%82%B9%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
@@ -796,7 +796,7 @@
 <img src="https://picbed.tangspoon.cn/uPic/image-20201117162604959.png" alt="image-20201117162604959" style="zoom:50%;" />
 <hr />
 <blockquote>
-<p>欢迎补充</p>
+<p>欢迎在下方评论区补充</p>
 </blockquote>
 ]]></content>
       <categories>
