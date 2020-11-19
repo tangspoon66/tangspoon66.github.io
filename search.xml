@@ -1,6 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>APP测试需要考虑的点有哪些？</title>
+    <url>/2020/11/17/APP%E6%B5%8B%E8%AF%95%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E7%82%B9%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F/</url>
+    <content><![CDATA[<blockquote>
+<p>性能测试；适配兼容测试；耗电量测试；中断测试；若网络测试</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="性能测试"><a class="markdownIt-Anchor" href="#性能测试"></a> 性能测试：</h3>
+<p>CPU，内存，耗电量，耗流量，流畅度，APP的安装和卸载和启动的耗时</p>
+<h3 id="适配兼容性"><a class="markdownIt-Anchor" href="#适配兼容性"></a> 适配兼容性：</h3>
+<p>在不同的操作系统上的安装，拉起，点击，和卸载是否正常</p>
+<h3 id="耗电量测试"><a class="markdownIt-Anchor" href="#耗电量测试"></a> 耗电量测试：</h3>
+<p>当手机冲满格电的时候能玩多久，挂机10分钟耗多少电，APP每小时耗电多少</p>
+<h3 id="中断测试"><a class="markdownIt-Anchor" href="#中断测试"></a> 中断测试：</h3>
+<p>app在前台和后台运行状态时与来电，文件下载，音乐等关键运行的交互情况测试，测试电话，短信，微博或其他通知进来是APP的反应</p>
+<h3 id="弱网络测试"><a class="markdownIt-Anchor" href="#弱网络测试"></a> 弱网络测试：</h3>
+<p>​		在网络状况不太好的情况下，APP运行情况</p>
+<blockquote>
+<p>转自https://www.cnblogs.com/anliux/p/12571140.html</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JS学习笔记-01</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</url>
     <content><![CDATA[<p>基础的语法不再赘述，只强调以前未接触过的。</p>
@@ -554,6 +582,58 @@
       </tags>
   </entry>
   <entry>
+    <title>后盾人MySQL-多表操作</title>
+    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<blockquote>
+<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
+<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
+<ul>
+<li>查询一班的所有同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一班的所有女生发表的文章</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>哪个班级发表的文章超过两篇</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级文章的总点击数与平均点击数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级有多少同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
+<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
+<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
+<ul>
+<li>学生人数大于两个的班级名称</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
+<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
+<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
+<p>获取没有设置QQ的用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>正则表达式-01</title>
     <url>/2020/10/25/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-01/</url>
     <content><![CDATA[<h3 id="简单"><a class="markdownIt-Anchor" href="#简单"></a> 简单</h3>
@@ -636,55 +716,160 @@
       </tags>
   </entry>
   <entry>
-    <title>后盾人MySQL-多表操作</title>
-    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<blockquote>
-<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
-</blockquote>
+    <title>测试功能点总结</title>
+    <url>/2020/11/17/%E6%B5%8B%E8%AF%95%E5%8A%9F%E8%83%BD%E7%82%B9%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>给自己思考的一些功能点做个总结，可以站在更高的角度去看待一个系统、系统中的一个功能，整个过程可谓十分有趣。但因为个人思路有限，感觉始终没有做到让自己很惊艳，还是缺乏经验啊。欢迎各位在下方评论区交流。</p>
 <a id="more"></a>
-<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
-<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
-<ul>
-<li>查询一班的所有同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一班的所有女生发表的文章</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>哪个班级发表的文章超过两篇</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级文章的总点击数与平均点击数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级有多少同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
-<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
-<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
-<ul>
-<li>学生人数大于两个的班级名称</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
-<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
-<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
-<p>获取没有设置QQ的用户</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
+<h1 id="功能点列表"><a class="markdownIt-Anchor" href="#功能点列表"></a> 功能点列表</h1>
+<blockquote>
+<p>所有xmind文件都可以在blog的「<a href="https://file.tangspoon.cn">文件</a>」中下载，但目前使用的是Gcore的俄罗斯的vps搭建的OLAINDEX，所以访问与下载可能会有些慢，日后会进行优化。</p>
+</blockquote>
+<ol>
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%9C%8B%E5%8F%8B%E5%9C%88%E8%AF%84%E8%AE%BA-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">朋友圈点赞-测试点.xmind</a></li>
+</ol>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162135625.png" alt="image-20201117162135625" style="zoom:50%;" />
+<hr />
+<ol start="2">
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E5%BE%AE%E4%BF%A1%E7%BA%A2%E5%8C%85-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">微信红包-测试点.xmind</a></li>
+</ol>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201117162237889.png" alt="image-20201117162237889" /></p>
+<hr />
+<ol start="3">
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%90%9C%E7%B4%A2%E6%A1%86-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">搜索框-测试点.xmind</a></li>
+</ol>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162335854.png" alt="image-20201117162335854" style="zoom:50%;" />
+<hr />
+<ol start="4">
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%9C%8B%E5%8F%8B%E5%9C%88%E8%AF%84%E8%AE%BA-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">朋友圈评论-测试点.xmind</a></li>
+</ol>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162433886.png" alt="image-20201117162433886" style="zoom:50%;" />
+<hr />
+<ol start="5">
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">视频播放器-测试点.xmind</a></li>
+</ol>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162512012.png" alt="image-20201117162512012" style="zoom:50%;" />
+<hr />
+<ol start="6">
+<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E8%B4%AD%E7%89%A9%E8%BD%A6-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">购物车-测试点.xmind</a></li>
+</ol>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201117162604959.png" alt="image-20201117162604959" style="zoom:50%;" />
+<hr />
+<blockquote>
+<p>欢迎补充</p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>软件测试</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
+        <tag>软件测试</tag>
+        <tag>测试点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>测试用例-基础知识</title>
+    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
+<a id="more"></a>
+<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
+<blockquote>
+<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
+</blockquote>
+<ol>
+<li>
+<p>测试用例是什么？</p>
+<p>测试用例是“一组输入、执行条件、预期结果”</p>
+</li>
+<li>
+<p>什么是一个好的测试用例？</p>
+<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
+</li>
+<li>
+<p>测试用例的预期结果不需要验证吗？</p>
+<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
+</li>
+</ol>
+<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
+<ol>
+<li>
+<p>指导测试的「实施」</p>
+<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
+</li>
+<li>
+<p>「规划」测试数据</p>
+<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
+</li>
+<li>
+<p>评估测试结果的度量基准</p>
+<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
+</li>
+</ol>
+<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
+<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
+<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
+<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
+<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
+<ol>
+<li>
+<p>分析需求，确定「输入」「数据类型」。</p>
+<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
+<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
+</li>
+<li>
+<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
+<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
+<p>2）「划分」有效等价类与无效等价类</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
+</li>
+<li>
+<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
+</li>
+<li>
+<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
+</li>
+</ol>
+<hr />
+<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
+<blockquote>
+<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
+</blockquote>
+<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
+<p>首先，得明白上点、离点、内点的概念。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
+<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
+<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
+<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
+<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
+<hr />
+<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
+<hr />
+<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
+<hr />
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
+<blockquote>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
+<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
       </tags>
   </entry>
   <entry>
@@ -1233,191 +1418,6 @@
       <tags>
         <tag>软件测试</tag>
         <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>测试用例-基础知识</title>
-    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
-<a id="more"></a>
-<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
-<blockquote>
-<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
-</blockquote>
-<ol>
-<li>
-<p>测试用例是什么？</p>
-<p>测试用例是“一组输入、执行条件、预期结果”</p>
-</li>
-<li>
-<p>什么是一个好的测试用例？</p>
-<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
-</li>
-<li>
-<p>测试用例的预期结果不需要验证吗？</p>
-<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
-</li>
-</ol>
-<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
-<ol>
-<li>
-<p>指导测试的「实施」</p>
-<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
-</li>
-<li>
-<p>「规划」测试数据</p>
-<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
-</li>
-<li>
-<p>评估测试结果的度量基准</p>
-<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
-</li>
-</ol>
-<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
-<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
-<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
-<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
-<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
-<ol>
-<li>
-<p>分析需求，确定「输入」「数据类型」。</p>
-<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
-<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
-</li>
-<li>
-<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
-<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
-<p>2）「划分」有效等价类与无效等价类</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
-</li>
-<li>
-<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
-</li>
-<li>
-<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
-</li>
-</ol>
-<hr />
-<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
-<blockquote>
-<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
-</blockquote>
-<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
-<p>首先，得明白上点、离点、内点的概念。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
-<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
-<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
-<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
-<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
-<hr />
-<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
-<hr />
-<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
-<hr />
-<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
-<blockquote>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
-<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
-</ol>
-</blockquote>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>APP测试需要考虑的点有哪些？</title>
-    <url>/2020/11/17/APP%E6%B5%8B%E8%AF%95%E9%9C%80%E8%A6%81%E8%80%83%E8%99%91%E7%9A%84%E7%82%B9%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F/</url>
-    <content><![CDATA[<blockquote>
-<p>性能测试；适配兼容测试；耗电量测试；中断测试；若网络测试</p>
-</blockquote>
-<a id="more"></a>
-<h3 id="性能测试"><a class="markdownIt-Anchor" href="#性能测试"></a> 性能测试：</h3>
-<p>CPU，内存，耗电量，耗流量，流畅度，APP的安装和卸载和启动的耗时</p>
-<h3 id="适配兼容性"><a class="markdownIt-Anchor" href="#适配兼容性"></a> 适配兼容性：</h3>
-<p>在不同的操作系统上的安装，拉起，点击，和卸载是否正常</p>
-<h3 id="耗电量测试"><a class="markdownIt-Anchor" href="#耗电量测试"></a> 耗电量测试：</h3>
-<p>当手机冲满格电的时候能玩多久，挂机10分钟耗多少电，APP每小时耗电多少</p>
-<h3 id="中断测试"><a class="markdownIt-Anchor" href="#中断测试"></a> 中断测试：</h3>
-<p>app在前台和后台运行状态时与来电，文件下载，音乐等关键运行的交互情况测试，测试电话，短信，微博或其他通知进来是APP的反应</p>
-<h3 id="弱网络测试"><a class="markdownIt-Anchor" href="#弱网络测试"></a> 弱网络测试：</h3>
-<p>​		在网络状况不太好的情况下，APP运行情况</p>
-<blockquote>
-<p>转自https://www.cnblogs.com/anliux/p/12571140.html</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>测试功能点总结</title>
-    <url>/2020/11/17/%E6%B5%8B%E8%AF%95%E5%8A%9F%E8%83%BD%E7%82%B9%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>给自己思考的一些功能点做个总结，可以站在更高的角度去看待一个系统、系统中的一个功能，整个过程可谓十分有趣。但因为个人思路有限，感觉始终没有做到让自己很惊艳，还是缺乏经验啊。欢迎各位在下方评论区交流。</p>
-<a id="more"></a>
-<h1 id="功能点列表"><a class="markdownIt-Anchor" href="#功能点列表"></a> 功能点列表</h1>
-<blockquote>
-<p>所有xmind文件都可以在blog的「<a href="https://file.tangspoon.cn">文件</a>」中下载，但目前使用的是Gcore的俄罗斯的vps搭建的OLAINDEX，所以访问与下载可能会有些慢，日后会进行优化。</p>
-</blockquote>
-<ol>
-<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%9C%8B%E5%8F%8B%E5%9C%88%E8%AF%84%E8%AE%BA-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">朋友圈点赞-测试点.xmind</a></li>
-</ol>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201117162135625.png" alt="image-20201117162135625" style="zoom:50%;" />
-<hr />
-<ol start="2">
-<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E5%BE%AE%E4%BF%A1%E7%BA%A2%E5%8C%85-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">微信红包-测试点.xmind</a></li>
-</ol>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201117162237889.png" alt="image-20201117162237889" /></p>
-<hr />
-<ol start="3">
-<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%90%9C%E7%B4%A2%E6%A1%86-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">搜索框-测试点.xmind</a></li>
-</ol>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201117162335854.png" alt="image-20201117162335854" style="zoom:50%;" />
-<hr />
-<ol start="4">
-<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E6%9C%8B%E5%8F%8B%E5%9C%88%E8%AF%84%E8%AE%BA-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">朋友圈评论-测试点.xmind</a></li>
-</ol>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201117162433886.png" alt="image-20201117162433886" style="zoom:50%;" />
-<hr />
-<ol start="5">
-<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E8%A7%86%E9%A2%91%E6%92%AD%E6%94%BE%E5%99%A8-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">视频播放器-测试点.xmind</a></li>
-</ol>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201117162512012.png" alt="image-20201117162512012" style="zoom:50%;" />
-<hr />
-<ol start="6">
-<li><a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/%E6%B5%8B%E8%AF%95%E7%82%B9/%E8%B4%AD%E7%89%A9%E8%BD%A6-%E6%B5%8B%E8%AF%95%E7%82%B9.xmind?download=1">购物车-测试点.xmind</a></li>
-</ol>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201117162604959.png" alt="image-20201117162604959" style="zoom:50%;" />
-<hr />
-<blockquote>
-<p>欢迎补充</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>测试点</tag>
       </tags>
   </entry>
 </search>
