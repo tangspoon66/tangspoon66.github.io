@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-11-17T08:44:24.787Z</updated>
+  <updated>2020-11-19T03:06:35.760Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Python中init方法到底怎么理解？</title>
+    <link href="https://blog.tangspoon.cn/2020/11/19/python%E4%B8%ADinit%E6%96%B9%E6%B3%95%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/"/>
+    <id>https://blog.tangspoon.cn/2020/11/19/python%E4%B8%ADinit%E6%96%B9%E6%B3%95%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</id>
+    <published>2020-11-19T03:01:47.000Z</published>
+    <updated>2020-11-19T03:06:35.760Z</updated>
+    
+    <content type="html"><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" /><p>首先我们看上面一个简单的例子，从上到下仔细分析。</p><a id="more"></a><ol><li><p>Line1：首先创建一个<code>class Person():</code></p></li><li><p>Line2：在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age``name</code>三个部分来看。</p><ul><li><p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p><p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p></li><li><p>那么<code>self</code>又是什么东西？</p><p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p></li></ul></li><li><p>剩下的就都很好理解了吧。</p></li></ol><blockquote><p>参考资料：</p><p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p><p>最良心的 Python 教程：<a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p></blockquote>]]></content>
+    
+    
+    <summary type="html">&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20201119103811421.png&quot; alt=&quot;image-20201119103811421&quot; style=&quot;zoom:50%;&quot; /&gt;
+&lt;p&gt;首先我们看上面一个简单的例子，从上到下仔细分析。&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="Python" scheme="https://blog.tangspoon.cn/categories/Python/"/>
+    
+    
+    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
+    
+  </entry>
   
   <entry>
     <title>测试功能点总结</title>
