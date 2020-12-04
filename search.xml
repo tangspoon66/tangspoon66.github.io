@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
+    <url>/2020/11/19/Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<blockquote>
+<p>完美主义不允许。</p>
+</blockquote>
+<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
+<a id="more"></a>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
+<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
+<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
+<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
+<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
+<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
+<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
+<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
+<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
+<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
+<ul>
+<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
+<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
+<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JS学习笔记-01</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</url>
     <content><![CDATA[<p>基础的语法不再赘述，只强调以前未接触过的。</p>
@@ -115,42 +151,6 @@
       </categories>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
-    <url>/2020/11/19/Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
-<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<blockquote>
-<p>完美主义不允许。</p>
-</blockquote>
-<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
-<a id="more"></a>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
-<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
-<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
-<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
-<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
-<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
-<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
-<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
-<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
-<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
-<ul>
-<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
-<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
-<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -396,6 +396,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2020/10/13/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<a id="more"></a>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Python中的init()到底怎么理解？</title>
     <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
@@ -419,26 +439,6 @@
       <tags>
         <tag>Python</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/10/13/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<a id="more"></a>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>个人理解TCP/IP</title>
@@ -495,6 +495,36 @@
       </categories>
       <tags>
         <tag>网络基础</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>初识POM</title>
+    <url>/2020/12/04/%E5%88%9D%E8%AF%86POM/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
+<p>POM：Page Object Model——页面对象模。是一种思想。</p>
+<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
+<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
+<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
+<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
+<h2 id="三-怎么用"><a class="markdownIt-Anchor" href="#三-怎么用"></a> 三、怎么用</h2>
+<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
+<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
+<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
+<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
+<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="四-项目源代码下载"><a class="markdownIt-Anchor" href="#四-项目源代码下载"></a> 四、项目源代码下载</h2>
+<p>请进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载</p>
+]]></content>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
       </tags>
   </entry>
   <entry>
@@ -1044,6 +1074,204 @@
       </tags>
   </entry>
   <entry>
+    <title>解决badboy出现“页面的脚本发生素错误”</title>
+    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
+<a id="more"></a>
+<hr />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
+<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+        <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面试宝典-01</title>
+    <url>/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</url>
+    <content><![CDATA[<h2 id="一-软件工程"><a class="markdownIt-Anchor" href="#一-软件工程"></a> 一、软件工程</h2>
+<h4 id="1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"><a class="markdownIt-Anchor" href="#1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"></a> 1. 软件生命周期有哪些阶段？常见的软件生命周期模型有哪些？</h4>
+<p>软件生命周期有：初始构思、需求分析、功能设计、内部设计、文档计划、测试计划、文档准备、集成、测试、维护、升级、再测试、逐步淘汰等。</p>
+<p>常见模型有：瀑布模型、迭代模型、快速原型模型、螺旋模型。（1）瀑布是最常见的模型；（2）迭代约等于小型的瀑布流项目，每一次迭代都可以产生一个产品，这个产品是最终产品的一个子集；（3）快速原型模型是迅速构建一个可以运行的软件模型，以便理解和澄清问题；（4）而螺旋模型则大多用在大型管理软件系统中，具有前面三者没有的风险分析。</p>
+<a id="more"></a>
+<h4 id="2-什么是版本控制常用的系统有哪些"><a class="markdownIt-Anchor" href="#2-什么是版本控制常用的系统有哪些"></a> 2. 什么是版本控制，常用的系统有哪些？</h4>
+<p>是一种软体工程技巧，确保不同的人编辑的统一文档都能得到更新。</p>
+<p>1）Git：分布式的版本控制系统。</p>
+<p>2）SVN：subversion，分支管理系统。</p>
+<h2 id="二-测试模型"><a class="markdownIt-Anchor" href="#二-测试模型"></a> 二、测试模型</h2>
+<h4 id="1-常见的测试模型"><a class="markdownIt-Anchor" href="#1-常见的测试模型"></a> 1. 常见的测试模型</h4>
+<p>1）V字型：这是一种古老的瀑布模型，反映了实际和测试之间的关系。局限:仅仅把测试过程作为编码之后的一个阶段，忽视了测试对需求分析,系统设计的验证，如果前面设计错误， 得一直到后期的验收测试才被发现，耗时耗力。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123616102.png" alt="image-20201108123616102" style="zoom:50%;" />
+<p>2）W型：测试与开发同时进行，在 V 模型的基础上，增加了在开发阶段的同步测试。局限：仍然不支持迭代，减少了一定错误发生率，但是需按照流水线进行设计、编码和测试</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123631829.png" alt="image-20201108123631829" style="zoom:50%;" />
+<h4 id="2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"><a class="markdownIt-Anchor" href="#2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"></a> 2. 请根据”V”模型分别概述测试人员在软件的需求定义阶段、设计阶段、编码阶段、系统集成阶段的「工作任务」及其相应「生成的文档」?</h4>
+<p>1）需求定义阶段：根据项目需求提取测试需求，形成「测试需求文档」；根据测试需求和项目计划生成「测试计划」。</p>
+<p>2）设计阶段：根据测试需求拟定测试方案并形成「测试方案文档」；根据测试方案文档指定测试用例，并形成「测试用例文档」</p>
+<p>3）编码阶段：执行测试并完善测试用例文档</p>
+<p>4）系统集成阶段：测试总结报告，阶段问题统计报告，测试问题报告</p>
+<h2 id="三-测试计划"><a class="markdownIt-Anchor" href="#三-测试计划"></a> 三、测试计划</h2>
+<h4 id="1-编写测试计划的目的是"><a class="markdownIt-Anchor" href="#1-编写测试计划的目的是"></a> 1. 编写测试计划的目的是？</h4>
+<p>使测试工作顺利进行；使项目参与人员沟通更顺畅；使测试工作更系统（人与系统）</p>
+<h4 id="2-测试计划编写六要素"><a class="markdownIt-Anchor" href="#2-测试计划编写六要素"></a> 2. 测试计划编写六要素</h4>
+<p>5W1H（谁、时间、地点、做了什么事、为什么、怎么做的H）</p>
+<h4 id="3-测试人员在软件开发过程中的任务是什么"><a class="markdownIt-Anchor" href="#3-测试人员在软件开发过程中的任务是什么"></a> 3. 测试人员在软件开发过程中的任务是什么？</h4>
+<p>寻找bug，衡量软件的品质，避免软件开发过程中的缺陷，关注用户体验。总的来说就是：确保软件质量。</p>
+<h2 id="四-测试种类"><a class="markdownIt-Anchor" href="#四-测试种类"></a> 四、测试种类</h2>
+<h4 id="1-请列出你所知道的软件测试种类至少五项"><a class="markdownIt-Anchor" href="#1-请列出你所知道的软件测试种类至少五项"></a> 1. 请列出你所知道的「软件测试种类」，至少五项。</h4>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123501083.png" alt="image-20201108123501083" style="zoom:50%;" />
+<h4 id="2-黑盒测试和白盒测试的常用测试方法有举个例子"><a class="markdownIt-Anchor" href="#2-黑盒测试和白盒测试的常用测试方法有举个例子"></a> 2. 黑盒测试和白盒测试的常用测试方法有？举个例子？</h4>
+<p>1）黑盒：等价类划分法、边界值法、因果图法和错误猜测法</p>
+<p>2）白盒：逻辑覆盖法、循环测试路径选择、基本路径测试</p>
+<p>例子：在一次输入多个条件的完整性查询中。利用等价类划分法和边界分析法，首先利用等价类划分法，制定一个或多个结果是OK的测试用例，然后确认多个NG的测试用例。然后再用边界值分析法，对结果分别是OK和NG的测试用例进行拓展和补充。</p>
+<h4 id="3-简述黑盒测试和白盒测试的优缺点"><a class="markdownIt-Anchor" href="#3-简述黑盒测试和白盒测试的优缺点"></a> 3. 简述黑盒测试和白盒测试的优缺点？</h4>
+<p>1）黑盒</p>
+<ul>
+<li>优点：a. 比较简单，不用了解内部代码的实现；b. 从用户的角度出发，很容易知道用户会用到哪些功能，会遇到什么问题；c. 与软件内部无关；d. 在做软件自动化测试时较方便。</li>
+<li>缺点：代码覆盖率较低；自动化测试的复用性较低。</li>
+</ul>
+<p>2）白盒</p>
+<ul>
+<li>优点：代码覆盖率高，提高代码质量，发现隐藏的问题。</li>
+<li>缺点：a. 测试基于代码，只能测试开发人员的对与不对，而不能知道设计的正确与否，可能会漏掉一些功能需求；b. 系统庞大时，测试开销会很大；c. 测试有很多路径，不可能测试完所有的路径。</li>
+</ul>
+<h4 id="4-单元测试的策略有哪些主要内容有"><a class="markdownIt-Anchor" href="#4-单元测试的策略有哪些主要内容有"></a> 4. 单元测试的策略有哪些，主要内容有？</h4>
+<p>逻辑覆盖，循环覆盖，代码走查，静态数据流分析，代码评审，桌前检查，同行评审</p>
+<h4 id="5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"><a class="markdownIt-Anchor" href="#5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"></a> 5. 白盒测试逻辑覆盖有哪几种覆盖标准，覆盖率最高的是？</h4>
+<p>语句覆盖，分支覆盖，条件覆盖，路径覆盖，分支条件覆盖。最高的是路径覆盖。</p>
+<h2 id="五-用例设计"><a class="markdownIt-Anchor" href="#五-用例设计"></a> 五、用例设计</h2>
+<h4 id="1-什么是测试用例测试用例的基本要素"><a class="markdownIt-Anchor" href="#1-什么是测试用例测试用例的基本要素"></a> 1. 什么是测试用例，测试用例的基本要素？</h4>
+<p>测试用例是为某个测试目标编写的一组输入、执行条件与预期结果，以便测试某个程序是否符合特定要求。</p>
+<p>基本要素：测试索引，测试环境，测试输入，测试操作，预期结果，评价标准</p>
+<h4 id="2-描述测试用例设计的完整过程"><a class="markdownIt-Anchor" href="#2-描述测试用例设计的完整过程"></a> 2. 描述测试用例设计的完整过程</h4>
+<p>1）根据概要设计、需求文档、测试计划、测试方案细分出测试项</p>
+<p>2）根据测试项，按照详细设计与测试方案中测试的覆盖率细分出测试子项</p>
+<p>3）用测试设计方法（等价类划分，边界值，因果图等）编写测试用例</p>
+<p>注意：用例一定要及时更新（补充与删除），要全面（考虑功能、性能、兼容性等）</p>
+<h4 id="3-有个广告的纸杯子请设计测试用例"><a class="markdownIt-Anchor" href="#3-有个广告的纸杯子请设计测试用例"></a> 3. 有个广告的纸杯子，请设计测试用例</h4>
+<p>基本功能测试（逻辑功能测试）。</p>
+<p>1）硬度：是否达到设计标准。 装载能力:在杯子内分别装入少量的、半杯的、满杯的，看其装载量是否达到设计标准。 装载种类:开水(是否产生异味)、温水、冷水、冰水、咖啡。。</p>
+<p>2）界面测试(UI 测试)。</p>
+<p>看其形状、大小设计是否适合人方便拿起。</p>
+<p>外观是否吸引人(广告嘛)，赏心悦目。</p>
+<p>带广告的图案沾水受是否掉色、模糊。</p>
+<p>3）易用性测试。</p>
+<p>看其形状、大小设计是否适合人方便拿起。</p>
+<p>残疾人士用此杯去喝水的容程度。 杯子设计是否上大下小，在运输过程中可以套在一起有效利用空间，在使用时也容易拿开。</p>
+<p>4）稳定性测试（24 X 7 测试）。装入液体后记录其多少以后漏水。</p>
+<p>5）安全性测试。杯子所用的材料(包括纸基、涂层和广告颜料)是否符合食品卫生标准，在内外温度等环境因素下是否会与所盛各种饮料相反应，而产生对人体有害的物质。</p>
+<p>6）本地化测试。为国际化和本地化的需要，广告图案和文字是否在政治、宗教和文化方面具有广泛的适用性。</p>
+<p>7）对设计的改进建议。“如果是一次性杯子，能否标示已使用(比如变色)”和“杯子是否有使用者标贴(多人使用时防止混淆)”。</p>
+<h4 id="4-一个身份证号码输入框怎么设计用例"><a class="markdownIt-Anchor" href="#4-一个身份证号码输入框怎么设计用例"></a> 4. 一个身份证号码输入框，怎么设计用例?</h4>
+<p>校验身份证号的规则有效性（地址码、生日编码、顺序码、校验码）</p>
+<p>检验15位身份证和18位身份正好可用</p>
+<p>校验末尾是x的情况</p>
+<p>校验不足15位、16-17位和18位的情况</p>
+<p>如果是必输项，空白时是否有提示与流程是否正常进行</p>
+<p>如果不是必输项，校验不输入时流程能否正常进行</p>
+<p>检验非数字的情况，是否会有正确提示信息（包括大小写字母，汉字，特殊字符与标点符号）</p>
+<h4 id="5-登陆功能怎么设计测试用例"><a class="markdownIt-Anchor" href="#5-登陆功能怎么设计测试用例"></a> 5. 登陆功能怎么设计测试用例？</h4>
+<p>具体需求:有一个登录页面，有一个账号和一个密码输入框, 一个提交按钮。</p>
+<p>此题的考察目的：1. 了解需求(测什么都是从了解需求开始)；2. 是否有设计 Test Case 的能力；3. 是否熟悉各种测试方法； 4. 是否有丰富的 Web 测试经验;；5. 是否了解 Web 开发。</p>
+<p>了解需求：1. 登陆界面是弹出窗口式的，还是直接在网页里面；2. 账号长度和密码的强度要求（比如需要多少位、大小写敏感、特殊字符混搭）；3. 界面美观是否有特殊要求（是否要进行UI测试）</p>
+<p>用例设计：</p>
+<h5 id="1功能测试function-test"><a class="markdownIt-Anchor" href="#1功能测试function-test"></a> 1）功能测试：Function Test</h5>
+<ol>
+<li>
+<p>输入正确的账号密码，点击提交按钮，验证是否能正确登陆（正常输入）</p>
+</li>
+<li>
+<p>输入错误的账号密码，验证登陆会失败，与给出相应的错误提示（错误输入）</p>
+</li>
+<li>
+<p>登陆成功后能否正确跳转到正确界面</p>
+</li>
+<li>
+<p>账号和密码如果太长或太短，应该怎么处理（安全性，密码太短都有提示）</p>
+</li>
+<li>
+<p>账号和密码中，有特殊字符（比如空格）和其他非英文情况（是否做了顾虑）</p>
+</li>
+<li>
+<p>账号和密码前后都有空格的处理</p>
+</li>
+<li>
+<p>输入密码时，大写键盘有提示</p>
+</li>
+<li>
+<p>密码是否加密显示</p>
+</li>
+<li>
+<p>什么都不输，点击提交按钮，看提示信息</p>
+</li>
+<li>
+<p>记住账号功能</p>
+</li>
+<li>
+<p>登陆失败后，不能记录密码的功能</p>
+</li>
+<li>
+<p>牵涉到验证码的，还要考虑验证难度是否过大，刷新或者换一个的按钮是否好用</p>
+</li>
+<li>
+<p>登陆页面中的注册、忘记密码、登出、用另一账号等链接是否正确</p>
+</li>
+</ol>
+<h5 id="2界面测试ui-test"><a class="markdownIt-Anchor" href="#2界面测试ui-test"></a> 2）界面测试：UI Test</h5>
+<ol>
+<li>布局是否合理，2个Testbox和1个按钮是否对其</li>
+<li>Testbox和按钮的长度，高度是否符合要求</li>
+<li>界面的设计风格是否与UI的设计风格统一</li>
+<li>界面的文字简洁易懂，没有错别字</li>
+</ol>
+<h5 id="3性能测试-performance-test"><a class="markdownIt-Anchor" href="#3性能测试-performance-test"></a> 3）性能测试 Performance Test</h5>
+<ol>
+<li>打开登陆页面，需要几秒</li>
+<li>输入正确的账号密码后，登陆成功跳转到新页面，不超过5秒</li>
+</ol>
+<h5 id="4安全性测试-security-test"><a class="markdownIt-Anchor" href="#4安全性测试-security-test"></a> 4）安全性测试 Security Test</h5>
+<ol>
+<li>登陆成功后生成的 Cookie 是否有 HttpOnly（降低脚本盗取风险）</li>
+<li>账号密码是否通过加密的方式，发送到Web服务器</li>
+<li>账号和密码的验证，应该是用服务器端验证，而不只是用客户端的JS分析</li>
+<li>账号和密码的输入框，应该屏蔽SQL注入攻击</li>
+<li>账号和密码的输入框，要禁止输入脚本（防止XSS攻击）</li>
+<li>错误登陆的次数使用限制（防止暴力破解）</li>
+<li>考虑是否支持多用户在同一机器上登陆</li>
+<li>考虑一用户在多台机器登陆</li>
+</ol>
+<h5 id="5可用性测试-usability-test"><a class="markdownIt-Anchor" href="#5可用性测试-usability-test"></a> 5）可用性测试 Usability Test</h5>
+<ol>
+<li>是否可以用全键盘操作，是否有快捷键</li>
+<li>输入账号，密码后回车，是否可以登陆</li>
+<li>输入框是否可以用Tab切换</li>
+</ol>
+<h5 id="6兼容性测试-compatibility-test"><a class="markdownIt-Anchor" href="#6兼容性测试-compatibility-test"></a> 6）兼容性测试 Compatibility Test</h5>
+<ol>
+<li>主流浏览器功能是否正常</li>
+<li>不同系统平台是否工作正常（Macos pc）</li>
+<li>移动设备是否工作正常</li>
+<li>不同分辨率</li>
+</ol>
+<h5 id="7本地化测试-localization-test"><a class="markdownIt-Anchor" href="#7本地化测试-localization-test"></a> 7）本地化测试 Localization Test</h5>
+<p>不同语言环境，页面显示是否正确</p>
+<h5 id="8辅助性测试"><a class="markdownIt-Anchor" href="#8辅助性测试"></a> 8）辅助性测试</h5>
+<p>高对比度下是否显示正常（视力不好的人）</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>软件测试基础理论</title>
     <url>/2020/10/20/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0-01/</url>
     <content><![CDATA[<h3 id="软件测试的分类"><a class="markdownIt-Anchor" href="#软件测试的分类"></a> 软件测试的分类</h3>
@@ -1253,204 +1481,6 @@
       </categories>
       <tags>
         <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决badboy出现“页面的脚本发生素错误”</title>
-    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
-<a id="more"></a>
-<hr />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
-<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>troubleshooting</tag>
-        <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>面试宝典-01</title>
-    <url>/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</url>
-    <content><![CDATA[<h2 id="一-软件工程"><a class="markdownIt-Anchor" href="#一-软件工程"></a> 一、软件工程</h2>
-<h4 id="1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"><a class="markdownIt-Anchor" href="#1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"></a> 1. 软件生命周期有哪些阶段？常见的软件生命周期模型有哪些？</h4>
-<p>软件生命周期有：初始构思、需求分析、功能设计、内部设计、文档计划、测试计划、文档准备、集成、测试、维护、升级、再测试、逐步淘汰等。</p>
-<p>常见模型有：瀑布模型、迭代模型、快速原型模型、螺旋模型。（1）瀑布是最常见的模型；（2）迭代约等于小型的瀑布流项目，每一次迭代都可以产生一个产品，这个产品是最终产品的一个子集；（3）快速原型模型是迅速构建一个可以运行的软件模型，以便理解和澄清问题；（4）而螺旋模型则大多用在大型管理软件系统中，具有前面三者没有的风险分析。</p>
-<a id="more"></a>
-<h4 id="2-什么是版本控制常用的系统有哪些"><a class="markdownIt-Anchor" href="#2-什么是版本控制常用的系统有哪些"></a> 2. 什么是版本控制，常用的系统有哪些？</h4>
-<p>是一种软体工程技巧，确保不同的人编辑的统一文档都能得到更新。</p>
-<p>1）Git：分布式的版本控制系统。</p>
-<p>2）SVN：subversion，分支管理系统。</p>
-<h2 id="二-测试模型"><a class="markdownIt-Anchor" href="#二-测试模型"></a> 二、测试模型</h2>
-<h4 id="1-常见的测试模型"><a class="markdownIt-Anchor" href="#1-常见的测试模型"></a> 1. 常见的测试模型</h4>
-<p>1）V字型：这是一种古老的瀑布模型，反映了实际和测试之间的关系。局限:仅仅把测试过程作为编码之后的一个阶段，忽视了测试对需求分析,系统设计的验证，如果前面设计错误， 得一直到后期的验收测试才被发现，耗时耗力。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123616102.png" alt="image-20201108123616102" style="zoom:50%;" />
-<p>2）W型：测试与开发同时进行，在 V 模型的基础上，增加了在开发阶段的同步测试。局限：仍然不支持迭代，减少了一定错误发生率，但是需按照流水线进行设计、编码和测试</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123631829.png" alt="image-20201108123631829" style="zoom:50%;" />
-<h4 id="2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"><a class="markdownIt-Anchor" href="#2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"></a> 2. 请根据”V”模型分别概述测试人员在软件的需求定义阶段、设计阶段、编码阶段、系统集成阶段的「工作任务」及其相应「生成的文档」?</h4>
-<p>1）需求定义阶段：根据项目需求提取测试需求，形成「测试需求文档」；根据测试需求和项目计划生成「测试计划」。</p>
-<p>2）设计阶段：根据测试需求拟定测试方案并形成「测试方案文档」；根据测试方案文档指定测试用例，并形成「测试用例文档」</p>
-<p>3）编码阶段：执行测试并完善测试用例文档</p>
-<p>4）系统集成阶段：测试总结报告，阶段问题统计报告，测试问题报告</p>
-<h2 id="三-测试计划"><a class="markdownIt-Anchor" href="#三-测试计划"></a> 三、测试计划</h2>
-<h4 id="1-编写测试计划的目的是"><a class="markdownIt-Anchor" href="#1-编写测试计划的目的是"></a> 1. 编写测试计划的目的是？</h4>
-<p>使测试工作顺利进行；使项目参与人员沟通更顺畅；使测试工作更系统（人与系统）</p>
-<h4 id="2-测试计划编写六要素"><a class="markdownIt-Anchor" href="#2-测试计划编写六要素"></a> 2. 测试计划编写六要素</h4>
-<p>5W1H（谁、时间、地点、做了什么事、为什么、怎么做的H）</p>
-<h4 id="3-测试人员在软件开发过程中的任务是什么"><a class="markdownIt-Anchor" href="#3-测试人员在软件开发过程中的任务是什么"></a> 3. 测试人员在软件开发过程中的任务是什么？</h4>
-<p>寻找bug，衡量软件的品质，避免软件开发过程中的缺陷，关注用户体验。总的来说就是：确保软件质量。</p>
-<h2 id="四-测试种类"><a class="markdownIt-Anchor" href="#四-测试种类"></a> 四、测试种类</h2>
-<h4 id="1-请列出你所知道的软件测试种类至少五项"><a class="markdownIt-Anchor" href="#1-请列出你所知道的软件测试种类至少五项"></a> 1. 请列出你所知道的「软件测试种类」，至少五项。</h4>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123501083.png" alt="image-20201108123501083" style="zoom:50%;" />
-<h4 id="2-黑盒测试和白盒测试的常用测试方法有举个例子"><a class="markdownIt-Anchor" href="#2-黑盒测试和白盒测试的常用测试方法有举个例子"></a> 2. 黑盒测试和白盒测试的常用测试方法有？举个例子？</h4>
-<p>1）黑盒：等价类划分法、边界值法、因果图法和错误猜测法</p>
-<p>2）白盒：逻辑覆盖法、循环测试路径选择、基本路径测试</p>
-<p>例子：在一次输入多个条件的完整性查询中。利用等价类划分法和边界分析法，首先利用等价类划分法，制定一个或多个结果是OK的测试用例，然后确认多个NG的测试用例。然后再用边界值分析法，对结果分别是OK和NG的测试用例进行拓展和补充。</p>
-<h4 id="3-简述黑盒测试和白盒测试的优缺点"><a class="markdownIt-Anchor" href="#3-简述黑盒测试和白盒测试的优缺点"></a> 3. 简述黑盒测试和白盒测试的优缺点？</h4>
-<p>1）黑盒</p>
-<ul>
-<li>优点：a. 比较简单，不用了解内部代码的实现；b. 从用户的角度出发，很容易知道用户会用到哪些功能，会遇到什么问题；c. 与软件内部无关；d. 在做软件自动化测试时较方便。</li>
-<li>缺点：代码覆盖率较低；自动化测试的复用性较低。</li>
-</ul>
-<p>2）白盒</p>
-<ul>
-<li>优点：代码覆盖率高，提高代码质量，发现隐藏的问题。</li>
-<li>缺点：a. 测试基于代码，只能测试开发人员的对与不对，而不能知道设计的正确与否，可能会漏掉一些功能需求；b. 系统庞大时，测试开销会很大；c. 测试有很多路径，不可能测试完所有的路径。</li>
-</ul>
-<h4 id="4-单元测试的策略有哪些主要内容有"><a class="markdownIt-Anchor" href="#4-单元测试的策略有哪些主要内容有"></a> 4. 单元测试的策略有哪些，主要内容有？</h4>
-<p>逻辑覆盖，循环覆盖，代码走查，静态数据流分析，代码评审，桌前检查，同行评审</p>
-<h4 id="5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"><a class="markdownIt-Anchor" href="#5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"></a> 5. 白盒测试逻辑覆盖有哪几种覆盖标准，覆盖率最高的是？</h4>
-<p>语句覆盖，分支覆盖，条件覆盖，路径覆盖，分支条件覆盖。最高的是路径覆盖。</p>
-<h2 id="五-用例设计"><a class="markdownIt-Anchor" href="#五-用例设计"></a> 五、用例设计</h2>
-<h4 id="1-什么是测试用例测试用例的基本要素"><a class="markdownIt-Anchor" href="#1-什么是测试用例测试用例的基本要素"></a> 1. 什么是测试用例，测试用例的基本要素？</h4>
-<p>测试用例是为某个测试目标编写的一组输入、执行条件与预期结果，以便测试某个程序是否符合特定要求。</p>
-<p>基本要素：测试索引，测试环境，测试输入，测试操作，预期结果，评价标准</p>
-<h4 id="2-描述测试用例设计的完整过程"><a class="markdownIt-Anchor" href="#2-描述测试用例设计的完整过程"></a> 2. 描述测试用例设计的完整过程</h4>
-<p>1）根据概要设计、需求文档、测试计划、测试方案细分出测试项</p>
-<p>2）根据测试项，按照详细设计与测试方案中测试的覆盖率细分出测试子项</p>
-<p>3）用测试设计方法（等价类划分，边界值，因果图等）编写测试用例</p>
-<p>注意：用例一定要及时更新（补充与删除），要全面（考虑功能、性能、兼容性等）</p>
-<h4 id="3-有个广告的纸杯子请设计测试用例"><a class="markdownIt-Anchor" href="#3-有个广告的纸杯子请设计测试用例"></a> 3. 有个广告的纸杯子，请设计测试用例</h4>
-<p>基本功能测试（逻辑功能测试）。</p>
-<p>1）硬度：是否达到设计标准。 装载能力:在杯子内分别装入少量的、半杯的、满杯的，看其装载量是否达到设计标准。 装载种类:开水(是否产生异味)、温水、冷水、冰水、咖啡。。</p>
-<p>2）界面测试(UI 测试)。</p>
-<p>看其形状、大小设计是否适合人方便拿起。</p>
-<p>外观是否吸引人(广告嘛)，赏心悦目。</p>
-<p>带广告的图案沾水受是否掉色、模糊。</p>
-<p>3）易用性测试。</p>
-<p>看其形状、大小设计是否适合人方便拿起。</p>
-<p>残疾人士用此杯去喝水的容程度。 杯子设计是否上大下小，在运输过程中可以套在一起有效利用空间，在使用时也容易拿开。</p>
-<p>4）稳定性测试（24 X 7 测试）。装入液体后记录其多少以后漏水。</p>
-<p>5）安全性测试。杯子所用的材料(包括纸基、涂层和广告颜料)是否符合食品卫生标准，在内外温度等环境因素下是否会与所盛各种饮料相反应，而产生对人体有害的物质。</p>
-<p>6）本地化测试。为国际化和本地化的需要，广告图案和文字是否在政治、宗教和文化方面具有广泛的适用性。</p>
-<p>7）对设计的改进建议。“如果是一次性杯子，能否标示已使用(比如变色)”和“杯子是否有使用者标贴(多人使用时防止混淆)”。</p>
-<h4 id="4-一个身份证号码输入框怎么设计用例"><a class="markdownIt-Anchor" href="#4-一个身份证号码输入框怎么设计用例"></a> 4. 一个身份证号码输入框，怎么设计用例?</h4>
-<p>校验身份证号的规则有效性（地址码、生日编码、顺序码、校验码）</p>
-<p>检验15位身份证和18位身份正好可用</p>
-<p>校验末尾是x的情况</p>
-<p>校验不足15位、16-17位和18位的情况</p>
-<p>如果是必输项，空白时是否有提示与流程是否正常进行</p>
-<p>如果不是必输项，校验不输入时流程能否正常进行</p>
-<p>检验非数字的情况，是否会有正确提示信息（包括大小写字母，汉字，特殊字符与标点符号）</p>
-<h4 id="5-登陆功能怎么设计测试用例"><a class="markdownIt-Anchor" href="#5-登陆功能怎么设计测试用例"></a> 5. 登陆功能怎么设计测试用例？</h4>
-<p>具体需求:有一个登录页面，有一个账号和一个密码输入框, 一个提交按钮。</p>
-<p>此题的考察目的：1. 了解需求(测什么都是从了解需求开始)；2. 是否有设计 Test Case 的能力；3. 是否熟悉各种测试方法； 4. 是否有丰富的 Web 测试经验;；5. 是否了解 Web 开发。</p>
-<p>了解需求：1. 登陆界面是弹出窗口式的，还是直接在网页里面；2. 账号长度和密码的强度要求（比如需要多少位、大小写敏感、特殊字符混搭）；3. 界面美观是否有特殊要求（是否要进行UI测试）</p>
-<p>用例设计：</p>
-<h5 id="1功能测试function-test"><a class="markdownIt-Anchor" href="#1功能测试function-test"></a> 1）功能测试：Function Test</h5>
-<ol>
-<li>
-<p>输入正确的账号密码，点击提交按钮，验证是否能正确登陆（正常输入）</p>
-</li>
-<li>
-<p>输入错误的账号密码，验证登陆会失败，与给出相应的错误提示（错误输入）</p>
-</li>
-<li>
-<p>登陆成功后能否正确跳转到正确界面</p>
-</li>
-<li>
-<p>账号和密码如果太长或太短，应该怎么处理（安全性，密码太短都有提示）</p>
-</li>
-<li>
-<p>账号和密码中，有特殊字符（比如空格）和其他非英文情况（是否做了顾虑）</p>
-</li>
-<li>
-<p>账号和密码前后都有空格的处理</p>
-</li>
-<li>
-<p>输入密码时，大写键盘有提示</p>
-</li>
-<li>
-<p>密码是否加密显示</p>
-</li>
-<li>
-<p>什么都不输，点击提交按钮，看提示信息</p>
-</li>
-<li>
-<p>记住账号功能</p>
-</li>
-<li>
-<p>登陆失败后，不能记录密码的功能</p>
-</li>
-<li>
-<p>牵涉到验证码的，还要考虑验证难度是否过大，刷新或者换一个的按钮是否好用</p>
-</li>
-<li>
-<p>登陆页面中的注册、忘记密码、登出、用另一账号等链接是否正确</p>
-</li>
-</ol>
-<h5 id="2界面测试ui-test"><a class="markdownIt-Anchor" href="#2界面测试ui-test"></a> 2）界面测试：UI Test</h5>
-<ol>
-<li>布局是否合理，2个Testbox和1个按钮是否对其</li>
-<li>Testbox和按钮的长度，高度是否符合要求</li>
-<li>界面的设计风格是否与UI的设计风格统一</li>
-<li>界面的文字简洁易懂，没有错别字</li>
-</ol>
-<h5 id="3性能测试-performance-test"><a class="markdownIt-Anchor" href="#3性能测试-performance-test"></a> 3）性能测试 Performance Test</h5>
-<ol>
-<li>打开登陆页面，需要几秒</li>
-<li>输入正确的账号密码后，登陆成功跳转到新页面，不超过5秒</li>
-</ol>
-<h5 id="4安全性测试-security-test"><a class="markdownIt-Anchor" href="#4安全性测试-security-test"></a> 4）安全性测试 Security Test</h5>
-<ol>
-<li>登陆成功后生成的 Cookie 是否有 HttpOnly（降低脚本盗取风险）</li>
-<li>账号密码是否通过加密的方式，发送到Web服务器</li>
-<li>账号和密码的验证，应该是用服务器端验证，而不只是用客户端的JS分析</li>
-<li>账号和密码的输入框，应该屏蔽SQL注入攻击</li>
-<li>账号和密码的输入框，要禁止输入脚本（防止XSS攻击）</li>
-<li>错误登陆的次数使用限制（防止暴力破解）</li>
-<li>考虑是否支持多用户在同一机器上登陆</li>
-<li>考虑一用户在多台机器登陆</li>
-</ol>
-<h5 id="5可用性测试-usability-test"><a class="markdownIt-Anchor" href="#5可用性测试-usability-test"></a> 5）可用性测试 Usability Test</h5>
-<ol>
-<li>是否可以用全键盘操作，是否有快捷键</li>
-<li>输入账号，密码后回车，是否可以登陆</li>
-<li>输入框是否可以用Tab切换</li>
-</ol>
-<h5 id="6兼容性测试-compatibility-test"><a class="markdownIt-Anchor" href="#6兼容性测试-compatibility-test"></a> 6）兼容性测试 Compatibility Test</h5>
-<ol>
-<li>主流浏览器功能是否正常</li>
-<li>不同系统平台是否工作正常（Macos pc）</li>
-<li>移动设备是否工作正常</li>
-<li>不同分辨率</li>
-</ol>
-<h5 id="7本地化测试-localization-test"><a class="markdownIt-Anchor" href="#7本地化测试-localization-test"></a> 7）本地化测试 Localization Test</h5>
-<p>不同语言环境，页面显示是否正确</p>
-<h5 id="8辅助性测试"><a class="markdownIt-Anchor" href="#8辅助性测试"></a> 8）辅助性测试</h5>
-<p>高对比度下是否显示正常（视力不好的人）</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>面试</tag>
       </tags>
   </entry>
 </search>
