@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>About POM</title>
+    <url>/2020/12/04/About%20POM/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
+<p>POM：Page Object Model——页面对象模。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
+<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
+<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
+<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
+<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
+<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
+<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
+<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
+<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
+<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
+<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
+<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="四-项目源代码下载"><a class="markdownIt-Anchor" href="#四-项目源代码下载"></a> 四、项目源代码下载</h2>
+<p>请进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>About unittest</title>
     <url>/2020/12/04/About-unittest/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
@@ -33,46 +68,17 @@
 <img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
 <p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
 <p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
 ]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
       <tags>
         <tag>软件测试</tag>
         <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
-    <url>/2020/11/19/Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
-<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<blockquote>
-<p>完美主义不允许。</p>
-</blockquote>
-<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
-<a id="more"></a>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
-<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
-<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
-<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
-<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
-<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
-<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
-<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
-<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
-<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
-<ul>
-<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
-<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
-<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -435,6 +441,26 @@
       </tags>
   </entry>
   <entry>
+    <title>Hello World</title>
+    <url>/2020/10/13/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<a id="more"></a>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Python中的init()到底怎么理解？</title>
     <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
@@ -514,108 +540,6 @@
       </categories>
       <tags>
         <tag>网络基础</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/10/13/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<a id="more"></a>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>初识POM</title>
-    <url>/2020/12/04/%E5%88%9D%E8%AF%86POM/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
-<p>POM：Page Object Model——页面对象模。是一种思想。</p>
-<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
-<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
-<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
-<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
-<h2 id="三-怎么用"><a class="markdownIt-Anchor" href="#三-怎么用"></a> 三、怎么用</h2>
-<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
-<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
-<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
-<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
-<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="四-项目源代码下载"><a class="markdownIt-Anchor" href="#四-项目源代码下载"></a> 四、项目源代码下载</h2>
-<p>请进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载</p>
-]]></content>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>后盾人MySQL-多表操作</title>
-    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<blockquote>
-<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
-<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
-<ul>
-<li>查询一班的所有同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一班的所有女生发表的文章</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>哪个班级发表的文章超过两篇</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级文章的总点击数与平均点击数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级有多少同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
-<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
-<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
-<ul>
-<li>学生人数大于两个的班级名称</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
-<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
-<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
-<p>获取没有设置QQ的用户</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
@@ -736,6 +660,129 @@
       </tags>
   </entry>
   <entry>
+    <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
+    <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
+<h3 id="一-背景"><a class="markdownIt-Anchor" href="#一-背景"></a> 一、背景</h3>
+<p>在《Python自动化测试实战》中，使用的是HTMLTestRunner，但教程使用的是windows系统，本人使用的macOS与其有点出入。Baidu和Google的帖子全都是在手动下载py文件，然后手动放到Python的lib文件夹中，但本macOS无效。</p>
+<a id="more"></a>
+<h3 id="二-解决过程"><a class="markdownIt-Anchor" href="#二-解决过程"></a> 二、解决过程</h3>
+<p>然后尝试换个思路，自动化测试报告中肯定不止只有老旧的HTMLTestRunner这个库呀，会不会有功能更加丰富、使用更方便、美观的第三方库呢？果然，有一个<a href="https://pypi.org/project/unittestreport/">unittestreport</a> 让人极为惊喜。</p>
+<p>安装过程显示是非常简单的，直接使用pip安装。但我install之后import还是没反应。疑惑。这时，突然想起Pycharm中的Interpreter的配置，是可以直接安装第三方库的。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207160205161.png" alt="image-20201207160205161" style="zoom:50%;" />
+<p>在Install Package后，就可以成功使用unittestreport了。</p>
+<h3 id="三-深入"><a class="markdownIt-Anchor" href="#三-深入"></a> 三、深入</h3>
+<h4 id="1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"><a class="markdownIt-Anchor" href="#1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"></a> 1. 为什么pip安装不能直接使用，而直接在Pycharm Interpreter安装就可以使用呢？</h4>
+<p>打开Pycharm Interpreter的Avaliable Packages界面，仔细查看，会发现其实会有一个钩子选项。从这里可以得到提示，可能与一个叫site packages的文件夹有关。可以从这里入手。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+<p>我们看看Project中的External Libraries都有哪些，打开一看，有了site-packes！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207162437233.png" alt="image-20201207162437233" style="zoom:45%;" />
+<p>在里面可以找到我们刚刚导入的unittestreport，还有之前折腾失败的HTMLTestRunner。</p>
+<p>pip安装失败，难道是pip安装的路径有问题？那我们查一下通过pip安装的unittestreport是在哪里。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207163426073.png" alt="image-20201207163426073" /></p>
+<p>在上述路径中删除一个库，PyCharm的External Libraries中的site-packages中就少了被删除的库，由此可证明其实<code>pip install unittestreport</code>已经成功了，只是我们还未在项目的解释器（PyCharm的Interpreter）中添加而已。其实这就像和我们使用selenium一样，每次新建一个project，<strong>就需要在解释器中添加相应的包才能使用的。</strong></p>
+<h4 id="2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"><a class="markdownIt-Anchor" href="#2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"></a> 2. 为什么网上手动引入HTMLTestRunner.py的方法行不通呢？</h4>
+<p>我们研究了上面的问题后，其实可以发现：我们是要在/Users/换成自己的用户名/opt/anaconda3/lib/python3.7/site-packages/中，创建一个HTMLTestRunner文件夹，然后把py文件放进即可。而不是放入什么bin目录或者lib目录。</p>
+<p><strong>手动引入其他第三方库类似。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207165459498.png" alt="image-20201207165459498" style="zoom:50%;" />
+<p><strong>或者更简单的，我们可以直接通过PyCharm的解释器在线添加packages。</strong></p>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
+    <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<blockquote>
+<p>完美主义不允许。</p>
+</blockquote>
+<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
+<a id="more"></a>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
+<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
+<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
+<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
+<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
+<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
+<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
+<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
+<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
+<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
+<ul>
+<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
+<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
+<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>后盾人MySQL-多表操作</title>
+    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<blockquote>
+<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
+<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
+<ul>
+<li>查询一班的所有同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一班的所有女生发表的文章</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>哪个班级发表的文章超过两篇</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级文章的总点击数与平均点击数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级有多少同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
+<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
+<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
+<ul>
+<li>学生人数大于两个的班级名称</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
+<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
+<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
+<p>获取没有设置QQ的用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>正则表达式-01</title>
     <url>/2020/10/25/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-01/</url>
     <content><![CDATA[<h3 id="简单"><a class="markdownIt-Anchor" href="#简单"></a> 简单</h3>
@@ -818,6 +865,111 @@
       </tags>
   </entry>
   <entry>
+    <title>测试用例-基础知识</title>
+    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
+<a id="more"></a>
+<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
+<blockquote>
+<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
+</blockquote>
+<ol>
+<li>
+<p>测试用例是什么？</p>
+<p>测试用例是“一组输入、执行条件、预期结果”</p>
+</li>
+<li>
+<p>什么是一个好的测试用例？</p>
+<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
+</li>
+<li>
+<p>测试用例的预期结果不需要验证吗？</p>
+<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
+</li>
+</ol>
+<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
+<ol>
+<li>
+<p>指导测试的「实施」</p>
+<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
+</li>
+<li>
+<p>「规划」测试数据</p>
+<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
+</li>
+<li>
+<p>评估测试结果的度量基准</p>
+<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
+</li>
+</ol>
+<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
+<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
+<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
+<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
+<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
+<ol>
+<li>
+<p>分析需求，确定「输入」「数据类型」。</p>
+<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
+<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
+</li>
+<li>
+<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
+<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
+<p>2）「划分」有效等价类与无效等价类</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
+</li>
+<li>
+<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
+</li>
+<li>
+<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
+</li>
+</ol>
+<hr />
+<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
+<blockquote>
+<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
+</blockquote>
+<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
+<p>首先，得明白上点、离点、内点的概念。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
+<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
+<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
+<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
+<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
+<hr />
+<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
+<hr />
+<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
+<hr />
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
+<blockquote>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
+<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>测试功能点总结</title>
     <url>/2020/11/17/%E6%B5%8B%E8%AF%95%E5%8A%9F%E8%83%BD%E7%82%B9%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
@@ -867,6 +1019,25 @@
       <tags>
         <tag>软件测试</tag>
         <tag>测试点</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决badboy出现“页面的脚本发生素错误”</title>
+    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
+<a id="more"></a>
+<hr />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
+<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -1005,130 +1176,6 @@
       </categories>
       <tags>
         <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>测试用例-基础知识</title>
-    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
-<a id="more"></a>
-<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
-<blockquote>
-<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
-</blockquote>
-<ol>
-<li>
-<p>测试用例是什么？</p>
-<p>测试用例是“一组输入、执行条件、预期结果”</p>
-</li>
-<li>
-<p>什么是一个好的测试用例？</p>
-<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
-</li>
-<li>
-<p>测试用例的预期结果不需要验证吗？</p>
-<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
-</li>
-</ol>
-<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
-<ol>
-<li>
-<p>指导测试的「实施」</p>
-<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
-</li>
-<li>
-<p>「规划」测试数据</p>
-<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
-</li>
-<li>
-<p>评估测试结果的度量基准</p>
-<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
-</li>
-</ol>
-<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
-<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
-<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
-<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
-<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
-<ol>
-<li>
-<p>分析需求，确定「输入」「数据类型」。</p>
-<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
-<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
-</li>
-<li>
-<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
-<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
-<p>2）「划分」有效等价类与无效等价类</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
-</li>
-<li>
-<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
-</li>
-<li>
-<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
-</li>
-</ol>
-<hr />
-<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
-<blockquote>
-<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
-</blockquote>
-<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
-<p>首先，得明白上点、离点、内点的概念。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
-<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
-<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
-<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
-<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
-<hr />
-<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
-<hr />
-<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
-<hr />
-<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
-<blockquote>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
-<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
-</ol>
-</blockquote>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决badboy出现“页面的脚本发生素错误”</title>
-    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
-<a id="more"></a>
-<hr />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
-<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
