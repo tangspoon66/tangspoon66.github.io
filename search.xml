@@ -1,6 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>About POM</title>
+    <url>/2020/12/04/About%20POM/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
+<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
+<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
+<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
+<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
+<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
+<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
+<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
+<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
+<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
+<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
+<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
+<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
+<ul>
+<li>
+<p>[ ]</p>
+</li>
+<li>
+<p>[ ]</p>
+</li>
+<li>
+<p>[ ] 使用unittest重新整合TestUnit部分</p>
+</li>
+<li>
+<p>[ ] 加入流程异常捕捉断言测试。在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
+</li>
+<li>
+<p>[ ] 对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
+</li>
+</ul>
+<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
+<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
+Github中。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>About unittest</title>
     <url>/2020/12/04/About-unittest/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
@@ -230,41 +284,6 @@
       </tags>
   </entry>
   <entry>
-    <title>About POM</title>
-    <url>/2020/12/04/About%20POM/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
-<p>POM：Page Object Model——页面对象模。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
-<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
-<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
-<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
-<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
-<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
-<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
-<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
-<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
-<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
-<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
-<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="四-项目源代码下载"><a class="markdownIt-Anchor" href="#四-项目源代码下载"></a> 四、项目源代码下载</h2>
-<p>请进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS学习笔记-03</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/</url>
     <content><![CDATA[<h3 id="函数"><a class="markdownIt-Anchor" href="#函数"></a> 函数</h3>
@@ -389,6 +408,83 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux基本操作</title>
+    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
+<p>这篇博文开个Linux栏目吧。</p>
+<a id="more"></a>
+<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
+<ul>
+<li>新建文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新建文件夹</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
+<ul>
+<li>移动/剪切/重命名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前所在路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>权限修改</li>
+</ul>
+<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取文档内容</li>
+</ul>
+<blockquote>
+<p>常用语查看Linux的log日志文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python中的init()到底怎么理解？</title>
+    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
+<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
+<a id="more"></a>
+<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
+<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
+<p>那么<code>self</code>又是什么东西？</p>
+<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
+<hr />
+<blockquote>
+<p>参考资料</p>
+<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
+<p>最良心的Python教程：</p>
+<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hello World</title>
     <url>/2020/10/13/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
@@ -466,6 +562,42 @@
       </tags>
   </entry>
   <entry>
+    <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
+    <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<blockquote>
+<p>完美主义不允许。</p>
+</blockquote>
+<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
+<a id="more"></a>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
+<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
+<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
+<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
+<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
+<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
+<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
+<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
+<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
+<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
+<ul>
+<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
+<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
+<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
     <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
@@ -498,8 +630,10 @@
 ]]></content>
       <categories>
         <category>troubleshooting</category>
+        <category>自动化测试</category>
       </categories>
       <tags>
+        <tag>自动化测试</tag>
         <tag>troubleshooting</tag>
       </tags>
   </entry>
@@ -621,58 +755,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux基本操作</title>
-    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
-<p>这篇博文开个Linux栏目吧。</p>
-<a id="more"></a>
-<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
-<ul>
-<li>新建文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
-<ul>
-<li>新建文件夹</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
-<ul>
-<li>移动/剪切/重命名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看当前所在路径</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
-<ul>
-<li>权限修改</li>
-</ul>
-<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
-<ul>
-<li>删除</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
-<ul>
-<li>读取文档内容</li>
-</ul>
-<blockquote>
-<p>常用语查看Linux的log日志文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>后盾人MySQL-多表操作</title>
     <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
@@ -722,6 +804,223 @@
       </categories>
       <tags>
         <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>怎么把java web项目部署到centos7中？</title>
+    <url>/2020/12/12/%E6%80%8E%E4%B9%88%E6%8A%8Ajava-web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0centos7%E4%B8%AD%EF%BC%9F/</url>
+    <content><![CDATA[<p>今天打开FinalShell，在vps列表最底下发现了一个叫“pr”的备注，瞬间想起6美元上的一个灵车pacificrack。双击后，震惊，链接居然绿了！连接速度居然还变快了……想不到近一年过去了还没翻车。既然这样，那就用来干点“正事”吧，把失败了的宠物论坛重新搭建起来，折腾一下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_16-53-56.jpg" alt="Xnip2020-12-11_16-53-56" style="zoom:50%;" />
+<a id="more"></a>
+<p>在linux环境上部署javaweb项目比想象中的要简单太多，<strong>只需要java环境、mysql、tomcat三样</strong>。</p>
+<p>我们先查看一下VPS是否自带有以上环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa|grep java</span><br><span class="line">rpm -qa|grep mysql</span><br><span class="line">rpm -qa|grep tomcat</span><br></pre></td></tr></table></figure>
+<p>还好，都没有（不然我还得卸载）。所以，第一步是装好java环境。</p>
+<h2 id="一-安装java环境"><a class="markdownIt-Anchor" href="#一-安装java环境"></a> 一、安装java环境</h2>
+<h3 id="1-使用wget高效率下载jdk8安装java环境"><a class="markdownIt-Anchor" href="#1-使用wget高效率下载jdk8安装java环境"></a> 1. 使用wget高效率下载jdk8，安装java环境</h3>
+<p>进入<a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">jdk8</a>下载页面，点击下载链接。（注意到链接左上角是有一把锁🔒的，<strong>证明点击后还有验证项目</strong>，所以不是直接wget这条url。）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211183815811.png" alt="image-20201211183815811" style="zoom:50%;" />
+<p>点入链接，打勾后，直接在Download下右键（不是左键！），复制下载链接，这条链接才是可以直接在VPS下wget的。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211184247551.png" alt="image-20201211184247551" style="zoom:50%;" />
+<p>然后我们连上VPS，输入wget，然后粘贴上面的下载链接。有了VPS后，我们要利用好VPS优秀的远程网络，不要再傻傻的下载到本地电脑，然后再手动上传到VPS中，简直多此一举。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_17-03-50.jpg" alt="Xnip2020-12-11_17-03-50" style="zoom:50%;" />
+<blockquote>
+<p>注意，我为什么不直接把下载链接分享出来呢？因为每条下载链接的有效性只能保持一段时间，过后就会失效。具体多久没有探究。oracle公司考虑得真的非常完美，感觉这样其中一个好处就是：可以大幅提高官网的访问率和官方方式下载率，不用一条链接用万年。</p>
+</blockquote>
+<h3 id="2-解压包"><a class="markdownIt-Anchor" href="#2-解压包"></a> 2. 解压包</h3>
+<p>然后我们再/usr/local目录下创建一个名叫java的目录，把刚下载的jdk tar.gz包解压到这里，详细命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新建java目录</span><br><span class="line">mkdir &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line"># 解压jdk包到java目录</span><br><span class="line">tar -zxvf 包名 -C &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line"># 查看解压包名</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211190147742.png" alt="image-20201211190147742" style="zoom: 50%;" />
+<p><strong>注意！<code>ls</code>后就像上图一样，java文件夹内只能有一个jdk的包，不要放置其他内容</strong></p>
+<h3 id="3-配置环境变量"><a class="markdownIt-Anchor" href="#3-配置环境变量"></a> 3. 配置环境变量</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>然后如图添加以下内容，然后保存，退出。（注意红框的内容自行更换为自己下载的包名，也就是上面<code>ls</code>查看出来的）</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_17-36-34.jpg" alt="Xnip2020-12-11_17-36-34" style="zoom:50%;" />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># java</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;java&#x2F;jdk1.8.0_271</span><br><span class="line">export CLASSPATH&#x3D;$CLASSPATH:$JAVA_HOME&#x2F;lib&#x2F;</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
+<p>然后更新文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<h3 id="4-验证"><a class="markdownIt-Anchor" href="#4-验证"></a> 4. 验证</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211191148413.png" alt="image-20201211191148413" style="zoom:50%;" />
+<p>出现上图，java环境安装成功！</p>
+<p>如果出现了什么幺蛾子的话，就看error提示吧。linux问题很多，很难一一说明。死活有问题的话，就重装系统，换个系统吧，这是最最最没办法中的办法。</p>
+<hr />
+<h2 id="二-安装mysql-57"><a class="markdownIt-Anchor" href="#二-安装mysql-57"></a> 二、安装MySQL 5.7</h2>
+<h3 id="1-检查是否有冲突的mariadb-lib然后卸载"><a class="markdownIt-Anchor" href="#1-检查是否有冲突的mariadb-lib然后卸载"></a> 1. 检查是否有冲突的mariadb-lib，然后卸载</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211195150651.png" alt="image-20201211195150651" style="zoom:50%;" />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看是否存在mariadb</span><br><span class="line">rpm -qa|grep mariadb</span><br><span class="line"># 卸载</span><br><span class="line">rpm -e --nodes mariadb-libs-5.5.64-1.el7.x86_64</span><br></pre></td></tr></table></figure>
+<h3 id="2-下载mysql安装包"><a class="markdownIt-Anchor" href="#2-下载mysql安装包"></a> 2. 下载MySQL安装包</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载rpm</span><br><span class="line">wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line"># 安装</span><br><span class="line">yum localinstall mysql57-community-release-el7-11.noarch.rpm</span><br></pre></td></tr></table></figure>
+<h3 id="3-安装"><a class="markdownIt-Anchor" href="#3-安装"></a> 3. 安装</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y mysql-community-server</span><br></pre></td></tr></table></figure>
+<p>安装完毕后，启动mysql服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service mysqld start</span><br></pre></td></tr></table></figure>
+<p>查看mysql服务是否启动成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef|grep mysql</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211203901096.png" alt="image-20201211203901096" style="zoom:50%;" />
+<h3 id="4-修改密码"><a class="markdownIt-Anchor" href="#4-修改密码"></a> 4. 修改密码</h3>
+<p>查询MySQL的临时密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &#39;temporary password&#39; &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211205414107.png" alt="image-20201211205414107" style="zoom:50%;" />
+<p>复制临时密码，使用临时登录MySQL</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
+<p>修改密码，然后刷新权限</p>
+<blockquote>
+<p>把下面的xxx修改成自己的密码。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;xxxx&#39;;</span><br><span class="line"># 刷新权限！一定要！</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<p>最后尝试使用新修改的密码重新登陆。</p>
+<hr />
+<h2 id="三-安装tomcat-8"><a class="markdownIt-Anchor" href="#三-安装tomcat-8"></a> 三、安装tomcat 8</h2>
+<h3 id="1-使用wegt下载targz包"><a class="markdownIt-Anchor" href="#1-使用wegt下载targz包"></a> 1. 使用wegt下载tar.gz包</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212093710258.png" alt="image-20201212093710258" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212093839753.png" alt="image-20201212093839753" style="zoom:50%;" />
+<h3 id="2-安装"><a class="markdownIt-Anchor" href="#2-安装"></a> 2. 安装</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建tomcat文件夹</span><br><span class="line">mkdir &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line"># 解压</span><br><span class="line">tar -zvxf xxx(你的tomcat包名) -C &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line"># 重命名</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line">mv  xxx(你的tomcat包名) tomcat8</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212094351216.png" alt="image-20201212094351216" style="zoom:50%;" />
+<h3 id="3-防火墙开放端口"><a class="markdownIt-Anchor" href="#3-防火墙开放端口"></a> 3. 防火墙开放端口</h3>
+<p>查看防火墙开放情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">firewall-cmd --list-ports</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212094507455.png" alt="image-20201212094507455" style="zoom:50%;" />
+<p>如果显示<code>-bash: firewall-cmd: 未找到命令</code>,证明没有防火墙。下方是防火墙的相关操作。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装防火墙</span><br><span class="line">yum install firewalld</span><br><span class="line"># 开启防火墙</span><br><span class="line">systemtcl start firewalld</span><br><span class="line"># 开放8080与3306端口，然后重启防火墙</span><br><span class="line">firewalld-cmd --add-port&#x3D;8080&#x2F;tcp --permanent</span><br><span class="line">firewalld-cmd --add-port&#x3D;3306&#x2F;tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br><span class="line"># 重新查看开放端口列表</span><br><span class="line">firewalld-cmd --list-ports</span><br></pre></td></tr></table></figure>
+<p>如图显示，则端口开启成功</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212095454503.png" alt="image-20201212095454503" style="zoom:50%;" />
+<h3 id="4-开启tomcat尝试外部访问"><a class="markdownIt-Anchor" href="#4-开启tomcat尝试外部访问"></a> 4. 开启tomcat，尝试外部访问</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 有关tomcat的脚本都在bin目录下，bat后缀为windows用户的脚本</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;tomcat8&#x2F;bin &amp;&amp; ls</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212095835339.png" alt="image-20201212095835339" style="zoom:50%;" />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 运行tomcat</span><br><span class="line">sh startup.sh</span><br></pre></td></tr></table></figure>
+<p>尝试外部访问：在浏览器中输入VPS的ip:8080。如图，tomcat部署成功！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212100051835.png" alt="image-20201212100051835" style="zoom:50%;" />
+<h3 id="5-配置开机启动"><a class="markdownIt-Anchor" href="#5-配置开机启动"></a> 5. 配置开机启动</h3>
+<p>创建tomcat8系统服务文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;tomcat8.service</span><br></pre></td></tr></table></figure>
+<p>然后在文件中粘贴如下内容，保存后退出。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;Tomcat8</span><br><span class="line">After&#x3D;syslog.target network.target remote-fs.target nss-lookup.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking</span><br><span class="line"></span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecReload&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecStop&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;shutdown.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
+<p>最后启用tomcat8系统配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable tomcat8</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212100604097.png" alt="image-20201212100604097" style="zoom:50%;" />
+<hr />
+<h2 id="四-导入javaweb项目的sql文件到vps的数据库中"><a class="markdownIt-Anchor" href="#四-导入javaweb项目的sql文件到vps的数据库中"></a> 四、导入javaweb项目的sql文件到VPS的数据库中</h2>
+<p><strong>注意：以下命令一行一行逐渐执行，不是直接复制粘贴</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装上传下载工具</span><br><span class="line">cd ~ &amp;&amp; yum install lrzsz</span><br><span class="line"># 上传</span><br><span class="line">rz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入mysql</span><br><span class="line">mysql -uroot -p</span><br><span class="line"># 查看数据库</span><br><span class="line">show databases;</span><br><span class="line"># 新建数据库</span><br><span class="line">creat database xxx(你的数据库名) default charater set utf8 collate utf8_general_ci;</span><br><span class="line"># 使用数据库</span><br><span class="line">use xxx(你的数据库名)</span><br><span class="line"># 导入你的sql文件，路径为你sql文件的路径</span><br><span class="line">source &#x2F;xxx&#x2F;xxx&#x2F;xxx.sql;</span><br><span class="line"># 查看sql文件的table，是否导入成功</span><br><span class="line">show tables;</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212103535073.png" alt="image-20201212103535073" style="zoom:50%;" />
+<p>导入sql成功！现在VPS数据库中已经有我们的数据表了！</p>
+<hr />
+<h2 id="五-上传war包到vps中"><a class="markdownIt-Anchor" href="#五-上传war包到vps中"></a> 五、上传war包到VPS中</h2>
+<p>先在IDEA打包好war包，打包方法参考：<a href="https://blog.csdn.net/qq_1290259791/article/details/78619353">intellij idea打包war包</a>。</p>
+<p>我们使用<code>rz</code>命令把war包上传到tomcat8里的wabapps文件夹下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212104332240.png" alt="image-20201212104332240" style="zoom:50%;" />
+<p>稍等一下，我们再查看一下webapps有什么变化。可以看到上传pet.war后还多了一个pet文件，原因是tomcat帮我们把war项目自动解析了。这个pet就是我们运行中的pet项目。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212104528197.png" alt="image-20201212104528197" style="zoom:50%;" />
+<p>此时我们访问尝试访问 ip:8080/项目路径，如无意外，项目访问成功。但我部署项目中就很少没有意外的，这次我就404了……</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212145923339.png" alt="image-20201212145923339" style="zoom:50%;" />
+<hr />
+<h2 id="六-故障解决"><a class="markdownIt-Anchor" href="#六-故障解决"></a> 六、故障解决</h2>
+<h3 id="1-访问出现404"><a class="markdownIt-Anchor" href="#1-访问出现404"></a> 1. 访问出现404</h3>
+<p>javaweb部署导致404出现的原因有挺多种的，当然我们可以选择Google、Baidu，但其实最快、最稳妥的办法就是<strong>查看tomcat的日志</strong>。访问不了tomcat会给出针对性的报错原因的。</p>
+<p>tomcat的日志在/xxx(tomcat安装目录)/logs/catalina.out</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212150457465.png" alt="image-20201212150457465" style="zoom:50%;" />
+<p>查看日志最后100行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tail -n 100 catalina.out</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-12_14-56-28.jpg" alt="Xnip2020-12-12_14-56-28" style="zoom:50%;" />
+<p>一眼就看出是MySQL的问题！导致这个原因一般只有两个：首先是jdbc文件mysql配置信息错误，不然就是数据库版本不对。</p>
+<p>打开idea，查看项目的jdbc配置文件，果然这里的password忘记更改成VPS数据库的密码了。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212151256298.png" alt="image-20201212151256298" style="zoom:50%;" />
+<p>重新编译，打包war包。</p>
+<p>删除VPS中tomcat/webapps中的项目war包 和 自动解析生成的项目文件夹</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212151758556.png" alt="image-20201212151758556" style="zoom:50%;" />
+<p>然后重新上传新打包的war包，然后等待大概两分钟（tomcat要重新部署新的war包），过后我们再尝试尝试访问 ip:8080/项目文件。</p>
+<p>Done！</p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>正则表达式-01</title>
+    <url>/2020/10/25/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-01/</url>
+    <content><![CDATA[<h3 id="简单"><a class="markdownIt-Anchor" href="#简单"></a> 简单</h3>
+<ul>
+<li><code>\d</code> 匹配数字</li>
+<li><code>\w</code> 匹配字母</li>
+<li><code>.</code> 匹配所有</li>
+</ul>
+<p>例如：<code>00\d</code> 可以匹配000～009，<code>00\w</code> 可以匹配00a～00z，<code>\w\w</code> 可以匹配 aa，<code>\w.</code> 可以匹配 js、j1、j! 等</p>
+<ul>
+<li><code>*</code>表示任意个字符（包括0个）</li>
+<li><code>+</code>表示至少一个字符</li>
+<li><code>?</code>表示0个或1个字符</li>
+<li><code>&#123;n&#125;</code>表示n个字符</li>
+<li><code>&#123;n,m&#125;</code>表示n-m个字符：</li>
+</ul>
+<a id="more"></a>
+<p>复杂例子：<code>\d&#123;3&#125;\s+\d&#123;3,8&#125;</code>。</p>
+<p>我们来从左到右解读一下：</p>
+<ol>
+<li><code>\d&#123;3&#125;</code>表示匹配3个数字，例如<code>'010'</code>；</li>
+<li><code>\s</code>可以匹配一个空格（也包括Tab等空白符），所以<code>\s+</code>表示至少有一个空格，例如匹配<code>' '</code>，<code>'\t\t'</code>等；</li>
+<li><code>\d&#123;3,8&#125;</code>表示3-8个数字，例如<code>'1234567'</code>。</li>
+</ol>
+<p>综合起来，上面的正则表达式可以匹配以任意个空格隔开的带区号的电话号码。</p>
+<p>如果要匹配<code>'010-12345'</code>这样的号码呢？由于<code>'-'</code>是特殊字符，在正则表达式中，要用<code>'\'</code>转义，所以，上面的正则是<code>\d&#123;3&#125;\-\d&#123;3,8&#125;</code>。</p>
+<h3 id="进阶"><a class="markdownIt-Anchor" href="#进阶"></a> 进阶</h3>
+<p>要做更精确地匹配，可以用<code>[]</code>表示范围，比如：</p>
+<ul>
+<li><code>[0-9a-zA-Z\_]</code>可以匹配一个数字、字母或者下划线；</li>
+<li><code>[0-9a-zA-Z\_]+</code>可以匹配至少由一个数字、字母或者下划线与$组成的字符串，比如<code>'a100'</code>，<code>'0_Z'</code>，<code>'js2015'</code>等等；</li>
+<li><code>[a-zA-Z\_\$][0-9a-zA-Z\_\$]*</code>可以匹配由字母或下划线开头，后接任意个由一个数字、字母或者下划线、$组成的字符串，也就是JavaScript允许的变量名；</li>
+<li><code>[a-zA-Z\_\$][0-9a-zA-Z\_\$]&#123;0, 19&#125;</code>更精确地限制了变量的长度是1-20个字符（前面1个字符+后面最多19个字符）。</li>
+</ul>
+<p><code>A|B</code>可以匹配A或B，所以<code>(J|j)ava(S|s)cript</code>可以匹配<code>'JavaScript'</code>、<code>'Javascript'</code>、<code>'javaScript'</code>或者<code>'javascript'</code>。</p>
+<p><code>^</code>表示行的开头，<code>^\d</code>表示必须以数字开头。</p>
+<p><code>$</code>表示行的结束，<code>\d$</code>表示必须以数字结束。</p>
+<p>你可能注意到了，<code>js</code>也可以匹配<code>'jsp'</code>，但是加上<code>^js$</code>就变成了整行匹配，就只能匹配<code>'js'</code>了。</p>
+<h3 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h3>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re1=<span class="regexp">/ABC\-001/</span></span><br><span class="line"><span class="keyword">var</span> re2=<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">&#x27;ABC\\-001&#x27;</span>)  <span class="comment">//字符串的转义问题，字符串的两个\\实际上是一个\。</span></span><br><span class="line">re1; <span class="comment">// /ABC\-001/</span></span><br><span class="line">re2; <span class="comment">// /ABC\-001/</span></span><br></pre></td></tr></table></figure>
+<h3 id="切分字符串"><a class="markdownIt-Anchor" href="#切分字符串"></a> 切分字符串</h3>
+<p>用正则表达式切分字符串比用固定的字符更灵活，请看正常的切分代码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a b   c&#39;.split(&#39; &#39;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;&#39;, &#39;&#39;, &#39;c&#39;]</span><br></pre></td></tr></table></figure>
+<p>嗯，无法识别连续的空格，用正则表达式试试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a b   c&#39;.split(&#x2F;\s+&#x2F;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span><br></pre></td></tr></table></figure>
+<p>无论多少个空格都可以正常分割。加入<code>,</code>试试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a,b, c  d&#39;.split(&#x2F;[\s\,]+&#x2F;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span><br></pre></td></tr></table></figure>
+<p>再加入<code>;</code>试试：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a,b;; c  d&#39;.split(&#x2F;[\s\,\;]+&#x2F;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span><br></pre></td></tr></table></figure>
+<p>如果用户输入了一组标签，下次记得用正则表达式来把不规范的输入转化成正确的数组。</p>
+<h3 id="分组"><a class="markdownIt-Anchor" href="#分组"></a> 分组</h3>
+<p>用<code>()</code>表示的就是要提取的分组（Group）。比如：</p>
+<p><code>^(\d&#123;3&#125;)-(\d&#123;3,8&#125;)$</code>分别定义了两个组，可以直接从匹配的字符串中提取出区号和本地号码：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var re &#x3D; &#x2F;^(\d&#123;3&#125;)-(\d&#123;3,8&#125;)$&#x2F;;</span><br><span class="line">re.exec(&#39;010-12345&#39;); &#x2F;&#x2F; [&#39;010-12345&#39;, &#39;010&#39;, &#39;12345&#39;]</span><br><span class="line">re.exec(&#39;010 12345&#39;); &#x2F;&#x2F; null</span><br></pre></td></tr></table></figure>
+<p>如果正则表达式中定义了组，就可以在<code>RegExp</code>对象上用<code>exec()</code>方法提取出子串来。</p>
+<p><code>exec()</code>方法在匹配成功后，会返回一个<code>Array</code>，第一个元素是正则表达式匹配到的整个字符串，后面的字符串表示匹配成功的子串。</p>
+<p><code>exec()</code>方法在匹配失败时返回<code>null</code>。</p>
+<p>提取子串非常有用。来看一个更凶残的例子：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(0[0-9]|1[0-9]|2[0-3]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])$/</span>;</span><br><span class="line">re.exec(<span class="string">&#x27;19:05:30&#x27;</span>); <span class="comment">// [&#x27;19:05:30&#x27;, &#x27;19&#x27;, &#x27;05&#x27;, &#x27;30&#x27;]</span></span><br></pre></td></tr></table></figure>
+<p>这个正则表达式可以直接识别合法的时间。但是有些时候，用正则表达式也无法做到完全验证，比如识别日期：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(0[1-9]|1[0-2]|[0-9])-(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])$/</span>;</span><br></pre></td></tr></table></figure>
+<p>对于<code>'2-30'</code>，<code>'4-31'</code>这样的非法日期，用正则还是识别不了，或者说写出来非常困难，这时就需要程序配合识别了。</p>
+<h3 id="贪婪匹配"><a class="markdownIt-Anchor" href="#贪婪匹配"></a> 贪婪匹配</h3>
+<p>需要特别指出的是，正则匹配默认是贪婪匹配，也就是匹配尽可能多的字符。举例如下，匹配出数字后面的<code>0</code>：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(\d+)(0*)$/</span>;</span><br><span class="line">re.exec(<span class="string">&#x27;102300&#x27;</span>); <span class="comment">// [&#x27;102300&#x27;, &#x27;102300&#x27;, &#x27;&#x27;]</span></span><br></pre></td></tr></table></figure>
+<p>由于<code>\d+</code>采用贪婪匹配，直接把后面的<code>0</code>全部匹配了，结果<code>0*</code>只能匹配空字符串了。</p>
+<p>必须让<code>\d+</code>采用非贪婪匹配（也就是尽可能少匹配），才能把后面的<code>0</code>匹配出来，加个<code>?</code>就可以让<code>\d+</code>采用非贪婪匹配：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(\d+?)(0*)$/</span>;</span><br><span class="line">re.exec(<span class="string">&#x27;102300&#x27;</span>); <span class="comment">// [&#x27;102300&#x27;, &#x27;1023&#x27;, &#x27;00&#x27;]</span></span><br></pre></td></tr></table></figure>
+<h3 id="全局搜索"><a class="markdownIt-Anchor" href="#全局搜索"></a> 全局搜索</h3>
+<p>JavaScript的正则表达式还有几个特殊的标志，最常用的是<code>g</code>，表示全局匹配：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r1 = <span class="regexp">/test/g</span>;</span><br><span class="line"><span class="comment">// 等价于:</span></span><br><span class="line"><span class="keyword">var</span> r2 = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;g&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>全局匹配可以多次执行<code>exec()</code>方法来搜索一个匹配的字符串。当我们指定<code>g</code>标志后，每次运行<code>exec()</code>，正则表达式本身会更新<code>lastIndex</code>属性，表示上次匹配到的最后索引：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">&#x27;JavaScript, VBScript, JScript and ECMAScript&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> re=<span class="regexp">/[a-zA-Z]+Script/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用全局匹配:</span></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;JavaScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 10</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;VBScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 20</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;JScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 29</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;ECMAScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 44</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// null，直到结束仍没有匹配到</span></span><br></pre></td></tr></table></figure>
+<p>全局匹配类似搜索，因此不能使用<code>/^...$/</code>，那样只会最多匹配一次。</p>
+<p>正则表达式还可以指定<code>i</code>标志，表示忽略大小写，<code>m</code>标志，表示执行多行匹配。</p>
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>正则表达式</tag>
       </tags>
   </entry>
   <entry>
@@ -1020,39 +1319,22 @@
       </tags>
   </entry>
   <entry>
-    <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
-    <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
-<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<blockquote>
-<p>完美主义不允许。</p>
-</blockquote>
-<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
+    <title>解决badboy出现“页面的脚本发生素错误”</title>
+    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
 <a id="more"></a>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
-<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
-<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
-<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
-<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
-<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
-<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
-<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
-<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
-<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
-<ul>
-<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
-<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
-<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
-</ul>
+<hr />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
+<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
 ]]></content>
       <categories>
         <category>troubleshooting</category>
       </categories>
       <tags>
+        <tag>软件测试</tag>
         <tag>troubleshooting</tag>
-        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -1444,132 +1726,6 @@
       <tags>
         <tag>软件测试</tag>
         <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python中的init()到底怎么理解？</title>
-    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
-<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
-<a id="more"></a>
-<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
-<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
-<p>那么<code>self</code>又是什么东西？</p>
-<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
-<hr />
-<blockquote>
-<p>参考资料</p>
-<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
-<p>最良心的Python教程：</p>
-<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>正则表达式-01</title>
-    <url>/2020/10/25/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-01/</url>
-    <content><![CDATA[<h3 id="简单"><a class="markdownIt-Anchor" href="#简单"></a> 简单</h3>
-<ul>
-<li><code>\d</code> 匹配数字</li>
-<li><code>\w</code> 匹配字母</li>
-<li><code>.</code> 匹配所有</li>
-</ul>
-<p>例如：<code>00\d</code> 可以匹配000～009，<code>00\w</code> 可以匹配00a～00z，<code>\w\w</code> 可以匹配 aa，<code>\w.</code> 可以匹配 js、j1、j! 等</p>
-<ul>
-<li><code>*</code>表示任意个字符（包括0个）</li>
-<li><code>+</code>表示至少一个字符</li>
-<li><code>?</code>表示0个或1个字符</li>
-<li><code>&#123;n&#125;</code>表示n个字符</li>
-<li><code>&#123;n,m&#125;</code>表示n-m个字符：</li>
-</ul>
-<a id="more"></a>
-<p>复杂例子：<code>\d&#123;3&#125;\s+\d&#123;3,8&#125;</code>。</p>
-<p>我们来从左到右解读一下：</p>
-<ol>
-<li><code>\d&#123;3&#125;</code>表示匹配3个数字，例如<code>'010'</code>；</li>
-<li><code>\s</code>可以匹配一个空格（也包括Tab等空白符），所以<code>\s+</code>表示至少有一个空格，例如匹配<code>' '</code>，<code>'\t\t'</code>等；</li>
-<li><code>\d&#123;3,8&#125;</code>表示3-8个数字，例如<code>'1234567'</code>。</li>
-</ol>
-<p>综合起来，上面的正则表达式可以匹配以任意个空格隔开的带区号的电话号码。</p>
-<p>如果要匹配<code>'010-12345'</code>这样的号码呢？由于<code>'-'</code>是特殊字符，在正则表达式中，要用<code>'\'</code>转义，所以，上面的正则是<code>\d&#123;3&#125;\-\d&#123;3,8&#125;</code>。</p>
-<h3 id="进阶"><a class="markdownIt-Anchor" href="#进阶"></a> 进阶</h3>
-<p>要做更精确地匹配，可以用<code>[]</code>表示范围，比如：</p>
-<ul>
-<li><code>[0-9a-zA-Z\_]</code>可以匹配一个数字、字母或者下划线；</li>
-<li><code>[0-9a-zA-Z\_]+</code>可以匹配至少由一个数字、字母或者下划线与$组成的字符串，比如<code>'a100'</code>，<code>'0_Z'</code>，<code>'js2015'</code>等等；</li>
-<li><code>[a-zA-Z\_\$][0-9a-zA-Z\_\$]*</code>可以匹配由字母或下划线开头，后接任意个由一个数字、字母或者下划线、$组成的字符串，也就是JavaScript允许的变量名；</li>
-<li><code>[a-zA-Z\_\$][0-9a-zA-Z\_\$]&#123;0, 19&#125;</code>更精确地限制了变量的长度是1-20个字符（前面1个字符+后面最多19个字符）。</li>
-</ul>
-<p><code>A|B</code>可以匹配A或B，所以<code>(J|j)ava(S|s)cript</code>可以匹配<code>'JavaScript'</code>、<code>'Javascript'</code>、<code>'javaScript'</code>或者<code>'javascript'</code>。</p>
-<p><code>^</code>表示行的开头，<code>^\d</code>表示必须以数字开头。</p>
-<p><code>$</code>表示行的结束，<code>\d$</code>表示必须以数字结束。</p>
-<p>你可能注意到了，<code>js</code>也可以匹配<code>'jsp'</code>，但是加上<code>^js$</code>就变成了整行匹配，就只能匹配<code>'js'</code>了。</p>
-<h3 id="使用"><a class="markdownIt-Anchor" href="#使用"></a> 使用</h3>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re1=<span class="regexp">/ABC\-001/</span></span><br><span class="line"><span class="keyword">var</span> re2=<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">&#x27;ABC\\-001&#x27;</span>)  <span class="comment">//字符串的转义问题，字符串的两个\\实际上是一个\。</span></span><br><span class="line">re1; <span class="comment">// /ABC\-001/</span></span><br><span class="line">re2; <span class="comment">// /ABC\-001/</span></span><br></pre></td></tr></table></figure>
-<h3 id="切分字符串"><a class="markdownIt-Anchor" href="#切分字符串"></a> 切分字符串</h3>
-<p>用正则表达式切分字符串比用固定的字符更灵活，请看正常的切分代码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a b   c&#39;.split(&#39; &#39;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;&#39;, &#39;&#39;, &#39;c&#39;]</span><br></pre></td></tr></table></figure>
-<p>嗯，无法识别连续的空格，用正则表达式试试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a b   c&#39;.split(&#x2F;\s+&#x2F;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;]</span><br></pre></td></tr></table></figure>
-<p>无论多少个空格都可以正常分割。加入<code>,</code>试试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a,b, c  d&#39;.split(&#x2F;[\s\,]+&#x2F;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span><br></pre></td></tr></table></figure>
-<p>再加入<code>;</code>试试：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#39;a,b;; c  d&#39;.split(&#x2F;[\s\,\;]+&#x2F;); &#x2F;&#x2F; [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]</span><br></pre></td></tr></table></figure>
-<p>如果用户输入了一组标签，下次记得用正则表达式来把不规范的输入转化成正确的数组。</p>
-<h3 id="分组"><a class="markdownIt-Anchor" href="#分组"></a> 分组</h3>
-<p>用<code>()</code>表示的就是要提取的分组（Group）。比如：</p>
-<p><code>^(\d&#123;3&#125;)-(\d&#123;3,8&#125;)$</code>分别定义了两个组，可以直接从匹配的字符串中提取出区号和本地号码：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var re &#x3D; &#x2F;^(\d&#123;3&#125;)-(\d&#123;3,8&#125;)$&#x2F;;</span><br><span class="line">re.exec(&#39;010-12345&#39;); &#x2F;&#x2F; [&#39;010-12345&#39;, &#39;010&#39;, &#39;12345&#39;]</span><br><span class="line">re.exec(&#39;010 12345&#39;); &#x2F;&#x2F; null</span><br></pre></td></tr></table></figure>
-<p>如果正则表达式中定义了组，就可以在<code>RegExp</code>对象上用<code>exec()</code>方法提取出子串来。</p>
-<p><code>exec()</code>方法在匹配成功后，会返回一个<code>Array</code>，第一个元素是正则表达式匹配到的整个字符串，后面的字符串表示匹配成功的子串。</p>
-<p><code>exec()</code>方法在匹配失败时返回<code>null</code>。</p>
-<p>提取子串非常有用。来看一个更凶残的例子：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(0[0-9]|1[0-9]|2[0-3]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])\:(0[0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9]|[0-9])$/</span>;</span><br><span class="line">re.exec(<span class="string">&#x27;19:05:30&#x27;</span>); <span class="comment">// [&#x27;19:05:30&#x27;, &#x27;19&#x27;, &#x27;05&#x27;, &#x27;30&#x27;]</span></span><br></pre></td></tr></table></figure>
-<p>这个正则表达式可以直接识别合法的时间。但是有些时候，用正则表达式也无法做到完全验证，比如识别日期：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(0[1-9]|1[0-2]|[0-9])-(0[1-9]|1[0-9]|2[0-9]|3[0-1]|[0-9])$/</span>;</span><br></pre></td></tr></table></figure>
-<p>对于<code>'2-30'</code>，<code>'4-31'</code>这样的非法日期，用正则还是识别不了，或者说写出来非常困难，这时就需要程序配合识别了。</p>
-<h3 id="贪婪匹配"><a class="markdownIt-Anchor" href="#贪婪匹配"></a> 贪婪匹配</h3>
-<p>需要特别指出的是，正则匹配默认是贪婪匹配，也就是匹配尽可能多的字符。举例如下，匹配出数字后面的<code>0</code>：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(\d+)(0*)$/</span>;</span><br><span class="line">re.exec(<span class="string">&#x27;102300&#x27;</span>); <span class="comment">// [&#x27;102300&#x27;, &#x27;102300&#x27;, &#x27;&#x27;]</span></span><br></pre></td></tr></table></figure>
-<p>由于<code>\d+</code>采用贪婪匹配，直接把后面的<code>0</code>全部匹配了，结果<code>0*</code>只能匹配空字符串了。</p>
-<p>必须让<code>\d+</code>采用非贪婪匹配（也就是尽可能少匹配），才能把后面的<code>0</code>匹配出来，加个<code>?</code>就可以让<code>\d+</code>采用非贪婪匹配：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> re = <span class="regexp">/^(\d+?)(0*)$/</span>;</span><br><span class="line">re.exec(<span class="string">&#x27;102300&#x27;</span>); <span class="comment">// [&#x27;102300&#x27;, &#x27;1023&#x27;, &#x27;00&#x27;]</span></span><br></pre></td></tr></table></figure>
-<h3 id="全局搜索"><a class="markdownIt-Anchor" href="#全局搜索"></a> 全局搜索</h3>
-<p>JavaScript的正则表达式还有几个特殊的标志，最常用的是<code>g</code>，表示全局匹配：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> r1 = <span class="regexp">/test/g</span>;</span><br><span class="line"><span class="comment">// 等价于:</span></span><br><span class="line"><span class="keyword">var</span> r2 = <span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">&#x27;test&#x27;</span>, <span class="string">&#x27;g&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<p>全局匹配可以多次执行<code>exec()</code>方法来搜索一个匹配的字符串。当我们指定<code>g</code>标志后，每次运行<code>exec()</code>，正则表达式本身会更新<code>lastIndex</code>属性，表示上次匹配到的最后索引：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">&#x27;JavaScript, VBScript, JScript and ECMAScript&#x27;</span>;</span><br><span class="line"><span class="keyword">var</span> re=<span class="regexp">/[a-zA-Z]+Script/g</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用全局匹配:</span></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;JavaScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 10</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;VBScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 20</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;JScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 29</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// [&#x27;ECMAScript&#x27;]</span></span><br><span class="line">re.lastIndex; <span class="comment">// 44</span></span><br><span class="line"></span><br><span class="line">re.exec(s); <span class="comment">// null，直到结束仍没有匹配到</span></span><br></pre></td></tr></table></figure>
-<p>全局匹配类似搜索，因此不能使用<code>/^...$/</code>，那样只会最多匹配一次。</p>
-<p>正则表达式还可以指定<code>i</code>标志，表示忽略大小写，<code>m</code>标志，表示执行多行匹配。</p>
-]]></content>
-      <tags>
-        <tag>JavaScript</tag>
-        <tag>正则表达式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>解决badboy出现“页面的脚本发生素错误”</title>
-    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
-<a id="more"></a>
-<hr />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
-<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>troubleshooting</tag>
       </tags>
   </entry>
 </search>
