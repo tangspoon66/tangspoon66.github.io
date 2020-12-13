@@ -1,54 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>About POM</title>
-    <url>/2020/12/04/About%20POM/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
-<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
-<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
-<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
-<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
-<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
-<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
-<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
-<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
-<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
-<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
-<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
-<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
-<ul>
-<li>
-<p>[ ]</p>
-</li>
-<li>
-<p>[ ]</p>
-</li>
-</ul>
-<p>使用unittest重新整合TestUnit部分</p>
-<p>加入流程异常捕捉断言测试。在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
-<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
-<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
-<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
-Github中。</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>About unittest</title>
     <url>/2020/12/04/About-unittest/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
@@ -958,12 +910,15 @@ Github中。</p>
 <blockquote>
 <p>MySQL参考：<a href="https://www.jianshu.com/p/1dab9a4d0d5f">https://www.jianshu.com/p/1dab9a4d0d5f</a></p>
 <p>tomcat部署参考：<a href="https://ken.io/note/centos7-tomcat-setup">https://ken.io/note/centos7-tomcat-setup</a></p>
+<p>部署到根目录参考：<a href="https://www.cnblogs.com/xdot/p/8418655.html">https://www.cnblogs.com/xdot/p/8418655.html</a></p>
 </blockquote>
 ]]></content>
       <categories>
         <category>linux</category>
+        <category>troubleshooting</category>
       </categories>
       <tags>
+        <tag>troubleshooting</tag>
         <tag>linux</tag>
       </tags>
   </entry>
@@ -1752,6 +1707,55 @@ Github中。</p>
       <tags>
         <tag>软件测试</tag>
         <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About POM</title>
+    <url>/2020/12/04/About-POM/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
+<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
+<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
+<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
+<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
+<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
+<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
+<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
+<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
+<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
+<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
+<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
+<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
+<ol>
+<li>
+<p>使用unittest重新整合TestUnit部分</p>
+</li>
+<li>
+<p>加入流程异常捕捉断言测试。</p>
+<p>在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
+</li>
+<li>
+<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
+</li>
+</ol>
+<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
+<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
+Github中。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
       </tags>
   </entry>
 </search>
