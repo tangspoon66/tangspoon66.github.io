@@ -32,16 +32,10 @@
 <li>
 <p>[ ]</p>
 </li>
-<li>
-<p>[ ] 使用unittest重新整合TestUnit部分</p>
-</li>
-<li>
-<p>[ ] 加入流程异常捕捉断言测试。在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
-</li>
-<li>
-<p>[ ] 对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
-</li>
 </ul>
+<p>使用unittest重新整合TestUnit部分</p>
+<p>加入流程异常捕捉断言测试。在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
+<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
 <h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
 <p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
 Github中。</p>
@@ -914,7 +908,7 @@ Github中。</p>
 <img src="https://picbed.tangspoon.cn/uPic/image-20201212104332240.png" alt="image-20201212104332240" style="zoom:50%;" />
 <p>稍等一下，我们再查看一下webapps有什么变化。可以看到上传pet.war后还多了一个pet文件，原因是tomcat帮我们把war项目自动解析了。这个pet就是我们运行中的pet项目。</p>
 <img src="https://picbed.tangspoon.cn/uPic/image-20201212104528197.png" alt="image-20201212104528197" style="zoom:50%;" />
-<p>此时我们访问尝试访问 ip:8080/项目路径，如无意外，项目访问成功。但我部署项目中就很少没有意外的，这次我就404了……</p>
+<p>此时我们访问尝试访问 <strong>ip:8080/项目路径</strong>，如无意外，项目访问成功。但我部署项目中就很少没有意外的，这次我就404了……</p>
 <img src="https://picbed.tangspoon.cn/uPic/image-20201212145923339.png" alt="image-20201212145923339" style="zoom:50%;" />
 <hr />
 <h2 id="六-故障解决"><a class="markdownIt-Anchor" href="#六-故障解决"></a> 六、故障解决</h2>
@@ -932,7 +926,39 @@ Github中。</p>
 <p>删除VPS中tomcat/webapps中的项目war包 和 自动解析生成的项目文件夹</p>
 <img src="https://picbed.tangspoon.cn/uPic/image-20201212151758556.png" alt="image-20201212151758556" style="zoom:50%;" />
 <p>然后重新上传新打包的war包，然后等待大概两分钟（tomcat要重新部署新的war包），过后我们再尝试尝试访问 ip:8080/项目文件。</p>
-<p>Done！</p>
+<p>然后然后……总是如此曲折</p>
+<h3 id="2-样式不见了"><a class="markdownIt-Anchor" href="#2-样式不见了"></a> 2. 样式不见了……</h3>
+<p>真是天秀～，查看log也没有报错。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212152345134.png" alt="image-20201212152345134" style="zoom:40%;" />
+<p>那就F12，看看Console，所有的何css、js资源都无法获取，</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-12_15-58-19.jpg" alt="Xnip2020-12-12_15-58-19" style="zoom:50%;" />
+<p>网络搜索了一下，在这里<a href="https://www.geek-share.com/detail/2744094259.html">这篇文章</a>里获取到了一点点思路，是获取的路径有问题。那么我们在本地idea上编译然后F12，对比看看</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-13_15-01-19.jpg" alt="Xnip2020-12-13_15-01-19" style="zoom: 40%;" />
+<p>从上图我们可以看到，我们的资源多了一个项目名称的目录，index自然获取不到在外部的resources里的css、js文件。可是当时为这个问题已经折腾了一整天了，完完整整的一天，思路已经被局限，没有想到在webapps下的ROOT目录。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213150725829.png" alt="image-20201213150725829" style="zoom:50%;" />
+<p>在晚上9点折腾无果后，决定加Roothub项目作者交流一下，看看能否获得提示。第二天交流后有一句话给了我提示：“可以设置根路径访问的。”一句惊醒梦中人～</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-13_14-30-10.jpg" alt="Xnip2020-12-13_14-30-10" style="zoom:50%;" />
+<p>想到我们直接输入ip访问的Apache Tomcat的首页是部署在ROOT目录下的，这个就是tomcat的根目录呀。那我直接把ROOT下的文件替换成我的<strong>项目下的所有文件</strong>能不能直接访问呢？</p>
+<p>但不知道为何，使用命令行无法操作ROOT这个目录，想要cp备份不行，cd进入也不行，rm也不行。只好使用FinalShell的图形界面操作了。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213153848470.png" alt="image-20201213153848470" style="zoom:50%;" />
+<p>在替换操作之后，VPS监控到CPU占用率马上提高，可能是tomcat已经在部署项目了。等CPU占比下来后，访问 ip:8080，成功访问。</p>
+<p>其实这种做法是一种折中的解决办法吧，那假如我还有其他要部署的项目呢？还是直接覆盖ROOT目录？这样就在一台VPS下只能存在一个javaweb项目了。这显然是不合理的。</p>
+<p>综合搜索资料后分析，出现这种情况大概是原项目作者在开发时使用的是绝对路径。但具体怎么回事目前还未有足够时间去深究，以后有机会再研究。</p>
+<hr />
+<h2 id="七-域名访问项目"><a class="markdownIt-Anchor" href="#七-域名访问项目"></a> 七、域名访问项目</h2>
+<p>这里重点讲述tomcat的配置，域名解析什么的就略过吧。相关配置在tomcat/conf/server.xml。</p>
+<h3 id="1-修改成80端口访问"><a class="markdownIt-Anchor" href="#1-修改成80端口访问"></a> 1. 修改成80端口访问</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213161121091.png" alt="image-20201213161121091" style="zoom:50%;" />
+<h3 id="3-改域名"><a class="markdownIt-Anchor" href="#3-改域名"></a> 3. 改域名</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi server.xml</span><br></pre></td></tr></table></figure>
+<p>需要修改两个地方：进入vi后，键入<code>esc</code>，直接键入<code>/</code> ，然后输入Engine，回车。把localhost修改成自己的域名。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213162200088.png" alt="image-20201213162200088" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213162403247.png" alt="image-20201213162403247" style="zoom:50%;" />
+<p>最后重启tomcat即可！</p>
+<blockquote>
+<p>MySQL参考：<a href="https://www.jianshu.com/p/1dab9a4d0d5f">https://www.jianshu.com/p/1dab9a4d0d5f</a></p>
+<p>tomcat部署参考：<a href="https://ken.io/note/centos7-tomcat-setup">https://ken.io/note/centos7-tomcat-setup</a></p>
+</blockquote>
 ]]></content>
       <categories>
         <category>linux</category>
