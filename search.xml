@@ -753,176 +753,6 @@
       </tags>
   </entry>
   <entry>
-    <title>怎么把java web项目部署到centos7中？</title>
-    <url>/2020/12/12/%E6%80%8E%E4%B9%88%E6%8A%8Ajava-web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0centos7%E4%B8%AD%EF%BC%9F/</url>
-    <content><![CDATA[<p>今天打开FinalShell，在vps列表最底下发现了一个叫“pr”的备注，瞬间想起6美元上的一个灵车pacificrack。双击后，震惊，链接居然绿了！连接速度居然还变快了……想不到近一年过去了还没翻车。既然这样，那就用来干点“正事”吧，把失败了的宠物论坛重新搭建起来，折腾一下。</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_16-53-56.jpg" alt="Xnip2020-12-11_16-53-56" style="zoom:50%;" />
-<a id="more"></a>
-<p>在linux环境上部署javaweb项目比想象中的要简单太多，<strong>只需要java环境、mysql、tomcat三样</strong>。</p>
-<p>我们先查看一下VPS是否自带有以上环境</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa|grep java</span><br><span class="line">rpm -qa|grep mysql</span><br><span class="line">rpm -qa|grep tomcat</span><br></pre></td></tr></table></figure>
-<p>还好，都没有（不然我还得卸载）。所以，第一步是装好java环境。</p>
-<h2 id="一-安装java环境"><a class="markdownIt-Anchor" href="#一-安装java环境"></a> 一、安装java环境</h2>
-<h3 id="1-使用wget高效率下载jdk8安装java环境"><a class="markdownIt-Anchor" href="#1-使用wget高效率下载jdk8安装java环境"></a> 1. 使用wget高效率下载jdk8，安装java环境</h3>
-<p>进入<a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">jdk8</a>下载页面，点击下载链接。（注意到链接左上角是有一把锁🔒的，<strong>证明点击后还有验证项目</strong>，所以不是直接wget这条url。）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201211183815811.png" alt="image-20201211183815811" style="zoom:50%;" />
-<p>点入链接，打勾后，直接在Download下右键（不是左键！），复制下载链接，这条链接才是可以直接在VPS下wget的。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201211184247551.png" alt="image-20201211184247551" style="zoom:50%;" />
-<p>然后我们连上VPS，输入wget，然后粘贴上面的下载链接。有了VPS后，我们要利用好VPS优秀的远程网络，不要再傻傻的下载到本地电脑，然后再手动上传到VPS中，简直多此一举。</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_17-03-50.jpg" alt="Xnip2020-12-11_17-03-50" style="zoom:50%;" />
-<blockquote>
-<p>注意，我为什么不直接把下载链接分享出来呢？因为每条下载链接的有效性只能保持一段时间，过后就会失效。具体多久没有探究。oracle公司考虑得真的非常完美，感觉这样其中一个好处就是：可以大幅提高官网的访问率和官方方式下载率，不用一条链接用万年。</p>
-</blockquote>
-<h3 id="2-解压包"><a class="markdownIt-Anchor" href="#2-解压包"></a> 2. 解压包</h3>
-<p>然后我们再/usr/local目录下创建一个名叫java的目录，把刚下载的jdk tar.gz包解压到这里，详细命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新建java目录</span><br><span class="line">mkdir &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line"># 解压jdk包到java目录</span><br><span class="line">tar -zxvf 包名 -C &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line"># 查看解压包名</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201211190147742.png" alt="image-20201211190147742" style="zoom: 50%;" />
-<p><strong>注意！<code>ls</code>后就像上图一样，java文件夹内只能有一个jdk的包，不要放置其他内容</strong></p>
-<h3 id="3-配置环境变量"><a class="markdownIt-Anchor" href="#3-配置环境变量"></a> 3. 配置环境变量</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
-<p>然后如图添加以下内容，然后保存，退出。（注意红框的内容自行更换为自己下载的包名，也就是上面<code>ls</code>查看出来的）</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_17-36-34.jpg" alt="Xnip2020-12-11_17-36-34" style="zoom:50%;" />
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># java</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;java&#x2F;jdk1.8.0_271</span><br><span class="line">export CLASSPATH&#x3D;$CLASSPATH:$JAVA_HOME&#x2F;lib&#x2F;</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
-<p>然后更新文件：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
-<h3 id="4-验证"><a class="markdownIt-Anchor" href="#4-验证"></a> 4. 验证</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201211191148413.png" alt="image-20201211191148413" style="zoom:50%;" />
-<p>出现上图，java环境安装成功！</p>
-<p>如果出现了什么幺蛾子的话，就看error提示吧。linux问题很多，很难一一说明。死活有问题的话，就重装系统，换个系统吧，这是最最最没办法中的办法。</p>
-<hr />
-<h2 id="二-安装mysql-57"><a class="markdownIt-Anchor" href="#二-安装mysql-57"></a> 二、安装MySQL 5.7</h2>
-<h3 id="1-检查是否有冲突的mariadb-lib然后卸载"><a class="markdownIt-Anchor" href="#1-检查是否有冲突的mariadb-lib然后卸载"></a> 1. 检查是否有冲突的mariadb-lib，然后卸载</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201211195150651.png" alt="image-20201211195150651" style="zoom:50%;" />
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看是否存在mariadb</span><br><span class="line">rpm -qa|grep mariadb</span><br><span class="line"># 卸载</span><br><span class="line">rpm -e --nodes mariadb-libs-5.5.64-1.el7.x86_64</span><br></pre></td></tr></table></figure>
-<h3 id="2-下载mysql安装包"><a class="markdownIt-Anchor" href="#2-下载mysql安装包"></a> 2. 下载MySQL安装包</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载rpm</span><br><span class="line">wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line"># 安装</span><br><span class="line">yum localinstall mysql57-community-release-el7-11.noarch.rpm</span><br></pre></td></tr></table></figure>
-<h3 id="3-安装"><a class="markdownIt-Anchor" href="#3-安装"></a> 3. 安装</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y mysql-community-server</span><br></pre></td></tr></table></figure>
-<p>安装完毕后，启动mysql服务</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service mysqld start</span><br></pre></td></tr></table></figure>
-<p>查看mysql服务是否启动成功</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef|grep mysql</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201211203901096.png" alt="image-20201211203901096" style="zoom:50%;" />
-<h3 id="4-修改密码"><a class="markdownIt-Anchor" href="#4-修改密码"></a> 4. 修改密码</h3>
-<p>查询MySQL的临时密码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &#39;temporary password&#39; &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201211205414107.png" alt="image-20201211205414107" style="zoom:50%;" />
-<p>复制临时密码，使用临时登录MySQL</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
-<p>修改密码，然后刷新权限</p>
-<blockquote>
-<p>把下面的xxx修改成自己的密码。</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;xxxx&#39;;</span><br><span class="line"># 刷新权限！一定要！</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
-<p>最后尝试使用新修改的密码重新登陆。</p>
-<hr />
-<h2 id="三-安装tomcat-8"><a class="markdownIt-Anchor" href="#三-安装tomcat-8"></a> 三、安装tomcat 8</h2>
-<h3 id="1-使用wegt下载targz包"><a class="markdownIt-Anchor" href="#1-使用wegt下载targz包"></a> 1. 使用wegt下载tar.gz包</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212093710258.png" alt="image-20201212093710258" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212093839753.png" alt="image-20201212093839753" style="zoom:50%;" />
-<h3 id="2-安装"><a class="markdownIt-Anchor" href="#2-安装"></a> 2. 安装</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建tomcat文件夹</span><br><span class="line">mkdir &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line"># 解压</span><br><span class="line">tar -zvxf xxx(你的tomcat包名) -C &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line"># 重命名</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line">mv  xxx(你的tomcat包名) tomcat8</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212094351216.png" alt="image-20201212094351216" style="zoom:50%;" />
-<h3 id="3-防火墙开放端口"><a class="markdownIt-Anchor" href="#3-防火墙开放端口"></a> 3. 防火墙开放端口</h3>
-<p>查看防火墙开放情况</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">firewall-cmd --list-ports</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212094507455.png" alt="image-20201212094507455" style="zoom:50%;" />
-<p>如果显示<code>-bash: firewall-cmd: 未找到命令</code>,证明没有防火墙。下方是防火墙的相关操作。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装防火墙</span><br><span class="line">yum install firewalld</span><br><span class="line"># 开启防火墙</span><br><span class="line">systemtcl start firewalld</span><br><span class="line"># 开放8080与3306端口，然后重启防火墙</span><br><span class="line">firewalld-cmd --add-port&#x3D;8080&#x2F;tcp --permanent</span><br><span class="line">firewalld-cmd --add-port&#x3D;3306&#x2F;tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br><span class="line"># 重新查看开放端口列表</span><br><span class="line">firewalld-cmd --list-ports</span><br></pre></td></tr></table></figure>
-<p>如图显示，则端口开启成功</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212095454503.png" alt="image-20201212095454503" style="zoom:50%;" />
-<h3 id="4-开启tomcat尝试外部访问"><a class="markdownIt-Anchor" href="#4-开启tomcat尝试外部访问"></a> 4. 开启tomcat，尝试外部访问</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 有关tomcat的脚本都在bin目录下，bat后缀为windows用户的脚本</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;tomcat8&#x2F;bin &amp;&amp; ls</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212095835339.png" alt="image-20201212095835339" style="zoom:50%;" />
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 运行tomcat</span><br><span class="line">sh startup.sh</span><br></pre></td></tr></table></figure>
-<p>尝试外部访问：在浏览器中输入VPS的ip:8080。如图，tomcat部署成功！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212100051835.png" alt="image-20201212100051835" style="zoom:50%;" />
-<h3 id="5-配置开机启动"><a class="markdownIt-Anchor" href="#5-配置开机启动"></a> 5. 配置开机启动</h3>
-<p>创建tomcat8系统服务文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;tomcat8.service</span><br></pre></td></tr></table></figure>
-<p>然后在文件中粘贴如下内容，保存后退出。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;Tomcat8</span><br><span class="line">After&#x3D;syslog.target network.target remote-fs.target nss-lookup.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking</span><br><span class="line"></span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecReload&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecStop&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;shutdown.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
-<p>最后启用tomcat8系统配置文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable tomcat8</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212100604097.png" alt="image-20201212100604097" style="zoom:50%;" />
-<hr />
-<h2 id="四-导入javaweb项目的sql文件到vps的数据库中"><a class="markdownIt-Anchor" href="#四-导入javaweb项目的sql文件到vps的数据库中"></a> 四、导入javaweb项目的sql文件到VPS的数据库中</h2>
-<p><strong>注意：以下命令一行一行逐渐执行，不是直接复制粘贴</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装上传下载工具</span><br><span class="line">cd ~ &amp;&amp; yum install lrzsz</span><br><span class="line"># 上传</span><br><span class="line">rz</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入mysql</span><br><span class="line">mysql -uroot -p</span><br><span class="line"># 查看数据库</span><br><span class="line">show databases;</span><br><span class="line"># 新建数据库</span><br><span class="line">creat database xxx(你的数据库名) default charater set utf8 collate utf8_general_ci;</span><br><span class="line"># 使用数据库</span><br><span class="line">use xxx(你的数据库名)</span><br><span class="line"># 导入你的sql文件，路径为你sql文件的路径</span><br><span class="line">source &#x2F;xxx&#x2F;xxx&#x2F;xxx.sql;</span><br><span class="line"># 查看sql文件的table，是否导入成功</span><br><span class="line">show tables;</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212103535073.png" alt="image-20201212103535073" style="zoom:50%;" />
-<p>导入sql成功！现在VPS数据库中已经有我们的数据表了！</p>
-<hr />
-<h2 id="五-上传war包到vps中"><a class="markdownIt-Anchor" href="#五-上传war包到vps中"></a> 五、上传war包到VPS中</h2>
-<p>先在IDEA打包好war包，打包方法参考：<a href="https://blog.csdn.net/qq_1290259791/article/details/78619353">intellij idea打包war包</a>。</p>
-<p>我们使用<code>rz</code>命令把war包上传到tomcat8里的wabapps文件夹下。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212104332240.png" alt="image-20201212104332240" style="zoom:50%;" />
-<p>稍等一下，我们再查看一下webapps有什么变化。可以看到上传pet.war后还多了一个pet文件，原因是tomcat帮我们把war项目自动解析了。这个pet就是我们运行中的pet项目。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212104528197.png" alt="image-20201212104528197" style="zoom:50%;" />
-<p>此时我们访问尝试访问 <strong>ip:8080/项目路径</strong>，如无意外，项目访问成功。但我部署项目中就很少没有意外的，这次我就404了……</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212145923339.png" alt="image-20201212145923339" style="zoom:50%;" />
-<hr />
-<h2 id="六-故障解决"><a class="markdownIt-Anchor" href="#六-故障解决"></a> 六、故障解决</h2>
-<h3 id="1-访问出现404"><a class="markdownIt-Anchor" href="#1-访问出现404"></a> 1. 访问出现404</h3>
-<p>javaweb部署导致404出现的原因有挺多种的，当然我们可以选择Google、Baidu，但其实最快、最稳妥的办法就是<strong>查看tomcat的日志</strong>。访问不了tomcat会给出针对性的报错原因的。</p>
-<p>tomcat的日志在/xxx(tomcat安装目录)/logs/catalina.out</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212150457465.png" alt="image-20201212150457465" style="zoom:50%;" />
-<p>查看日志最后100行</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tail -n 100 catalina.out</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-12_14-56-28.jpg" alt="Xnip2020-12-12_14-56-28" style="zoom:50%;" />
-<p>一眼就看出是MySQL的问题！导致这个原因一般只有两个：首先是jdbc文件mysql配置信息错误，不然就是数据库版本不对。</p>
-<p>打开idea，查看项目的jdbc配置文件，果然这里的password忘记更改成VPS数据库的密码了。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212151256298.png" alt="image-20201212151256298" style="zoom:50%;" />
-<p>重新编译，打包war包。</p>
-<p>删除VPS中tomcat/webapps中的项目war包 和 自动解析生成的项目文件夹</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212151758556.png" alt="image-20201212151758556" style="zoom:50%;" />
-<p>然后重新上传新打包的war包，然后等待大概两分钟（tomcat要重新部署新的war包），过后我们再尝试尝试访问 ip:8080/项目文件。</p>
-<p>然后然后……总是如此曲折</p>
-<h3 id="2-样式不见了"><a class="markdownIt-Anchor" href="#2-样式不见了"></a> 2. 样式不见了……</h3>
-<p>真是天秀～，查看log也没有报错。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201212152345134.png" alt="image-20201212152345134" style="zoom:40%;" />
-<p>那就F12，看看Console，所有的何css、js资源都无法获取，</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-12_15-58-19.jpg" alt="Xnip2020-12-12_15-58-19" style="zoom:50%;" />
-<p>网络搜索了一下，在这里<a href="https://www.geek-share.com/detail/2744094259.html">这篇文章</a>里获取到了一点点思路，是获取的路径有问题。那么我们在本地idea上编译然后F12，对比看看</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-13_15-01-19.jpg" alt="Xnip2020-12-13_15-01-19" style="zoom: 40%;" />
-<p>从上图我们可以看到，我们的资源多了一个项目名称的目录，index自然获取不到在外部的resources里的css、js文件。可是当时为这个问题已经折腾了一整天了，完完整整的一天，思路已经被局限，没有想到在webapps下的ROOT目录。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201213150725829.png" alt="image-20201213150725829" style="zoom:50%;" />
-<p>在晚上9点折腾无果后，决定加Roothub项目作者交流一下，看看能否获得提示。第二天交流后有一句话给了我提示：“可以设置根路径访问的。”一句惊醒梦中人～</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-13_14-30-10.jpg" alt="Xnip2020-12-13_14-30-10" style="zoom:50%;" />
-<p>想到我们直接输入ip访问的Apache Tomcat的首页是部署在ROOT目录下的，这个就是tomcat的根目录呀。那我直接把ROOT下的文件替换成我的<strong>项目下的所有文件</strong>能不能直接访问呢？</p>
-<p>但不知道为何，使用命令行无法操作ROOT这个目录，想要cp备份不行，cd进入也不行，rm也不行。只好使用FinalShell的图形界面操作了。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201213153848470.png" alt="image-20201213153848470" style="zoom:50%;" />
-<p>在替换操作之后，VPS监控到CPU占用率马上提高，可能是tomcat已经在部署项目了。等CPU占比下来后，访问 ip:8080，成功访问。</p>
-<p>其实这种做法是一种折中的解决办法吧，那假如我还有其他要部署的项目呢？还是直接覆盖ROOT目录？这样就在一台VPS下只能存在一个javaweb项目了。这显然是不合理的。</p>
-<p>综合搜索资料后分析，出现这种情况大概是原项目作者在开发时使用的是绝对路径。但具体怎么回事目前还未有足够时间去深究，以后有机会再研究。</p>
-<hr />
-<h2 id="七-域名访问项目"><a class="markdownIt-Anchor" href="#七-域名访问项目"></a> 七、域名访问项目</h2>
-<p>这里重点讲述tomcat的配置，域名解析什么的就略过吧。相关配置在tomcat/conf/server.xml。</p>
-<h3 id="1-修改成80端口访问"><a class="markdownIt-Anchor" href="#1-修改成80端口访问"></a> 1. 修改成80端口访问</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201213161121091.png" alt="image-20201213161121091" style="zoom:50%;" />
-<h3 id="3-改域名"><a class="markdownIt-Anchor" href="#3-改域名"></a> 3. 改域名</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi server.xml</span><br></pre></td></tr></table></figure>
-<p>需要修改两个地方：进入vi后，键入<code>esc</code>，直接键入<code>/</code> ，然后输入Engine，回车。把localhost修改成自己的域名。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201213162200088.png" alt="image-20201213162200088" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201213162403247.png" alt="image-20201213162403247" style="zoom:50%;" />
-<p>最后重启tomcat即可！</p>
-<blockquote>
-<p>MySQL参考：<a href="https://www.jianshu.com/p/1dab9a4d0d5f">https://www.jianshu.com/p/1dab9a4d0d5f</a></p>
-<p>tomcat部署参考：<a href="https://ken.io/note/centos7-tomcat-setup">https://ken.io/note/centos7-tomcat-setup</a></p>
-<p>部署到根目录参考：<a href="https://www.cnblogs.com/xdot/p/8418655.html">https://www.cnblogs.com/xdot/p/8418655.html</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>linux</category>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>troubleshooting</tag>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>正则表达式-01</title>
     <url>/2020/10/25/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-01/</url>
     <content><![CDATA[<h3 id="简单"><a class="markdownIt-Anchor" href="#简单"></a> 简单</h3>
@@ -1756,6 +1586,176 @@ Github中。</p>
       <tags>
         <tag>软件测试</tag>
         <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>吐血原创整理｜怎么把java web项目部署到centos7中？</title>
+    <url>/2020/12/12/%E5%90%90%E8%A1%80%E5%8E%9F%E5%88%9B%E6%95%B4%E7%90%86%EF%BD%9C%E6%80%8E%E4%B9%88%E6%8A%8Ajava-web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0centos7%E4%B8%AD%EF%BC%9F/</url>
+    <content><![CDATA[<p>今天打开FinalShell，在vps列表最底下发现了一个叫“pr”的备注，瞬间想起6美元上的一个灵车pacificrack。双击后，震惊，链接居然绿了！连接速度居然还变快了……想不到近一年过去了还没翻车。既然这样，那就用来干点“正事”吧，把失败了的宠物论坛重新搭建起来，折腾一下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_16-53-56.jpg" alt="Xnip2020-12-11_16-53-56" style="zoom:50%;" />
+<a id="more"></a>
+<p>在linux环境上部署javaweb项目比想象中的要简单太多，<strong>只需要java环境、mysql、tomcat三样</strong>。</p>
+<p>我们先查看一下VPS是否自带有以上环境</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rpm -qa|grep java</span><br><span class="line">rpm -qa|grep mysql</span><br><span class="line">rpm -qa|grep tomcat</span><br></pre></td></tr></table></figure>
+<p>还好，都没有（不然我还得卸载）。所以，第一步是装好java环境。</p>
+<h2 id="一-安装java环境"><a class="markdownIt-Anchor" href="#一-安装java环境"></a> 一、安装java环境</h2>
+<h3 id="1-使用wget高效率下载jdk8安装java环境"><a class="markdownIt-Anchor" href="#1-使用wget高效率下载jdk8安装java环境"></a> 1. 使用wget高效率下载jdk8，安装java环境</h3>
+<p>进入<a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">jdk8</a>下载页面，点击下载链接。（注意到链接左上角是有一把锁🔒的，<strong>证明点击后还有验证项目</strong>，所以不是直接wget这条url。）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211183815811.png" alt="image-20201211183815811" style="zoom:50%;" />
+<p>点入链接，打勾后，直接在Download下右键（不是左键！），复制下载链接，这条链接才是可以直接在VPS下wget的。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211184247551.png" alt="image-20201211184247551" style="zoom:50%;" />
+<p>然后我们连上VPS，输入wget，然后粘贴上面的下载链接。有了VPS后，我们要利用好VPS优秀的远程网络，不要再傻傻的下载到本地电脑，然后再手动上传到VPS中，简直多此一举。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_17-03-50.jpg" alt="Xnip2020-12-11_17-03-50" style="zoom:50%;" />
+<blockquote>
+<p>注意，我为什么不直接把下载链接分享出来呢？因为每条下载链接的有效性只能保持一段时间，过后就会失效。具体多久没有探究。oracle公司考虑得真的非常完美，感觉这样其中一个好处就是：可以大幅提高官网的访问率和官方方式下载率，不用一条链接用万年。</p>
+</blockquote>
+<h3 id="2-解压包"><a class="markdownIt-Anchor" href="#2-解压包"></a> 2. 解压包</h3>
+<p>然后我们再/usr/local目录下创建一个名叫java的目录，把刚下载的jdk tar.gz包解压到这里，详细命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新建java目录</span><br><span class="line">mkdir &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line"># 解压jdk包到java目录</span><br><span class="line">tar -zxvf 包名 -C &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line"># 查看解压包名</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;java</span><br><span class="line">ls</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211190147742.png" alt="image-20201211190147742" style="zoom: 50%;" />
+<p><strong>注意！<code>ls</code>后就像上图一样，java文件夹内只能有一个jdk的包，不要放置其他内容</strong></p>
+<h3 id="3-配置环境变量"><a class="markdownIt-Anchor" href="#3-配置环境变量"></a> 3. 配置环境变量</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<p>然后如图添加以下内容，然后保存，退出。（注意红框的内容自行更换为自己下载的包名，也就是上面<code>ls</code>查看出来的）</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-11_17-36-34.jpg" alt="Xnip2020-12-11_17-36-34" style="zoom:50%;" />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># java</span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;local&#x2F;java&#x2F;jdk1.8.0_271</span><br><span class="line">export CLASSPATH&#x3D;$CLASSPATH:$JAVA_HOME&#x2F;lib&#x2F;</span><br><span class="line">export PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin</span><br></pre></td></tr></table></figure>
+<p>然后更新文件：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+<h3 id="4-验证"><a class="markdownIt-Anchor" href="#4-验证"></a> 4. 验证</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211191148413.png" alt="image-20201211191148413" style="zoom:50%;" />
+<p>出现上图，java环境安装成功！</p>
+<p>如果出现了什么幺蛾子的话，就看error提示吧。linux问题很多，很难一一说明。死活有问题的话，就重装系统，换个系统吧，这是最最最没办法中的办法。</p>
+<hr />
+<h2 id="二-安装mysql-57"><a class="markdownIt-Anchor" href="#二-安装mysql-57"></a> 二、安装MySQL 5.7</h2>
+<h3 id="1-检查是否有冲突的mariadb-lib然后卸载"><a class="markdownIt-Anchor" href="#1-检查是否有冲突的mariadb-lib然后卸载"></a> 1. 检查是否有冲突的mariadb-lib，然后卸载</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211195150651.png" alt="image-20201211195150651" style="zoom:50%;" />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 查看是否存在mariadb</span><br><span class="line">rpm -qa|grep mariadb</span><br><span class="line"># 卸载</span><br><span class="line">rpm -e --nodes mariadb-libs-5.5.64-1.el7.x86_64</span><br></pre></td></tr></table></figure>
+<h3 id="2-下载mysql安装包"><a class="markdownIt-Anchor" href="#2-下载mysql安装包"></a> 2. 下载MySQL安装包</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 下载rpm</span><br><span class="line">wget https:&#x2F;&#x2F;dev.mysql.com&#x2F;get&#x2F;mysql57-community-release-el7-11.noarch.rpm</span><br><span class="line"># 安装</span><br><span class="line">yum localinstall mysql57-community-release-el7-11.noarch.rpm</span><br></pre></td></tr></table></figure>
+<h3 id="3-安装"><a class="markdownIt-Anchor" href="#3-安装"></a> 3. 安装</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install -y mysql-community-server</span><br></pre></td></tr></table></figure>
+<p>安装完毕后，启动mysql服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">service mysqld start</span><br></pre></td></tr></table></figure>
+<p>查看mysql服务是否启动成功</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ps -ef|grep mysql</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211203901096.png" alt="image-20201211203901096" style="zoom:50%;" />
+<h3 id="4-修改密码"><a class="markdownIt-Anchor" href="#4-修改密码"></a> 4. 修改密码</h3>
+<p>查询MySQL的临时密码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">grep &#39;temporary password&#39; &#x2F;var&#x2F;log&#x2F;mysqld.log</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201211205414107.png" alt="image-20201211205414107" style="zoom:50%;" />
+<p>复制临时密码，使用临时登录MySQL</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mysql -uroot -p</span><br></pre></td></tr></table></figure>
+<p>修改密码，然后刷新权限</p>
+<blockquote>
+<p>把下面的xxx修改成自己的密码。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ALTER USER &#39;root&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;xxxx&#39;;</span><br><span class="line"># 刷新权限！一定要！</span><br><span class="line">flush privileges;</span><br></pre></td></tr></table></figure>
+<p>最后尝试使用新修改的密码重新登陆。</p>
+<hr />
+<h2 id="三-安装tomcat-8"><a class="markdownIt-Anchor" href="#三-安装tomcat-8"></a> 三、安装tomcat 8</h2>
+<h3 id="1-使用wegt下载targz包"><a class="markdownIt-Anchor" href="#1-使用wegt下载targz包"></a> 1. 使用wegt下载tar.gz包</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212093710258.png" alt="image-20201212093710258" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212093839753.png" alt="image-20201212093839753" style="zoom:50%;" />
+<h3 id="2-安装"><a class="markdownIt-Anchor" href="#2-安装"></a> 2. 安装</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 创建tomcat文件夹</span><br><span class="line">mkdir &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line"># 解压</span><br><span class="line">tar -zvxf xxx(你的tomcat包名) -C &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line"># 重命名</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;tomcat</span><br><span class="line">mv  xxx(你的tomcat包名) tomcat8</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212094351216.png" alt="image-20201212094351216" style="zoom:50%;" />
+<h3 id="3-防火墙开放端口"><a class="markdownIt-Anchor" href="#3-防火墙开放端口"></a> 3. 防火墙开放端口</h3>
+<p>查看防火墙开放情况</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">firewall-cmd --list-ports</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212094507455.png" alt="image-20201212094507455" style="zoom:50%;" />
+<p>如果显示<code>-bash: firewall-cmd: 未找到命令</code>,证明没有防火墙。下方是防火墙的相关操作。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装防火墙</span><br><span class="line">yum install firewalld</span><br><span class="line"># 开启防火墙</span><br><span class="line">systemtcl start firewalld</span><br><span class="line"># 开放8080与3306端口，然后重启防火墙</span><br><span class="line">firewalld-cmd --add-port&#x3D;8080&#x2F;tcp --permanent</span><br><span class="line">firewalld-cmd --add-port&#x3D;3306&#x2F;tcp --permanent</span><br><span class="line">firewall-cmd --reload</span><br><span class="line"># 重新查看开放端口列表</span><br><span class="line">firewalld-cmd --list-ports</span><br></pre></td></tr></table></figure>
+<p>如图显示，则端口开启成功</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212095454503.png" alt="image-20201212095454503" style="zoom:50%;" />
+<h3 id="4-开启tomcat尝试外部访问"><a class="markdownIt-Anchor" href="#4-开启tomcat尝试外部访问"></a> 4. 开启tomcat，尝试外部访问</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 有关tomcat的脚本都在bin目录下，bat后缀为windows用户的脚本</span><br><span class="line">cd &#x2F;usr&#x2F;local&#x2F;tomcat&#x2F;tomcat8&#x2F;bin &amp;&amp; ls</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212095835339.png" alt="image-20201212095835339" style="zoom:50%;" />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 运行tomcat</span><br><span class="line">sh startup.sh</span><br></pre></td></tr></table></figure>
+<p>尝试外部访问：在浏览器中输入VPS的ip:8080。如图，tomcat部署成功！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212100051835.png" alt="image-20201212100051835" style="zoom:50%;" />
+<h3 id="5-配置开机启动"><a class="markdownIt-Anchor" href="#5-配置开机启动"></a> 5. 配置开机启动</h3>
+<p>创建tomcat8系统服务文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi &#x2F;usr&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;tomcat8.service</span><br></pre></td></tr></table></figure>
+<p>然后在文件中粘贴如下内容，保存后退出。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description&#x3D;Tomcat8</span><br><span class="line">After&#x3D;syslog.target network.target remote-fs.target nss-lookup.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type&#x3D;forking</span><br><span class="line"></span><br><span class="line">ExecStart&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecReload&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;startup.sh</span><br><span class="line">ExecStop&#x3D;&#x2F;usr&#x2F;tomcat&#x2F;tomcat8&#x2F;bin&#x2F;shutdown.sh</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy&#x3D;multi-user.target</span><br></pre></td></tr></table></figure>
+<p>最后启用tomcat8系统配置文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">systemctl enable tomcat8</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212100604097.png" alt="image-20201212100604097" style="zoom:50%;" />
+<hr />
+<h2 id="四-导入javaweb项目的sql文件到vps的数据库中"><a class="markdownIt-Anchor" href="#四-导入javaweb项目的sql文件到vps的数据库中"></a> 四、导入javaweb项目的sql文件到VPS的数据库中</h2>
+<p><strong>注意：以下命令一行一行逐渐执行，不是直接复制粘贴</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 安装上传下载工具</span><br><span class="line">cd ~ &amp;&amp; yum install lrzsz</span><br><span class="line"># 上传</span><br><span class="line">rz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 进入mysql</span><br><span class="line">mysql -uroot -p</span><br><span class="line"># 查看数据库</span><br><span class="line">show databases;</span><br><span class="line"># 新建数据库</span><br><span class="line">creat database xxx(你的数据库名) default charater set utf8 collate utf8_general_ci;</span><br><span class="line"># 使用数据库</span><br><span class="line">use xxx(你的数据库名)</span><br><span class="line"># 导入你的sql文件，路径为你sql文件的路径</span><br><span class="line">source &#x2F;xxx&#x2F;xxx&#x2F;xxx.sql;</span><br><span class="line"># 查看sql文件的table，是否导入成功</span><br><span class="line">show tables;</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212103535073.png" alt="image-20201212103535073" style="zoom:50%;" />
+<p>导入sql成功！现在VPS数据库中已经有我们的数据表了！</p>
+<hr />
+<h2 id="五-上传war包到vps中"><a class="markdownIt-Anchor" href="#五-上传war包到vps中"></a> 五、上传war包到VPS中</h2>
+<p>先在IDEA打包好war包，打包方法参考：<a href="https://blog.csdn.net/qq_1290259791/article/details/78619353">intellij idea打包war包</a>。</p>
+<p>我们使用<code>rz</code>命令把war包上传到tomcat8里的wabapps文件夹下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212104332240.png" alt="image-20201212104332240" style="zoom:50%;" />
+<p>稍等一下，我们再查看一下webapps有什么变化。可以看到上传pet.war后还多了一个pet文件，原因是tomcat帮我们把war项目自动解析了。这个pet就是我们运行中的pet项目。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212104528197.png" alt="image-20201212104528197" style="zoom:50%;" />
+<p>此时我们访问尝试访问 <strong>ip:8080/项目路径</strong>，如无意外，项目访问成功。但我部署项目中就很少没有意外的，这次我就404了……</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212145923339.png" alt="image-20201212145923339" style="zoom:50%;" />
+<hr />
+<h2 id="六-故障解决"><a class="markdownIt-Anchor" href="#六-故障解决"></a> 六、故障解决</h2>
+<h3 id="1-访问出现404"><a class="markdownIt-Anchor" href="#1-访问出现404"></a> 1. 访问出现404</h3>
+<p>javaweb部署导致404出现的原因有挺多种的，当然我们可以选择Google、Baidu，但其实最快、最稳妥的办法就是<strong>查看tomcat的日志</strong>。访问不了tomcat会给出针对性的报错原因的。</p>
+<p>tomcat的日志在/xxx(tomcat安装目录)/logs/catalina.out</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212150457465.png" alt="image-20201212150457465" style="zoom:50%;" />
+<p>查看日志最后100行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tail -n 100 catalina.out</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-12_14-56-28.jpg" alt="Xnip2020-12-12_14-56-28" style="zoom:50%;" />
+<p>一眼就看出是MySQL的问题！导致这个原因一般只有两个：首先是jdbc文件mysql配置信息错误，不然就是数据库版本不对。</p>
+<p>打开idea，查看项目的jdbc配置文件，果然这里的password忘记更改成VPS数据库的密码了。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212151256298.png" alt="image-20201212151256298" style="zoom:50%;" />
+<p>重新编译，打包war包。</p>
+<p>删除VPS中tomcat/webapps中的项目war包 和 自动解析生成的项目文件夹</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212151758556.png" alt="image-20201212151758556" style="zoom:50%;" />
+<p>然后重新上传新打包的war包，然后等待大概两分钟（tomcat要重新部署新的war包），过后我们再尝试尝试访问 ip:8080/项目文件。</p>
+<p>然后然后……总是如此曲折</p>
+<h3 id="2-样式不见了"><a class="markdownIt-Anchor" href="#2-样式不见了"></a> 2. 样式不见了……</h3>
+<p>真是天秀～，查看log也没有报错。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201212152345134.png" alt="image-20201212152345134" style="zoom:40%;" />
+<p>那就F12，看看Console，所有的何css、js资源都无法获取，</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-12_15-58-19.jpg" alt="Xnip2020-12-12_15-58-19" style="zoom:50%;" />
+<p>网络搜索了一下，在这里<a href="https://www.geek-share.com/detail/2744094259.html">这篇文章</a>里获取到了一点点思路，是获取的路径有问题。那么我们在本地idea上编译然后F12，对比看看</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-13_15-01-19.jpg" alt="Xnip2020-12-13_15-01-19" style="zoom: 40%;" />
+<p>从上图我们可以看到，我们的资源多了一个项目名称的目录，index自然获取不到在外部的resources里的css、js文件。可是当时为这个问题已经折腾了一整天了，完完整整的一天，思路已经被局限，没有想到在webapps下的ROOT目录。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213150725829.png" alt="image-20201213150725829" style="zoom:50%;" />
+<p>在晚上9点折腾无果后，决定加Roothub项目作者交流一下，看看能否获得提示。第二天交流后有一句话给了我提示：“可以设置根路径访问的。”一句惊醒梦中人～</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-12-13_14-30-10.jpg" alt="Xnip2020-12-13_14-30-10" style="zoom:50%;" />
+<p>想到我们直接输入ip访问的Apache Tomcat的首页是部署在ROOT目录下的，这个就是tomcat的根目录呀。那我直接把ROOT下的文件替换成我的<strong>项目下的所有文件</strong>能不能直接访问呢？</p>
+<p>但不知道为何，使用命令行无法操作ROOT这个目录，想要cp备份不行，cd进入也不行，rm也不行。只好使用FinalShell的图形界面操作了。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213153848470.png" alt="image-20201213153848470" style="zoom:50%;" />
+<p>在替换操作之后，VPS监控到CPU占用率马上提高，可能是tomcat已经在部署项目了。等CPU占比下来后，访问 ip:8080，成功访问。</p>
+<p>其实这种做法是一种折中的解决办法吧，那假如我还有其他要部署的项目呢？还是直接覆盖ROOT目录？这样就在一台VPS下只能存在一个javaweb项目了。这显然是不合理的。</p>
+<p>综合搜索资料后分析，出现这种情况大概是原项目作者在开发时使用的是绝对路径。但具体怎么回事目前还未有足够时间去深究，以后有机会再研究。</p>
+<hr />
+<h2 id="七-域名访问项目"><a class="markdownIt-Anchor" href="#七-域名访问项目"></a> 七、域名访问项目</h2>
+<p>这里重点讲述tomcat的配置，域名解析什么的就略过吧。相关配置在tomcat/conf/server.xml。</p>
+<h3 id="1-修改成80端口访问"><a class="markdownIt-Anchor" href="#1-修改成80端口访问"></a> 1. 修改成80端口访问</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213161121091.png" alt="image-20201213161121091" style="zoom:50%;" />
+<h3 id="3-改域名"><a class="markdownIt-Anchor" href="#3-改域名"></a> 3. 改域名</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vi server.xml</span><br></pre></td></tr></table></figure>
+<p>需要修改两个地方：进入vi后，键入<code>esc</code>，直接键入<code>/</code> ，然后输入Engine，回车。把localhost修改成自己的域名。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213162200088.png" alt="image-20201213162200088" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201213162403247.png" alt="image-20201213162403247" style="zoom:50%;" />
+<p>最后重启tomcat即可！</p>
+<blockquote>
+<p>MySQL参考：<a href="https://www.jianshu.com/p/1dab9a4d0d5f">https://www.jianshu.com/p/1dab9a4d0d5f</a></p>
+<p>tomcat部署参考：<a href="https://ken.io/note/centos7-tomcat-setup">https://ken.io/note/centos7-tomcat-setup</a></p>
+<p>部署到根目录参考：<a href="https://www.cnblogs.com/xdot/p/8418655.html">https://www.cnblogs.com/xdot/p/8418655.html</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
 </search>
