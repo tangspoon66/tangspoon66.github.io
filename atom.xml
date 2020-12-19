@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-12-13T15:10:24.584Z</updated>
+  <updated>2020-12-19T05:31:48.508Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -15,6 +15,32 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>智能闹钟（一）｜macOS入门使用树莓派3B+</title>
+    <link href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/"/>
+    <id>https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/</id>
+    <published>2020-12-19T05:23:28.000Z</published>
+    <updated>2020-12-19T05:31:48.508Z</updated>
+    
+    <content type="html"><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2><p>最近，苹果手机坏了，暂时用回一加6古董机。iOS的捷径可以实现每日闹钟停止后可以自动播放网易云音乐的每日推荐歌曲，这个功能真的太喜欢了。但是会有10%的几率播放失败，而且安卓系统并没有类似功能。可能你会想到目前的智能音箱调闹钟不就可以了吗？首先，智能音箱对网络依赖极强，网络故障啥都干不了。其次，智能音箱并没有对接到网易云的每日推荐歌单，闹钟播放的歌曲都是随机的。</p><p>因此，作为一个geek，还是自己亲手打造一个可以播放网易云每日推荐歌曲的闹钟吧！</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219132040671.png" alt="image-20201219132040671" style="zoom:50%;" /><a id="more"></a><hr /><h2 id="一-烧录镜像"><a class="markdownIt-Anchor" href="#一-烧录镜像"></a> 一、烧录镜像</h2><h3 id="1-格式化内存卡"><a class="markdownIt-Anchor" href="#1-格式化内存卡"></a> 1. 格式化内存卡</h3><p>macOS使用SD Memory Card Formatter格式化内存卡，<a href="https://www.sdcard.org/downloads/formatter/eula_mac/index.html">点击此处</a>进入官网下载。（拉到最下面点击accept）</p><p><img src="https://picbed.tangspoon.cn/uPic/image-20201219113330224.png" alt="image-20201219113330224" /></p><p>打开SD Card Formatter，按照下图操作。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219105251370.png" alt="image-20201219105251370" style="zoom:50%;" /><p>如下，证明格式化成功</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219105330442.png" alt="image-20201219105330442" style="zoom:50%;" /><h3 id="2-下载树莓派镜像文件"><a class="markdownIt-Anchor" href="#2-下载树莓派镜像文件"></a> 2. 下载树莓派镜像文件</h3><p><a href="https://www.raspberrypi.org/software/operating-systems/">点击此处</a>进入下载页面，我这里下载Lite版的，下载完后<strong>不用解压</strong>。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219110531165.png" alt="image-20201219110531165" style="zoom:25%;" /><h3 id="3-下载烧录工具"><a class="markdownIt-Anchor" href="#3-下载烧录工具"></a> 3. 下载烧录工具</h3><p>macOS可以使用 Etcher烧录树莓派，戳这里进入官网：<a href="https://etcher.io/">https://etcher.io</a></p><img src="https://picbed.tangspoon.cn/uPic/image-20201219110853874.png" alt="image-20201219110853874" style="zoom: 33%;" /><p>选择你刚才下载的镜像（zip 格式），然后选择你的储存卡，点 Flash！即可烧录系统。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219111417310.png" alt="image-20201219111417310" style="zoom:33%;" /><p>耐心等待一段时间，大概需要5分钟就可烧录成功。</p><p><strong>注意：烧录后TF卡名字会变为：<code>boot</code>。</strong></p><h3 id="4-编写ssh连接与wifi配置文件"><a class="markdownIt-Anchor" href="#4-编写ssh连接与wifi配置文件"></a> 4. 编写ssh连接与wifi配置文件</h3><p>新建两个<code>txt</code>文件，分别命名为：<code>ssh</code>、<code>wpa_supplicant.conf</code></p><img src="https://picbed.tangspoon.cn/uPic/image-20201219112541652.png" alt="image-20201219112541652" style="zoom:50%;" /><ul><li><p><code>ssh</code>文件是没有后缀的</p></li><li><p><code>wpa_supplicant.conf</code>写入下面信息：</p><blockquote><ol><li>SSID名字中不能有符号<code>.</code></li><li>优先级范围为1-10</li></ol></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">country&#x3D;CN</span><br><span class="line">ctrl_interface&#x3D;DIR&#x3D;&#x2F;var&#x2F;run&#x2F;wpa_supplicant Group&#x3D;netdev</span><br><span class="line">update_config&#x3D;1</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">ssid&#x3D;&quot;Wifi1的名字&quot;</span><br><span class="line">psk&#x3D;&quot;密码&quot;</span><br><span class="line">priority&#x3D;优先级，越大越优先</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">ssid&#x3D;&quot;Wifi2的名字&quot;</span><br><span class="line">psk&#x3D;&quot;密码&quot;</span><br><span class="line">priority&#x3D;优先级</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p><strong>然后将这两个文件移动至烧录系统镜像后TF卡的根目录。</strong></p><img src="https://picbed.tangspoon.cn/uPic/image-20201219113232972.png" alt="image-20201219113232972" style="zoom:50%;" /></li></ul><blockquote><p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p><p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p></blockquote><hr /><h2 id="二-准备开机"><a class="markdownIt-Anchor" href="#二-准备开机"></a> 二、准备开机</h2><blockquote><p>树莓派3B+的电源要求是5V 2.5A的，最好不要太低，否则会损坏机器。（近300块啊）</p></blockquote><h3 id="1-ssh连接"><a class="markdownIt-Anchor" href="#1-ssh连接"></a> 1. ssh连接</h3><p>进入到我们的路由器中，然后查看树莓派的IP地址。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219115812140.png" alt="image-20201219115812140" style="zoom:50%;" /><p>ssh工具推荐使用FinalShell，按下图填写</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219120353131.png" alt="image-20201219120353131" style="zoom: 33%;" /><p>连接成功。可以看到会提示让我们修改ssh密码，但是因为我日常忘记各种密码，我就直接用默认的吧。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219123856310.png" alt="image-20201219123856310" style="zoom:33%;" /><h2 id="三-软件源更改"><a class="markdownIt-Anchor" href="#三-软件源更改"></a> 三、软件源更改</h2><p>一定要更改源，不然下载程序会非常慢。这里改成清华源。</p><ol><li>先安装vim（你可以使用nano或者vi，我个人喜欢vim）</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install vim</span><br></pre></td></tr></table></figure><ol start="2"><li>修改<code>source.list</code>文件</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br></pre></td></tr></table></figure><p>先把里面的<strong>所有内容都注释掉</strong>，然后增加下面两行代码</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br></pre></td></tr></table></figure><ol start="3"><li>再修改<code>raspi.list</code></li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;raspi.list</span><br></pre></td></tr></table></figure><p>同样，先把里面的<strong>所有内容都注释掉</strong>，然后增加以下内容</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspberrypi&#x2F; buster main ui</span><br></pre></td></tr></table></figure><ol start="4"><li>最后，进行更新</li></ol><blockquote><p><strong>第二条命令执行时间会比较长。</strong></p></blockquote><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure><hr /><p>下一篇我们利用Node.js版本的网易云api<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">NeteaseCloudMusicApi</a>，写一个py脚本，实现定时播放网易云音乐每日推荐歌曲。</p><hr /><p>参考资料：</p><p><a href="https://stepneverstop.github.io/burn-system2raspberry-in-macos.html">https://stepneverstop.github.io/burn-system2raspberry-in-macos.html</a></p><p><a href="https://sspai.com/post/37356">https://sspai.com/post/37356</a></p><p><a href="https://www.icxbk.com/article/detail/1077.html">https://www.icxbk.com/article/detail/1077.html</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;前言&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt; 前言&lt;/h2&gt;
+&lt;p&gt;最近，苹果手机坏了，暂时用回一加6古董机。iOS的捷径可以实现每日闹钟停止后可以自动播放网易云音乐的每日推荐歌曲，这个功能真的太喜欢了。但是会有10%的几率播放失败，而且安卓系统并没有类似功能。可能你会想到目前的智能音箱调闹钟不就可以了吗？首先，智能音箱对网络依赖极强，网络故障啥都干不了。其次，智能音箱并没有对接到网易云的每日推荐歌单，闹钟播放的歌曲都是随机的。&lt;/p&gt;
+&lt;p&gt;因此，作为一个geek，还是自己亲手打造一个可以播放网易云每日推荐歌曲的闹钟吧！&lt;/p&gt;
+&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20201219132040671.png&quot; alt=&quot;image-20201219132040671&quot; style=&quot;zoom:50%;&quot; /&gt;</summary>
+    
+    
+    
+    <category term="树莓派" scheme="https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+    
+    <category term="linux" scheme="https://blog.tangspoon.cn/tags/linux/"/>
+    
+    <category term="树莓派" scheme="https://blog.tangspoon.cn/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+  </entry>
   
   <entry>
     <title>吐血原创整理｜怎么把java web项目部署到centos7中？</title>
@@ -485,40 +511,6 @@
     <category term="JavaScript" scheme="https://blog.tangspoon.cn/tags/JavaScript/"/>
     
     <category term="正则表达式" scheme="https://blog.tangspoon.cn/tags/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>软件测试基础理论</title>
-    <link href="https://blog.tangspoon.cn/2020/10/20/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0-01/"/>
-    <id>https://blog.tangspoon.cn/2020/10/20/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0-01/</id>
-    <published>2020-10-20T14:24:10.000Z</published>
-    <updated>2020-11-08T04:38:53.951Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="软件测试的分类"><a class="markdownIt-Anchor" href="#软件测试的分类"></a> 软件测试的分类</h3><h4 id="方法"><a class="markdownIt-Anchor" href="#方法"></a> 方法</h4><ul><li><p>黑盒测试：不用考虑内部逻辑结构与特性，只需要按照「<strong><a href="https://www.omegaxyz.com/2019/07/23/software-specification/">需求规格说明书</a></strong>」，检查程序的功能是否符合它的功能说明。</p><p>方法和技术有：等价类划分法、边界值分析法、错误推测法和因果图分析法等</p><ul><li>错误推测法：基于<strong>经验和直觉</strong>，推测软件系统中存在的错误，从而针对性地解决设计测试用例。例如：输入数据为0、输入前后空格……</li><li>因果图：等价类与边界值注重考虑输入条件，但并未考虑输入条件的<strong>联系、组合情况</strong>。因此需要用一种适合描述多种条件的组合，来便于设计测试用例的工具。这就需要因果图。<strong>因果图最终产生的是判定表</strong>。</li></ul></li><li><p>白盒测试：全面了解程序内部逻辑结构、对所有逻辑路径进行测试。穷举路径测试。测试者必须检查程序的内部结构，从检查程序的「逻辑」着手，得出测试数据。</p><p>主要技术：逻辑覆盖测试（语句覆盖、路径覆盖、判断覆盖、条件覆盖、判断-条件覆盖）、基本路径测试等</p><a id="more"></a></li></ul><hr /><h4 id="阶段"><a class="markdownIt-Anchor" href="#阶段"></a> 阶段</h4><ul><li><p>单元测试：</p><ul><li>重点测试「方法、函数、类」（换句话说就是测试代码）是指对软件中的「<strong>最小可测试单元</strong>」进行检查和验证，所以全局测试不算是单元测试。</li><li>单元测试的策略：逻辑覆盖、循环覆盖、同行评审、桌前检查、代码走查、代码评审、静态数据流分析</li><li>单元测试方法：控制流测试、数据流测试、排错测试、分域测试</li></ul></li><li><p>集成测试：重点测试「接口」</p><ul><li><p>策略：自顶向下和自底向上</p></li><li><p>应关注：</p><img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/jicheng-test.png" alt="jicheng-test" style="zoom:50%;" /></li></ul></li><li><p>系统测试</p><p>测试方法有：功能、安全、性能、兼容性、易用性、稳定性……</p></li><li><p>验收测试</p><p>Alpha：用户在<strong>开发者的场所</strong>进行，并且在开发者对用户的“指导”下进行测试。总是，A测试是在<strong>受控的环境</strong>下进行的。</p><p>Beta：与上相对。</p></li></ul><hr /><h4 id="方向"><a class="markdownIt-Anchor" href="#方向"></a> 方向</h4><ul><li><p>功能测试：看功能是否正常。</p><blockquote><p>黑盒=功能？不。黑盒测试只是在功能测试时的一种方法。换句话说，我在做功能测试时，能用黑白灰三种方法去做）</p></blockquote></li><li><p>性能测试：判断程序能做多好（与时间挂钩）</p><ul><li><p>压力测试：发现性能瓶颈。服务员做测试软件，我扣工资，给他点压力，看还正常工作不。</p></li><li><p>负载测试：</p><p>定义：数据在超负荷环境下运行，测试软件系统是否能够承担。这种超负荷主要指多并发用户。</p><p>理解：「持续」保持高强度的工作，能持续多长时间。（一般用峰值80%～90%模拟）</p><p>方法：认为生成大量数据，并利用工具模拟频繁并发访问</p><blockquote><p>以上有何区别？压力测试：最多能举多少哑铃；负载测试：看你能举多久。</p></blockquote></li><li><p>并发测试：一瞬间同一个程序在做同一件事情</p></li></ul><p>从用户角度看性能：软件对用户操作的响应时间</p><p>系统管理员角度看：</p><ul><li>系统的响应时间</li><li>系统运行服务器的状态，如cpu利用情况、内润使用情况等</li><li>系统是否能够实现拓展</li><li>系统支持多少用户访问</li><li>系统性能的瓶颈在哪里</li><li>系统是否支持7*24小时的业务访问</li></ul></li><li><p>安全测试（了解）：防止攻击，例如ddos等</p></li><li><p>兼容性</p></li></ul><h4 id="状态"><a class="markdownIt-Anchor" href="#状态"></a> 状态</h4><p>根据软件的状态划分的</p><ul><li>静态：不会运行的软件，通过白盒测试看代码</li><li>动态：把软件运行起来测试</li></ul><h4 id="其他"><a class="markdownIt-Anchor" href="#其他"></a> 其他</h4><ul><li>冒烟测试：测试前的测试，非正式测试流程的测试（预发布测试），仅对基本功能测试，保证软件跑得起来。</li><li>回归测试：回归bug，bug修改了，有没有检查。</li></ul><hr /><h3 id="测试流程"><a class="markdownIt-Anchor" href="#测试流程"></a> 测试流程</h3><p>4个阶段：测试需求分析阶段、测试计划阶段、执行测试阶段、测试评估阶段。</p><h4 id="需求分析阶段"><a class="markdownIt-Anchor" href="#需求分析阶段"></a> 需求分析阶段</h4><p>主要是学习业务流程，提取功能点，把小功能提取出来，做成树状图。</p><ul><li>阅读需求文档：产品经理用文档描述</li><li>查看产品原型：简单模拟画出的软件图（最原始的软件，比V1.0还要前的那种。）</li></ul><h4 id="测试设计阶段"><a class="markdownIt-Anchor" href="#测试设计阶段"></a> 测试设计阶段</h4><blockquote><p>前三个由产品经理或者组长写，方法是：5W1H</p></blockquote><ul><li><p>测试计划：时间、人、资源的分配</p></li><li><p>测试方案</p><ul><li>每个测试内容如何展开</li><li>采用什么测试计划</li><li>哪些内容先测</li></ul></li><li><p>测试策略</p><ul><li>哪些内容先测后测（先测功能还是兼容？）</li><li>开始和结束的标准是什么？</li></ul></li><li><p><strong>测试用例（重点！重中之重！）</strong></p><p>包括：用例编号，用例名称，前置条件，优先级，重要级，测试数据，测试步骤，预期结果，实际结果。</p><ul><li><p>用例编号：唯一的</p></li><li><p>用例名称：言简意赅</p></li><li><p>前置条件：在执行用例前，软件必须要满足的条件</p></li><li><p>优先级：执行用例的时间要求紧急的等级</p></li><li><p>重要级：被测功能在软件中的重要等级</p></li></ul><p>要先从测试方法讲起（这里的测试方法与上面的测试方法不一样，此处的～是一种具体的方法，相当于1+1=2、2+2=4这种具体怎么应用；而上面的方法是相当于加减乘除一样的测试思路 ）</p></li></ul><blockquote><p>测试方法有：等价类、边界值、场景法。是用来设计测试用例的。详细见下方</p></blockquote><h4 id="测试执行阶段"><a class="markdownIt-Anchor" href="#测试执行阶段"></a> 测试执行阶段</h4><p>搭建环境，执行冒烟测试，然后正式测试。</p><h4 id="测试评估阶段"><a class="markdownIt-Anchor" href="#测试评估阶段"></a> 测试评估阶段</h4><p>出测试报告，确认是否可以上线。</p><hr /><h3 id="测试方法"><a class="markdownIt-Anchor" href="#测试方法"></a> 测试方法</h3><h4 id="等价类"><a class="markdownIt-Anchor" href="#等价类"></a> 等价类</h4><p>通过少部分的值，代表大部分的情况。</p><ul><li><p>有效等价类</p><p>满足条件的：0.01，0.02，200，199.99</p></li><li><p>无效等价类</p><p>不满足条件的：0，200.01</p></li></ul><h4 id="边界法"><a class="markdownIt-Anchor" href="#边界法"></a> 边界法</h4><p>0，负数，+1，-1，本身，整数，非整数，字符</p><hr /><h3 id="研发管理模型"><a class="markdownIt-Anchor" href="#研发管理模型"></a> 研发管理模型</h3><blockquote><p>作用：在开发中会经历很多过程，模型可以知道不同的工作流程。</p></blockquote><h4 id="瀑布流"><a class="markdownIt-Anchor" href="#瀑布流"></a> 瀑布流</h4><p>从上往下，不可逆不可返回的流程。</p><h4 id="v字型"><a class="markdownIt-Anchor" href="#v字型"></a> V字型</h4><p>左边是开发做的，右边是测试做的，二者一一对照。</p><h4 id="w字型"><a class="markdownIt-Anchor" href="#w字型"></a> w字型</h4><p>测试与开发同步了。</p><hr /><h3 id="软件的生命周期"><a class="markdownIt-Anchor" href="#软件的生命周期"></a> 软件的生命周期</h3><p>是指软件的产生到报废的整个过程。包括可行性分析与项目计划，需求分析，概要设计和详细设计，编码，调试，维护七个阶段。</p><h3 id="软件测试的生命周期"><a class="markdownIt-Anchor" href="#软件测试的生命周期"></a> 软件测试的生命周期</h3><p>是指从测试项目计划建立到BUG提交的整个「测试过程」，包括测试计划，测试需求分析，测试用例编写，测试用例执行，BUG提交。</p>]]></content>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;软件测试的分类&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#软件测试的分类&quot;&gt;&lt;/a&gt; 软件测试的分类&lt;/h3&gt;
-&lt;h4 id=&quot;方法&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#方法&quot;&gt;&lt;/a&gt; 方法&lt;/h4&gt;
-&lt;ul&gt;
-&lt;li&gt;
-&lt;p&gt;黑盒测试：不用考虑内部逻辑结构与特性，只需要按照「&lt;strong&gt;&lt;a href=&quot;https://www.omegaxyz.com/2019/07/23/software-specification/&quot;&gt;需求规格说明书&lt;/a&gt;&lt;/strong&gt;」，检查程序的功能是否符合它的功能说明。&lt;/p&gt;
-&lt;p&gt;方法和技术有：等价类划分法、边界值分析法、错误推测法和因果图分析法等&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;错误推测法：基于&lt;strong&gt;经验和直觉&lt;/strong&gt;，推测软件系统中存在的错误，从而针对性地解决设计测试用例。例如：输入数据为0、输入前后空格……&lt;/li&gt;
-&lt;li&gt;因果图：等价类与边界值注重考虑输入条件，但并未考虑输入条件的&lt;strong&gt;联系、组合情况&lt;/strong&gt;。因此需要用一种适合描述多种条件的组合，来便于设计测试用例的工具。这就需要因果图。&lt;strong&gt;因果图最终产生的是判定表&lt;/strong&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;白盒测试：全面了解程序内部逻辑结构、对所有逻辑路径进行测试。穷举路径测试。测试者必须检查程序的内部结构，从检查程序的「逻辑」着手，得出测试数据。&lt;/p&gt;
-&lt;p&gt;主要技术：逻辑覆盖测试（语句覆盖、路径覆盖、判断覆盖、条件覆盖、判断-条件覆盖）、基本路径测试等&lt;/p&gt;</summary>
-    
-    
-    
-    <category term="软件测试" scheme="https://blog.tangspoon.cn/categories/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
-    
-    
-    <category term="软件测试" scheme="https://blog.tangspoon.cn/tags/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
     
   </entry>
   
