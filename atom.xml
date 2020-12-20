@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-12-20T03:58:33.123Z</updated>
+  <updated>2020-12-20T04:00:32.005Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -21,14 +21,14 @@
     <link href="https://blog.tangspoon.cn/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/"/>
     <id>https://blog.tangspoon.cn/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</id>
     <published>2020-12-20T03:54:24.000Z</published>
-    <updated>2020-12-20T03:58:33.123Z</updated>
+    <updated>2020-12-20T04:00:32.005Z</updated>
     
-    <content type="html"><![CDATA[<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p><p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" /><a id="more"></a><hr /><p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" /><br/><p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p><img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" /><img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" /><br/><p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p><p>剩下的我们就按照下图操作，然后点击Finish即可。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" /><p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p><p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p><p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" /><p>Done！</p>]]></content>
+    <content type="html"><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" /><p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p><p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p><a id="more"></a><hr /><p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" /><br/><p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p><img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" /><img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" /><br/><p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p><p>剩下的我们就按照下图操作，然后点击Finish即可。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" /><p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p><p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p><p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" /><p>Done！</p>]]></content>
     
     
-    <summary type="html">&lt;p&gt;直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。&lt;/p&gt;
-&lt;p&gt;网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。&lt;/p&gt;
-&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20201220115218956.png&quot; alt=&quot;image-20201220115218956&quot; style=&quot;zoom:30%;&quot; /&gt;</summary>
+    <summary type="html">&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20201220115218956.png&quot; alt=&quot;image-20201220115218956&quot; style=&quot;zoom:30%;&quot; /&gt;
+&lt;p&gt;直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。&lt;/p&gt;
+&lt;p&gt;网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。&lt;/p&gt;</summary>
     
     
     

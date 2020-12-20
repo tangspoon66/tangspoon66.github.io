@@ -96,72 +96,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>JS学习笔记-02</title>
-    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
-    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
-<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
-<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
-<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
-<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
-</ul>
-</blockquote>
-<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
-<p>请利用循环遍历数组中的每个名字</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
-<blockquote>
-<ul>
-<li>
-<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
-</li>
-<li>
-<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
-</li>
-</ul>
-</blockquote>
-<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
-<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
-<blockquote>
-<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
-</blockquote>
-<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
-<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
-<p>其他操作如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
-<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
-<p>重复元素在<code>Set</code>中自动被过滤：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
-<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
-<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
-<p>通过<code>delete(key)</code>方法可以删除元素：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
-<blockquote>
-<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
-</blockquote>
-<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS学习笔记-01</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</url>
     <content><![CDATA[<p>基础的语法不再赘述，只强调以前未接触过的。</p>
@@ -270,6 +204,72 @@ Github中。</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xiaoming=&#123;</span><br><span class="line">  	name=<span class="string">&quot;小明&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;name&#x27;</span>); <span class="comment">//true</span></span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;toString&#x27;</span>); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS学习笔记-02</title>
+    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
+    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
+<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
+<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
+<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
+<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
+</ul>
+</blockquote>
+<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
+<p>请利用循环遍历数组中的每个名字</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
+<blockquote>
+<ul>
+<li>
+<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
+</li>
+<li>
+<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
+</li>
+</ul>
+</blockquote>
+<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
+<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
+<blockquote>
+<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
+</blockquote>
+<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
+<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
+<p>其他操作如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
+<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
+<p>重复元素在<code>Set</code>中自动被过滤：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
+<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>delete(key)</code>方法可以删除元素：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
+<blockquote>
+<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
+</blockquote>
+<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
 ]]></content>
       <categories>
         <category>JavaScript</category>
@@ -457,9 +457,9 @@ Github中。</p>
   <entry>
     <title>PyCharm远程连接树莓派同步编辑py文件</title>
     <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
+<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
 <p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
 <a id="more"></a>
 <hr />
 <p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
