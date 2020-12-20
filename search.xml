@@ -96,6 +96,72 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>JS学习笔记-02</title>
+    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
+    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
+<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
+<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
+<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
+<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
+</ul>
+</blockquote>
+<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
+<p>请利用循环遍历数组中的每个名字</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
+<blockquote>
+<ul>
+<li>
+<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
+</li>
+<li>
+<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
+</li>
+</ul>
+</blockquote>
+<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
+<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
+<blockquote>
+<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
+</blockquote>
+<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
+<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
+<p>其他操作如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
+<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
+<p>重复元素在<code>Set</code>中自动被过滤：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
+<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>delete(key)</code>方法可以删除元素：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
+<blockquote>
+<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
+</blockquote>
+<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JS学习笔记-01</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</url>
     <content><![CDATA[<p>基础的语法不再赘述，只强调以前未接触过的。</p>
@@ -210,124 +276,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JS学习笔记-02</title>
-    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
-    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
-<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
-<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
-<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
-<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
-</ul>
-</blockquote>
-<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
-<p>请利用循环遍历数组中的每个名字</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
-<blockquote>
-<ul>
-<li>
-<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
-</li>
-<li>
-<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
-</li>
-</ul>
-</blockquote>
-<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
-<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
-<blockquote>
-<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
-</blockquote>
-<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
-<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
-<p>其他操作如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
-<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
-<p>重复元素在<code>Set</code>中自动被过滤：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
-<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
-<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
-<p>通过<code>delete(key)</code>方法可以删除元素：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
-<blockquote>
-<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
-</blockquote>
-<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux基本操作</title>
-    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
-<p>这篇博文开个Linux栏目吧。</p>
-<a id="more"></a>
-<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
-<ul>
-<li>新建文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
-<ul>
-<li>新建文件夹</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
-<ul>
-<li>移动/剪切/重命名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看当前所在路径</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
-<ul>
-<li>权限修改</li>
-</ul>
-<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
-<ul>
-<li>删除</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
-<ul>
-<li>读取文档内容</li>
-</ul>
-<blockquote>
-<p>常用语查看Linux的log日志文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -455,6 +403,89 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>Linux基本操作</title>
+    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
+<p>这篇博文开个Linux栏目吧。</p>
+<a id="more"></a>
+<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
+<ul>
+<li>新建文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新建文件夹</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
+<ul>
+<li>移动/剪切/重命名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前所在路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>权限修改</li>
+</ul>
+<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取文档内容</li>
+</ul>
+<blockquote>
+<p>常用语查看Linux的log日志文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PyCharm远程连接树莓派同步编辑py文件</title>
+    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
+<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
+<a id="more"></a>
+<hr />
+<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
+<br/>
+<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
+<br/>
+<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
+<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
+<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
+<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
+<p>Done！</p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python中的init()到底怎么理解？</title>
     <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
@@ -478,6 +509,26 @@ Github中。</p>
       <tags>
         <tag>Python</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/10/13/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<a id="more"></a>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>个人理解TCP/IP</title>
@@ -535,26 +586,6 @@ Github中。</p>
       <tags>
         <tag>网络基础</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/10/13/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<a id="more"></a>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
@@ -972,6 +1003,114 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>智能闹钟（一）｜macOS入门使用树莓派3B+</title>
+    <url>/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/</url>
+    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>最近，苹果手机坏了，暂时用回一加6古董机。iOS的捷径可以实现每日闹钟停止后可以自动播放网易云音乐的每日推荐歌曲，这个功能真的太喜欢了。但是会有10%的几率播放失败，而且安卓系统并没有类似功能。可能你会想到目前的智能音箱调闹钟不就可以了吗？首先，智能音箱对网络依赖极强，网络故障啥都干不了。其次，智能音箱并没有对接到网易云的每日推荐歌单，闹钟播放的歌曲都是随机的。</p>
+<p>因此，作为一个geek，还是自己亲手打造一个可以播放网易云每日推荐歌曲的闹钟吧！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219132040671.png" alt="image-20201219132040671" style="zoom:50%;" />
+<a id="more"></a>
+<hr />
+<h2 id="一-烧录镜像"><a class="markdownIt-Anchor" href="#一-烧录镜像"></a> 一、烧录镜像</h2>
+<h3 id="1-格式化内存卡"><a class="markdownIt-Anchor" href="#1-格式化内存卡"></a> 1. 格式化内存卡</h3>
+<p>macOS使用SD Memory Card Formatter格式化内存卡，<a href="https://www.sdcard.org/downloads/formatter/eula_mac/index.html">点击此处</a>进入官网下载。（拉到最下面点击accept）</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201219113330224.png" alt="image-20201219113330224" /></p>
+<p>打开SD Card Formatter，按照下图操作。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219105251370.png" alt="image-20201219105251370" style="zoom:50%;" />
+<p>如下，证明格式化成功</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219105330442.png" alt="image-20201219105330442" style="zoom:50%;" />
+<h3 id="2-下载树莓派镜像文件"><a class="markdownIt-Anchor" href="#2-下载树莓派镜像文件"></a> 2. 下载树莓派镜像文件</h3>
+<p><a href="https://www.raspberrypi.org/software/operating-systems/">点击此处</a>进入下载页面，我这里下载Lite版的，下载完后<strong>不用解压</strong>。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219110531165.png" alt="image-20201219110531165" style="zoom:25%;" />
+<h3 id="3-下载烧录工具"><a class="markdownIt-Anchor" href="#3-下载烧录工具"></a> 3. 下载烧录工具</h3>
+<p>macOS可以使用 Etcher烧录树莓派，戳这里进入官网：<a href="https://etcher.io/">https://etcher.io</a></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219110853874.png" alt="image-20201219110853874" style="zoom: 33%;" />
+<p>选择你刚才下载的镜像（zip 格式），然后选择你的储存卡，点 Flash！即可烧录系统。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219111417310.png" alt="image-20201219111417310" style="zoom:33%;" />
+<p>耐心等待一段时间，大概需要5分钟就可烧录成功。</p>
+<p><strong>注意：烧录后TF卡名字会变为：<code>boot</code>。</strong></p>
+<h3 id="4-编写ssh连接与wifi配置文件"><a class="markdownIt-Anchor" href="#4-编写ssh连接与wifi配置文件"></a> 4. 编写ssh连接与wifi配置文件</h3>
+<p>新建两个<code>txt</code>文件，分别命名为：<code>ssh</code>、<code>wpa_supplicant.conf</code></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219112541652.png" alt="image-20201219112541652" style="zoom:50%;" />
+<ul>
+<li>
+<p><code>ssh</code>文件是没有后缀的</p>
+</li>
+<li>
+<p><code>wpa_supplicant.conf</code>写入下面信息：</p>
+<blockquote>
+<ol>
+<li>SSID名字中不能有符号<code>.</code></li>
+<li>优先级范围为1-10</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">country&#x3D;CN</span><br><span class="line">ctrl_interface&#x3D;DIR&#x3D;&#x2F;var&#x2F;run&#x2F;wpa_supplicant Group&#x3D;netdev</span><br><span class="line">update_config&#x3D;1</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi1的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级，越大越优先</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi2的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>然后将这两个文件移动至烧录系统镜像后TF卡的根目录。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219113232972.png" alt="image-20201219113232972" style="zoom:50%;" />
+</li>
+</ul>
+<blockquote>
+<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
+<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
+</blockquote>
+<hr />
+<h2 id="二-准备开机"><a class="markdownIt-Anchor" href="#二-准备开机"></a> 二、准备开机</h2>
+<blockquote>
+<p>树莓派3B+的电源要求是5V 2.5A的，最好不要太低，否则会损坏机器。（近300块啊）</p>
+</blockquote>
+<h3 id="1-ssh连接"><a class="markdownIt-Anchor" href="#1-ssh连接"></a> 1. ssh连接</h3>
+<p>进入到我们的路由器中，然后查看树莓派的IP地址。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219115812140.png" alt="image-20201219115812140" style="zoom:50%;" />
+<p>ssh工具推荐使用FinalShell，按下图填写</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219120353131.png" alt="image-20201219120353131" style="zoom: 33%;" />
+<p>连接成功。可以看到会提示让我们修改ssh密码，但是因为我日常忘记各种密码，我就直接用默认的吧。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219123856310.png" alt="image-20201219123856310" style="zoom:33%;" />
+<h2 id="三-系统设置"><a class="markdownIt-Anchor" href="#三-系统设置"></a> 三、系统设置</h2>
+<h3 id="1-软件源更改"><a class="markdownIt-Anchor" href="#1-软件源更改"></a> 1. 软件源更改</h3>
+<p>一定要更改源，不然下载程序会非常慢。这里改成清华源。</p>
+<p>（1）先安装vim（你可以使用nano或者vi，我个人喜欢vim）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install vim</span><br></pre></td></tr></table></figure>
+<p>（2）修改<code>source.list</code>文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br></pre></td></tr></table></figure>
+<p>先把里面的<strong>所有内容都注释掉</strong>，然后增加下面两行代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br></pre></td></tr></table></figure>
+<p>（3）再修改<code>raspi.list</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;raspi.list</span><br></pre></td></tr></table></figure>
+<p>同样，先把里面的<strong>所有内容都注释掉</strong>，然后增加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspberrypi&#x2F; buster main ui</span><br></pre></td></tr></table></figure>
+<p>（4）最后，进行更新</p>
+<blockquote>
+<p><strong>第二条命令执行时间会比较长。</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+<h3 id="2-更改时区"><a class="markdownIt-Anchor" href="#2-更改时区"></a> 2. 更改时区</h3>
+<p>查看时区是否为你的当地时区</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">date</span><br></pre></td></tr></table></figure>
+<p>如果不是，执行命令更改成Asia-Shanghai</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dpkg-reconfigure tzdata</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219134431642.png" alt="image-20201219134431642" style="zoom:50%;" />
+<p>基本设置done！</p>
+<hr />
+<h2 id="四-关闭派不能直接拔出电源"><a class="markdownIt-Anchor" href="#四-关闭派不能直接拔出电源"></a> 四、关闭派不能直接拔出电源！！</h2>
+<p>注意⚠️：</p>
+<p><strong>关闭树莓派不能直接拔出电源！！！</strong></p>
+<p>正确关闭树莓派方法是：先执行<code>sudo halt</code>，然后等待只有电源指示灯亮的时候（或者等待20s），再拔电源。</p>
+<hr />
+<p>下一篇我们利用Node.js版本的网易云api<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">NeteaseCloudMusicApi</a>，写一个py脚本，实现定时播放网易云音乐每日推荐歌曲。</p>
+<p>参考资料：</p>
+<p><a href="https://stepneverstop.github.io/burn-system2raspberry-in-macos.html">https://stepneverstop.github.io/burn-system2raspberry-in-macos.html</a></p>
+<p><a href="https://sspai.com/post/37356">https://sspai.com/post/37356</a></p>
+<p><a href="https://www.icxbk.com/article/detail/1077.html">https://www.icxbk.com/article/detail/1077.html</a></p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>正则表达式-01</title>
     <url>/2020/10/25/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F-01/</url>
     <content><![CDATA[<h3 id="简单"><a class="markdownIt-Anchor" href="#简单"></a> 简单</h3>
@@ -1051,110 +1190,6 @@ Github中。</p>
       <tags>
         <tag>JavaScript</tag>
         <tag>正则表达式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>智能闹钟（一）｜macOS入门使用树莓派3B+</title>
-    <url>/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/</url>
-    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>最近，苹果手机坏了，暂时用回一加6古董机。iOS的捷径可以实现每日闹钟停止后可以自动播放网易云音乐的每日推荐歌曲，这个功能真的太喜欢了。但是会有10%的几率播放失败，而且安卓系统并没有类似功能。可能你会想到目前的智能音箱调闹钟不就可以了吗？首先，智能音箱对网络依赖极强，网络故障啥都干不了。其次，智能音箱并没有对接到网易云的每日推荐歌单，闹钟播放的歌曲都是随机的。</p>
-<p>因此，作为一个geek，还是自己亲手打造一个可以播放网易云每日推荐歌曲的闹钟吧！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219132040671.png" alt="image-20201219132040671" style="zoom:50%;" />
-<a id="more"></a>
-<hr />
-<h2 id="一-烧录镜像"><a class="markdownIt-Anchor" href="#一-烧录镜像"></a> 一、烧录镜像</h2>
-<h3 id="1-格式化内存卡"><a class="markdownIt-Anchor" href="#1-格式化内存卡"></a> 1. 格式化内存卡</h3>
-<p>macOS使用SD Memory Card Formatter格式化内存卡，<a href="https://www.sdcard.org/downloads/formatter/eula_mac/index.html">点击此处</a>进入官网下载。（拉到最下面点击accept）</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201219113330224.png" alt="image-20201219113330224" /></p>
-<p>打开SD Card Formatter，按照下图操作。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219105251370.png" alt="image-20201219105251370" style="zoom:50%;" />
-<p>如下，证明格式化成功</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219105330442.png" alt="image-20201219105330442" style="zoom:50%;" />
-<h3 id="2-下载树莓派镜像文件"><a class="markdownIt-Anchor" href="#2-下载树莓派镜像文件"></a> 2. 下载树莓派镜像文件</h3>
-<p><a href="https://www.raspberrypi.org/software/operating-systems/">点击此处</a>进入下载页面，我这里下载Lite版的，下载完后<strong>不用解压</strong>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219110531165.png" alt="image-20201219110531165" style="zoom:25%;" />
-<h3 id="3-下载烧录工具"><a class="markdownIt-Anchor" href="#3-下载烧录工具"></a> 3. 下载烧录工具</h3>
-<p>macOS可以使用 Etcher烧录树莓派，戳这里进入官网：<a href="https://etcher.io/">https://etcher.io</a></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219110853874.png" alt="image-20201219110853874" style="zoom: 33%;" />
-<p>选择你刚才下载的镜像（zip 格式），然后选择你的储存卡，点 Flash！即可烧录系统。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219111417310.png" alt="image-20201219111417310" style="zoom:33%;" />
-<p>耐心等待一段时间，大概需要5分钟就可烧录成功。</p>
-<p><strong>注意：烧录后TF卡名字会变为：<code>boot</code>。</strong></p>
-<h3 id="4-编写ssh连接与wifi配置文件"><a class="markdownIt-Anchor" href="#4-编写ssh连接与wifi配置文件"></a> 4. 编写ssh连接与wifi配置文件</h3>
-<p>新建两个<code>txt</code>文件，分别命名为：<code>ssh</code>、<code>wpa_supplicant.conf</code></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219112541652.png" alt="image-20201219112541652" style="zoom:50%;" />
-<ul>
-<li>
-<p><code>ssh</code>文件是没有后缀的</p>
-</li>
-<li>
-<p><code>wpa_supplicant.conf</code>写入下面信息：</p>
-<blockquote>
-<ol>
-<li>SSID名字中不能有符号<code>.</code></li>
-<li>优先级范围为1-10</li>
-</ol>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">country&#x3D;CN</span><br><span class="line">ctrl_interface&#x3D;DIR&#x3D;&#x2F;var&#x2F;run&#x2F;wpa_supplicant Group&#x3D;netdev</span><br><span class="line">update_config&#x3D;1</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi1的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级，越大越优先</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi2的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>然后将这两个文件移动至烧录系统镜像后TF卡的根目录。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219113232972.png" alt="image-20201219113232972" style="zoom:50%;" />
-</li>
-</ul>
-<blockquote>
-<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
-<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
-</blockquote>
-<hr />
-<h2 id="二-准备开机"><a class="markdownIt-Anchor" href="#二-准备开机"></a> 二、准备开机</h2>
-<blockquote>
-<p>树莓派3B+的电源要求是5V 2.5A的，最好不要太低，否则会损坏机器。（近300块啊）</p>
-</blockquote>
-<h3 id="1-ssh连接"><a class="markdownIt-Anchor" href="#1-ssh连接"></a> 1. ssh连接</h3>
-<p>进入到我们的路由器中，然后查看树莓派的IP地址。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219115812140.png" alt="image-20201219115812140" style="zoom:50%;" />
-<p>ssh工具推荐使用FinalShell，按下图填写</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219120353131.png" alt="image-20201219120353131" style="zoom: 33%;" />
-<p>连接成功。可以看到会提示让我们修改ssh密码，但是因为我日常忘记各种密码，我就直接用默认的吧。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219123856310.png" alt="image-20201219123856310" style="zoom:33%;" />
-<h2 id="三-软件源更改"><a class="markdownIt-Anchor" href="#三-软件源更改"></a> 三、软件源更改</h2>
-<p>一定要更改源，不然下载程序会非常慢。这里改成清华源。</p>
-<ol>
-<li>先安装vim（你可以使用nano或者vi，我个人喜欢vim）</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install vim</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li>修改<code>source.list</code>文件</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br></pre></td></tr></table></figure>
-<p>先把里面的<strong>所有内容都注释掉</strong>，然后增加下面两行代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>再修改<code>raspi.list</code></li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;raspi.list</span><br></pre></td></tr></table></figure>
-<p>同样，先把里面的<strong>所有内容都注释掉</strong>，然后增加以下内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspberrypi&#x2F; buster main ui</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>最后，进行更新</li>
-</ol>
-<blockquote>
-<p><strong>第二条命令执行时间会比较长。</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
-<hr />
-<p>下一篇我们利用Node.js版本的网易云api<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">NeteaseCloudMusicApi</a>，写一个py脚本，实现定时播放网易云音乐每日推荐歌曲。</p>
-<hr />
-<p>参考资料：</p>
-<p><a href="https://stepneverstop.github.io/burn-system2raspberry-in-macos.html">https://stepneverstop.github.io/burn-system2raspberry-in-macos.html</a></p>
-<p><a href="https://sspai.com/post/37356">https://sspai.com/post/37356</a></p>
-<p><a href="https://www.icxbk.com/article/detail/1077.html">https://www.icxbk.com/article/detail/1077.html</a></p>
-]]></content>
-      <categories>
-        <category>树莓派</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
