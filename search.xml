@@ -1003,6 +1003,65 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>智能闹钟（二）｜和风天气API使用</title>
+    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94API%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
+<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
+<a id="more"></a>
+<hr />
+<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
+<p>首先我们得明白需求：</p>
+<ol>
+<li>
+<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
+<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
+<br/>
+</li>
+<li>
+<p>每天最低、最高温度：参考整体温度</p>
+</li>
+<li>
+<p>日落时间：希望每天都可以看到好看的晚霞</p>
+<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
+</li>
+</ol>
+<blockquote>
+<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
+</blockquote>
+<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
+<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
+<h3 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h3>
+<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
+<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
+<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
+<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
+<br/>
+<p>其次，功能的实现还是比较简单的，但是其实应该加入<code>code≠200</code>的报错情况，增强程序的健壮性。</p>
+<p>另外，还需要加入：</p>
+<ul>
+<li>当天温度最高气温还是 &lt; 15 时，提醒穿衣</li>
+<li>实况天气为“雨”的时候，提醒带伞</li>
+</ul>
+<p>具体需要结合<strong>百度语音合成</strong>来使用，下一篇文章会记录结合过程。</p>
+<p>项目源代码会在整个「智能闹钟」项目完成后上传到Github。</p>
+]]></content>
+      <categories>
+        <category>智能闹钟</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>智能闹钟</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>智能闹钟（一）｜macOS入门使用树莓派3B+</title>
     <url>/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/</url>
     <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
@@ -1111,60 +1170,39 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>智能闹钟（二）｜和风天气API使用</title>
-    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94API%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
-<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
+    <title>格式化时间</title>
+    <url>/2020/12/21/%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%97%B6%E9%97%B4/</url>
+    <content><![CDATA[<p>在和风天气API获取日落时间时，没仔细看清楚官方文档，绕了一个大圈。但是也学到了时间格式化的一些操作，在这里继续记录下来。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201221193040002.png" alt="image-20201221193040002" /></p>
 <a id="more"></a>
 <hr />
-<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
-<p>首先我们得明白需求：</p>
-<ol>
-<li>
-<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
-<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
-</li>
-<li>
-<p>每天最低、最高温度：参考整体温度</p>
-</li>
-<li>
-<p>日落时间：希望每天都可以看到好看的晚霞</p>
-<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
-</li>
-</ol>
-<blockquote>
-<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
-</blockquote>
-<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
-<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
-<h2 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h2>
-<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
-<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
-<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
-<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
-<p>其次，功能的实现还是比较简单的，但是其实应该加入<code>code≠200</code>的报错情况，增强程序的健壮性。</p>
-<p>另外，还需要加入：</p>
-<ul>
-<li>当天温度最高气温还是 &lt; 15 时，提醒穿衣</li>
-<li>实况天气为“雨”的时候，提醒带伞</li>
-</ul>
-<p>具体需要结合<strong>百度语音合成</strong>来使用，下一篇文章会记录结合过程。</p>
-<p>项目源代码会在整个「智能闹钟」项目完成后上传到Github。</p>
+<h2 id="一-获取系统日期并格式化"><a class="markdownIt-Anchor" href="#一-获取系统日期并格式化"></a> 一、获取系统日期并格式化</h2>
+<p>因为使用sunmoon接口<code>https://devapi.qweather.com/v7/astronomy/sunmoon?</code>需要使用当天日期，格式例如<code>20201218</code>，Linux的时间显示格式为<code>Mon 21 Dec 18:39:36 CST 2020</code>，因此我们需要把系统格式化。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221191037433.png" alt="image-20201221191037433" style="zoom:70%;" />
+<p>可以使用Python的<code>datetime</code>模块，使用方式如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">formatTime</span>():</span></span><br><span class="line">	<span class="comment"># 实例化对象</span></span><br><span class="line">    dt = datetime.now()</span><br><span class="line">    year = dt.year</span><br><span class="line">    month = dt.month</span><br><span class="line">    day = dt.day</span><br><span class="line">    <span class="comment"># 组合时间</span></span><br><span class="line">    today = str(year) + str(month) + str(day)</span><br><span class="line">    <span class="comment"># print(&#x27;today: &#x27;,today)</span></span><br><span class="line">    <span class="keyword">return</span> today</span><br></pre></td></tr></table></figure>
+<h2 id="二-发送日落请求"><a class="markdownIt-Anchor" href="#二-发送日落请求"></a> 二、发送日落请求</h2>
+<p>获取了格式化的<code>date</code>之后，我们就可以获取日落时间了。过程如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSunsetTime</span>():</span></span><br><span class="line">    sunset_url = <span class="string">&#x27;https://devapi.qweather.com/v7/astronomy/sunmoon?&#x27;</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;101280101&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;6dee7771746148fbbee9cedeb9c1ffc4&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;date&#x27;</span>: date,</span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    sun_html = requests.get(sunset_url, params)</span><br><span class="line">    sun_content = sun_html.json()</span><br><span class="line">    sunset_time = sun_content[<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    print(<span class="string">&#x27;sunset_time:&#x27;</span>, sunset_time)</span><br><span class="line">    print(<span class="string">&#x27;sunset_time is: &#x27;</span>, type(sunset_time))</span><br><span class="line">    <span class="keyword">return</span> sunset_time</span><br></pre></td></tr></table></figure>
+<br/>
+<p>以下红框是我们需要的时间，在使用<code>type()</code>验证了日落时间是<code>str</code>类型后，我们可以通过<strong>正则表达式</strong>来提取我们需要的<code>17:47</code></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221192116078.png" alt="image-20201221192116078" style="zoom:50%;" />
+<h2 id="三-正则表达式提取做需要的字符串"><a class="markdownIt-Anchor" href="#三-正则表达式提取做需要的字符串"></a> 三、正则表达式提取做需要的字符串</h2>
+<p>使用<code>re</code>模块下的<code>findall</code>配合正则表达式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分离日落时间，获得几点几分</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSunsetHM</span>():</span></span><br><span class="line">    <span class="comment"># 使用正则表达式</span></span><br><span class="line">    sunsetime = getSunsetTime()</span><br><span class="line">    sunsetHM = (re.findall(<span class="string">r&quot;T(.+?)\+&quot;</span>, sunsetime))</span><br><span class="line">    print(sunsetHM)</span><br><span class="line">    <span class="keyword">return</span> sunsetHM</span><br></pre></td></tr></table></figure>
+<br/>
+<p>提取结果显示</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221192820537.png" alt="image-20201221192820537" style="zoom:50%;" />
+<hr />
+<p>参考资料：</p>
+<p><a href="https://blog.csdn.net/liao392781/article/details/80181088">https://blog.csdn.net/liao392781/article/details/80181088</a></p>
+<p><a href="https://blog.csdn.net/shomy_liu/article/details/44141483">https://blog.csdn.net/shomy_liu/article/details/44141483</a></p>
 ]]></content>
       <categories>
-        <category>智能闹钟</category>
+        <category>正则表达式</category>
       </categories>
       <tags>
-        <tag>Python</tag>
-        <tag>智能闹钟</tag>
+        <tag>正则表达式</tag>
       </tags>
   </entry>
   <entry>
