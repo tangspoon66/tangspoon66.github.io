@@ -213,72 +213,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>JS学习笔记-02</title>
-    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
-    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
-<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
-<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
-<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
-<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
-</ul>
-</blockquote>
-<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
-<p>请利用循环遍历数组中的每个名字</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
-<blockquote>
-<ul>
-<li>
-<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
-</li>
-<li>
-<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
-</li>
-</ul>
-</blockquote>
-<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
-<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
-<blockquote>
-<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
-</blockquote>
-<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
-<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
-<p>其他操作如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
-<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
-<p>重复元素在<code>Set</code>中自动被过滤：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
-<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
-<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
-<p>通过<code>delete(key)</code>方法可以删除元素：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
-<blockquote>
-<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
-</blockquote>
-<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS学习笔记-03</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/</url>
     <content><![CDATA[<h3 id="函数"><a class="markdownIt-Anchor" href="#函数"></a> 函数</h3>
@@ -403,6 +337,103 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>JS学习笔记-02</title>
+    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
+    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
+<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
+<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
+<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
+<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
+</ul>
+</blockquote>
+<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
+<p>请利用循环遍历数组中的每个名字</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
+<blockquote>
+<ul>
+<li>
+<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
+</li>
+<li>
+<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
+</li>
+</ul>
+</blockquote>
+<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
+<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
+<blockquote>
+<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
+</blockquote>
+<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
+<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
+<p>其他操作如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
+<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
+<p>重复元素在<code>Set</code>中自动被过滤：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
+<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>delete(key)</code>方法可以删除元素：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
+<blockquote>
+<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
+</blockquote>
+<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PyCharm远程连接树莓派同步编辑py文件</title>
+    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
+<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
+<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
+<a id="more"></a>
+<hr />
+<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
+<br/>
+<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
+<br/>
+<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
+<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
+<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
+<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
+<p>Done！</p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux基本操作</title>
     <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
@@ -452,62 +483,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PyCharm远程连接树莓派同步编辑py文件</title>
-    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
-<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
-<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
-<a id="more"></a>
-<hr />
-<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
-<br/>
-<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
-<br/>
-<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
-<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
-<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
-<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
-<p>Done！</p>
-]]></content>
-      <categories>
-        <category>树莓派</category>
-      </categories>
-      <tags>
-        <tag>树莓派</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python中的init()到底怎么理解？</title>
-    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
-<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
-<a id="more"></a>
-<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
-<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
-<p>那么<code>self</code>又是什么东西？</p>
-<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
-<hr />
-<blockquote>
-<p>参考资料</p>
-<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
-<p>最良心的Python教程：</p>
-<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -1003,65 +978,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>智能闹钟（二）｜和风天气API使用</title>
-    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94API%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
-<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
-<a id="more"></a>
-<hr />
-<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
-<p>首先我们得明白需求：</p>
-<ol>
-<li>
-<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
-<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
-<br/>
-</li>
-<li>
-<p>每天最低、最高温度：参考整体温度</p>
-</li>
-<li>
-<p>日落时间：希望每天都可以看到好看的晚霞</p>
-<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
-</li>
-</ol>
-<blockquote>
-<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
-</blockquote>
-<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
-<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
-<h3 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h3>
-<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
-<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
-<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
-<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
-<br/>
-<p>其次，功能的实现还是比较简单的，但是其实应该加入<code>code≠200</code>的报错情况，增强程序的健壮性。</p>
-<p>另外，还需要加入：</p>
-<ul>
-<li>当天温度最高气温还是 &lt; 15 时，提醒穿衣</li>
-<li>实况天气为“雨”的时候，提醒带伞</li>
-</ul>
-<p>具体需要结合<strong>百度语音合成</strong>来使用，下一篇文章会记录结合过程。</p>
-<p>项目源代码会在整个「智能闹钟」项目完成后上传到Github。</p>
-]]></content>
-      <categories>
-        <category>智能闹钟</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>智能闹钟</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>智能闹钟（一）｜macOS入门使用树莓派3B+</title>
     <url>/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/</url>
     <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
@@ -1170,40 +1086,245 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>格式化时间</title>
-    <url>/2020/12/21/%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%97%B6%E9%97%B4/</url>
-    <content><![CDATA[<p>在和风天气API获取日落时间时，没仔细看清楚官方文档，绕了一个大圈。但是也学到了时间格式化的一些操作，在这里继续记录下来。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201221193040002.png" alt="image-20201221193040002" /></p>
+    <title>Python中的init()到底怎么理解？</title>
+    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
+<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
 <a id="more"></a>
+<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
+<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
+<p>那么<code>self</code>又是什么东西？</p>
+<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
 <hr />
-<h2 id="一-获取系统日期并格式化"><a class="markdownIt-Anchor" href="#一-获取系统日期并格式化"></a> 一、获取系统日期并格式化</h2>
-<p>因为使用sunmoon接口<code>https://devapi.qweather.com/v7/astronomy/sunmoon?</code>需要使用当天日期，格式例如<code>20201218</code>，Linux的时间显示格式为<code>Mon 21 Dec 18:39:36 CST 2020</code>，因此我们需要把系统格式化。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221191037433.png" alt="image-20201221191037433" style="zoom:70%;" />
-<p>可以使用Python的<code>datetime</code>模块，使用方式如下。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">formatTime</span>():</span></span><br><span class="line">	<span class="comment"># 实例化对象</span></span><br><span class="line">    dt = datetime.now()</span><br><span class="line">    year = dt.year</span><br><span class="line">    month = dt.month</span><br><span class="line">    day = dt.day</span><br><span class="line">    <span class="comment"># 组合时间</span></span><br><span class="line">    today = str(year) + str(month) + str(day)</span><br><span class="line">    <span class="comment"># print(&#x27;today: &#x27;,today)</span></span><br><span class="line">    <span class="keyword">return</span> today</span><br></pre></td></tr></table></figure>
-<h2 id="二-发送日落请求"><a class="markdownIt-Anchor" href="#二-发送日落请求"></a> 二、发送日落请求</h2>
-<p>获取了格式化的<code>date</code>之后，我们就可以获取日落时间了。过程如下。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSunsetTime</span>():</span></span><br><span class="line">    sunset_url = <span class="string">&#x27;https://devapi.qweather.com/v7/astronomy/sunmoon?&#x27;</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;101280101&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;6dee7771746148fbbee9cedeb9c1ffc4&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;date&#x27;</span>: date,</span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    sun_html = requests.get(sunset_url, params)</span><br><span class="line">    sun_content = sun_html.json()</span><br><span class="line">    sunset_time = sun_content[<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    print(<span class="string">&#x27;sunset_time:&#x27;</span>, sunset_time)</span><br><span class="line">    print(<span class="string">&#x27;sunset_time is: &#x27;</span>, type(sunset_time))</span><br><span class="line">    <span class="keyword">return</span> sunset_time</span><br></pre></td></tr></table></figure>
-<br/>
-<p>以下红框是我们需要的时间，在使用<code>type()</code>验证了日落时间是<code>str</code>类型后，我们可以通过<strong>正则表达式</strong>来提取我们需要的<code>17:47</code></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221192116078.png" alt="image-20201221192116078" style="zoom:50%;" />
-<h2 id="三-正则表达式提取做需要的字符串"><a class="markdownIt-Anchor" href="#三-正则表达式提取做需要的字符串"></a> 三、正则表达式提取做需要的字符串</h2>
-<p>使用<code>re</code>模块下的<code>findall</code>配合正则表达式</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分离日落时间，获得几点几分</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSunsetHM</span>():</span></span><br><span class="line">    <span class="comment"># 使用正则表达式</span></span><br><span class="line">    sunsetime = getSunsetTime()</span><br><span class="line">    sunsetHM = (re.findall(<span class="string">r&quot;T(.+?)\+&quot;</span>, sunsetime))</span><br><span class="line">    print(sunsetHM)</span><br><span class="line">    <span class="keyword">return</span> sunsetHM</span><br></pre></td></tr></table></figure>
-<br/>
-<p>提取结果显示</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221192820537.png" alt="image-20201221192820537" style="zoom:50%;" />
-<hr />
-<p>参考资料：</p>
-<p><a href="https://blog.csdn.net/liao392781/article/details/80181088">https://blog.csdn.net/liao392781/article/details/80181088</a></p>
-<p><a href="https://blog.csdn.net/shomy_liu/article/details/44141483">https://blog.csdn.net/shomy_liu/article/details/44141483</a></p>
+<blockquote>
+<p>参考资料</p>
+<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
+<p>最良心的Python教程：</p>
+<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>正则表达式</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>正则表达式</tag>
+        <tag>Python</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气播报</title>
+    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
+<a id="more"></a>
+<br/>
+<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
+<hr />
+<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
+<p>首先我们得明白需求：</p>
+<ol>
+<li>
+<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
+<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
+<br/>
+</li>
+<li>
+<p>每天最低、最高温度：参考整体温度</p>
+</li>
+<li>
+<p>日落时间：希望每天都可以看到好看的晚霞</p>
+<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
+</li>
+</ol>
+<blockquote>
+<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
+</blockquote>
+<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
+<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
+<h3 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h3>
+<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
+<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
+<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
+<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
+<br/>
+<p>其次，功能的实现还是比较简单的，但是其实应该加入<code>code≠200</code>的报错情况，增强程序的健壮性。</p>
+<p>另外，还需要加入：</p>
+<ul>
+<li>当天温度最高气温还是 &lt; 15 时，提醒穿衣</li>
+<li>实况天气为“雨”的时候，提醒带伞</li>
+</ul>
+<p>具体需要结合<strong>百度语音合成</strong>来使用，下一篇文章会记录结合过程。</p>
+<p>项目源代码会在整个「智能闹钟」项目完成后上传到Github。</p>
+]]></content>
+      <categories>
+        <category>智能闹钟</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>智能闹钟</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>智能闹钟（三）| 使用「网易云音乐NodeJS版API接口」播放每日推荐歌曲</title>
+    <url>/2020/12/22/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%89%EF%BC%89%7C%20%E4%BD%BF%E7%94%A8%E3%80%8C%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90NodeJS%E7%89%88API%E6%8E%A5%E5%8F%A3%E3%80%8D%E8%8E%B7%E5%8F%96%E6%AF%8F%E6%97%A5%E6%8E%A8%E8%8D%90%E6%AD%8C%E6%9B%B2/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201222151927493.png" alt="image-20201222151927493" style="zoom:50%;" />
+<a id="more"></a>
+<hr />
+<h2 id="准备"><a class="markdownIt-Anchor" href="#准备"></a> 准备</h2>
+<ol>
+<li>
+<p>使用前请仔细查看里面的<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%b0%83%e7%94%a8%e5%89%8d%e9%a1%bb%e7%9f%a5">调用前须知</a></p>
+</li>
+<li>
+<p>进行简单的需求分析：</p>
+</li>
+</ol>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201222153644738.png" alt="image-20201222153644738" style="zoom:45%;" />
+<br/>
+<h2 id="一-搭建api"><a class="markdownIt-Anchor" href="#一-搭建api"></a> 一、搭建API</h2>
+<p>我个人选择了把接口搭建在<strong>VPS</strong>中，7x24x365在线，等调试好语音识别模块后再部署到树莓派上。但如果你的是是国外的服务器，请仔细阅读一下文档内的「<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%b0%83%e7%94%a8%e5%89%8d%e9%a1%bb%e7%9f%a5">调用前须知</a>」，里面有提示相关的注意事项。当然，如果仅仅学习API的调用的话，我们可以搭建在本机电脑中。</p>
+<blockquote>
+<p>注意⚠️：<strong>以下所有步骤均默认在管理员（root）用户下进行</strong></p>
+</blockquote>
+<br/>
+<h3 id="1-安装"><a class="markdownIt-Anchor" href="#1-安装"></a> 1. 安装</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;Binaryify&#x2F;NeteaseCloudMusicApi.git</span><br><span class="line"># 进入到项目文件内</span><br><span class="line">cd xxx&#x2F;xxx&#x2F;NeteaseCloudMusicApi  </span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<br/>
+<h3 id="2-运行"><a class="markdownIt-Anchor" href="#2-运行"></a> 2. 运行</h3>
+<h4 id="1在vps运行"><a class="markdownIt-Anchor" href="#1在vps运行"></a> （1）在「VPS」运行</h4>
+<p>要想API 7x24x365 在线，让项目保持后台运行就可以。我这里运用了比较简单的方法：<code>screen</code>命令。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd NeteaseCloudMusicApi</span><br><span class="line"># 新建一个名为NeteaseCloud的screen</span><br><span class="line">screen -S NeteaseCloud</span><br><span class="line"># 在新生成的窗口中运行API</span><br><span class="line">node app.js</span><br><span class="line"># 然后就可以放心把窗口关掉了</span><br></pre></td></tr></table></figure>
+<p><br/>在关掉后我们尝试访问<code>http://VPS的ip:3000</code>。如无意外，我们会看到：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201222160756839.png" alt="image-20201222160756839" style="zoom:33%;" />
+<p><br/>那么我们如何恢复<code>screen</code>呢？</p>
+<blockquote>
+<p>注意⚠️：回复<code>screen</code>一定要在新建<code>screen</code>的用户下进行。我上面是进入到了<code>root</code>中</p>
+</blockquote>
+<br/>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -i</span><br><span class="line"># 查看所有screen</span><br><span class="line">screen -ls </span><br><span class="line"># 找到我们的NeteaseCloud</span><br><span class="line">screen -r screen的id</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201222161602742.png" alt="image-20201222161602742" style="zoom: 50%;" />
+<p>想要关闭<code>screen</code>，我们可以看到上图有提示：<code>1 Socket in /var/run/screen/S-root</code>，我们进入到这个文件夹删除相应的文件，就可以关闭<code>screen</code>了。</p>
+<br/>
+<h4 id="2在本地电脑运行"><a class="markdownIt-Anchor" href="#2在本地电脑运行"></a> （2）在「本地电脑」运行</h4>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 想要运行项目，仍然要进入项目文件夹中</span><br><span class="line">cd NeteaseCloudMusicApi</span><br><span class="line">node app.js</span><br></pre></td></tr></table></figure>
+<br/>
+<h4 id="3修改端口运行"><a class="markdownIt-Anchor" href="#3修改端口运行"></a> （3）「修改端口」运行</h4>
+<p>服务器启动默认端口为 3000，若不想使用 3000 端口，可使用以下命令：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># Mac&#x2F;Linux</span><br><span class="line">PORT&#x3D;4000 node app.js</span><br><span class="line"># windows</span><br><span class="line">set PORT&#x3D;4000 &amp;&amp; node app.js</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="二-登陆"><a class="markdownIt-Anchor" href="#二-登陆"></a> 二、登陆</h2>
+<blockquote>
+<p>文档里面提供了手机、邮箱两种登陆方式，但<strong>使用邮箱登陆会返回<code>402</code>错误码</strong>，我们直接使用手机登陆。</p>
+</blockquote>
+<p><strong>接口地址 :</strong> <code>/login/cellphone</code></p>
+<p><strong>调用例子 :</strong> <code>/login/cellphone?phone=xxx&amp;password=yyy</code></p>
+<p>要注意：下面的大部分接口都要登陆成功后才能使用，而登陆接口<code>response</code>信息中会有带有<code>cookie</code>，所以我们要使用<code>session()</code>来保持登陆状态。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://localhost:3000&#x27;</span></span><br><span class="line">phone = <span class="string">&#x27;xxxx&#x27;</span></span><br><span class="line">pwd = <span class="string">&#x27;xxxx&#x27;</span></span><br><span class="line"></span><br><span class="line">s = requests.session()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 登陆</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">login</span>():</span></span><br><span class="line">    login_url = url + <span class="string">&#x27;/login/cellphone&#x27;</span></span><br><span class="line">    login = s.get(login_url, data=&#123;<span class="string">&#x27;phone&#x27;</span>: phone, </span><br><span class="line">                                   <span class="string">&#x27;password&#x27;</span>: pwd&#125;)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="keyword">if</span> login.status_code <span class="keyword">is</span> <span class="number">200</span>:</span><br><span class="line">            print(<span class="string">&#x27;恭喜！登陆成功！&#x27;</span>)</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;Exception&#x27;</span>,e)</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="三-获取所有每日推荐歌曲信息"><a class="markdownIt-Anchor" href="#三-获取所有每日推荐歌曲信息"></a> 三、获取所有每日推荐歌曲信息</h2>
+<p><strong>使用该接口需要完成「登陆」后才能使用。</strong></p>
+<p><strong>接口地址 :</strong> <code>/recommend/songs</code></p>
+<p><strong>调用例子 :</strong> <code>/recommend/songs</code></p>
+<p>我们尝试使用<code>postman</code>请求接口，<code>response</code>信息如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201222180112139.png" alt="image-20201222180112139" style="zoom: 33%;" />
+<br/>
+<p>仔细看会发现会发现，<code>response</code>中是没有歌曲播放<code>url</code>的！那怎么播放歌曲呢？</p>
+<p>别急，我们仔细思考一下，唯一能识别出一首歌的标志只有<code>id</code>，那会不会有其他接口可以通过<code>id</code>获得可流媒体播放的<code>url</code>呢？翻遍了文档终于找到<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/?id=%e8%8e%b7%e5%8f%96%e9%9f%b3%e4%b9%90-url">相关信息</a>。（我觉得作者应该把该接口放在更前面的位置）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201222180707359.png" alt="image-20201222180707359" style="zoom: 33%;" />
+<br/>
+<p>我们使用postman请求，观察<code>response</code>数据结构。然后开始编码通过<code>id</code>获取播放<code>url</code>，代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取每日推荐歌曲id</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSongs_id</span>():</span></span><br><span class="line">    <span class="comment"># 获取每日推荐歌曲字典</span></span><br><span class="line">    dailySongs_url = url + <span class="string">&#x27;/recommend/songs&#x27;</span></span><br><span class="line">    dailySongs_object = s.get(dailySongs_url)</span><br><span class="line">    songs_dict = dailySongs_object.json()  </span><br><span class="line">    <span class="comment"># 0~31首</span></span><br><span class="line">    <span class="keyword">for</span> list_index <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">32</span>):</span><br><span class="line">        song_id.append(songs_dict[<span class="string">&#x27;data&#x27;</span>][<span class="string">&#x27;dailySongs&#x27;</span>][list_index][<span class="string">&#x27;id&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> song_id</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取播放url</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSongs_url</span>():</span></span><br><span class="line">    getSongs_url = url + <span class="string">&#x27;/song/url&#x27;</span></span><br><span class="line">    <span class="comment"># 传入song_id[]作为data</span></span><br><span class="line">    song_id = getSongs_id()</span><br><span class="line">    song_url_object = s.post(getSongs_url, data=&#123;<span class="string">&#x27;id&#x27;</span>:song_id&#125;)</span><br><span class="line">    song_url_dict = song_url_object.json()</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">32</span>):</span><br><span class="line">        songs_url.append(song_url_dict[<span class="string">&#x27;data&#x27;</span>][i][<span class="string">&#x27;url&#x27;</span>])</span><br><span class="line">    <span class="keyword">return</span> songs_url</span><br></pre></td></tr></table></figure>
+<hr />
+<h2 id="四-播放音乐"><a class="markdownIt-Anchor" href="#四-播放音乐"></a> 四、播放音乐</h2>
+<p>参考了网络资料，在Linux中播放音乐有几种选择，用得比较多的是<code>pygame</code>和<code>mplayer</code>。但不知什么原因我树莓派一直装不了<code>pygame</code>，所以最终选择了<code>mplayer</code>作为我的播放器。</p>
+<p>基本使用方式很简单：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mplayer file&#x2F;url</span><br></pre></td></tr></table></figure>
+<p>但要如何在python脚本中调用<code>mplayer</code>呢？使用<code>os.system('cmd' %s)</code>或<code>Subprocess.Popen('cmd')</code>，具体区别可以参考<a href="https://blog.csdn.net/taohuaxinmu123/article/details/48828255">这篇文章</a>，一句话说完就是：前者比较老旧，但会显示<code>cmd</code>命令执行的信息；后者强大，支持多种参数和模式，但没有输出信息。</p>
+<p>在整个项目中我们两个模块都会用到，在播放音乐部分我们使用前者，后面「渐入渐出部分」我们再使用后者。</p>
+<br/>
+<p>先尝试播放日推第一首歌。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.system(<span class="string">&#x27;mplayer &quot;%s&quot; &gt; /dev/null 2&gt;&amp;1&#x27;</span> % songs_url[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
+<p>从左到右解析一下代码：单引号<code>''</code>里的内容就是<code>os.system('cmd')</code>中的<code>cmd</code>，<code>&quot;%s&quot;</code>是<code>str</code>类型的参数，输出<code>&gt;</code>（重定向）到<code>/dev/null 2&gt;&amp;1</code>文件，该文件会像黑洞一样吞噬所有的输入，同时也不会获得任何输出，单引号<code>''</code>部分的代码意思是mplayer播放%s的url，且不输出信息。更详细的意思请看<a href="https://blog.csdn.net/ithomer/article/details/9288353">这里</a>。后面的<code>%</code> 和 <code>song_url[0]</code>中间是有个空格的，这个就是传到<code>&quot;%s&quot;</code>的参数。</p>
+<br/>
+<p>要播放32首歌曲，可以写个<code>for</code>循环，重复执行mplayer的播放操作就可以。</p>
+<p>这部分代码整合到了下方的「优化播放流程」当中。</p>
+<br/>
+<p><strong>至此，文章一开头的需求分析全部模块已经基本完成，但仍有优化空间</strong></p>
+<hr />
+<h2 id="五-项目优化整合"><a class="markdownIt-Anchor" href="#五-项目优化整合"></a> 五、项目优化整合</h2>
+<p><strong>我们做项目应该更贴近生活考虑，带给用户更好的体验</strong>，所以还得在细节中下点功夫。</p>
+<h3 id="1-优化播放流程"><a class="markdownIt-Anchor" href="#1-优化播放流程"></a> 1. 优化播放流程</h3>
+<p>早上醒来<strong>意识是不清醒</strong>的，第一时间播放「天气」肯定听不清楚，而且完全没让人有个好心情啊！所以「天气播报」应该往后捎捎。由此大概确定**项目的完整播放流程为：**先播放一到两首歌，然后「天气播报」，然后再播放剩下的歌曲。</p>
+<p>同时，我们大概率会在第一次播放时听不清楚具体温度，所以我们应该做两次天气的播报。</p>
+<blockquote>
+<p>注意⚠️：下方代码<code>line</code> <code>12</code>播放天气文件的py脚本，要**填写绝对路径！绝对路径！**不然无法播放天气！</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 播放模块</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">playmusic</span>():</span></span><br><span class="line">    <span class="comment"># getSongs_url()函数在上面以实现</span></span><br><span class="line">    songs_url = getSongs_url()</span><br><span class="line">    print(<span class="string">&#x27;开始播放音乐&#x27;</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        print(<span class="string">&#x27;第一首歌&#x27;</span>)</span><br><span class="line">        <span class="comment"># 先播放第一首</span></span><br><span class="line">        os.system(<span class="string">&#x27;mplayer &quot;%s&quot; &gt; /dev/null 2&gt;&amp;1&#x27;</span> % songs_url[<span class="number">0</span>])</span><br><span class="line">        <span class="comment"># 播放两次天气</span></span><br><span class="line">        print(<span class="string">&#x27;播放天气&#x27;</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">2</span>)</span><br><span class="line">        	os.system(<span class="string">&#x27;python /tmp/clock/TextToVoice.py&#x27;</span>)</span><br><span class="line">        <span class="comment"># 开始随机播放2～32首</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">32</span>):</span><br><span class="line">            <span class="comment"># print(&#x27;播放第&#x27; + str(i) + &#x27;首&#x27;)</span></span><br><span class="line">            os.system(<span class="string">&#x27;mplayer &quot;%s&quot; &gt; /dev/null 2&gt;&amp;1&#x27;</span> % songs_url[i])</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        print(<span class="string">&#x27;Exception&#x27;</span>, e)</span><br></pre></td></tr></table></figure>
+<br/>
+<h3 id="2-渐入播放"><a class="markdownIt-Anchor" href="#2-渐入播放"></a> 2. 渐入播放</h3>
+<p>如果播放的音乐一开始非常大声，我们很容易受惊。</p>
+<p>所以在播放第一首歌时，渐入。我们可以有两种设计方式，第一种是通过mplayer的<code>slave</code>模式修改，另一种通过<code>amixer</code>修改Linux系统的声音。这里我选择后者，相对来说会更简单。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># amxier调音量基本使用</span></span><br><span class="line">amixer sset 声卡名字(str类型) volume音量(volume%)</span><br><span class="line"><span class="comment"># 例如：amixer sset Headphone 20%</span></span><br></pre></td></tr></table></figure>
+<br/>
+<p>思路：使用一个<code>for</code>循环，先从一个低音量开始，在<code>range()</code>里面每次递增%<code>1</code>，在每一次循环（递增）中，都会有0.3秒的延迟，这样就实现了较为顺滑的渐入操作。</p>
+<p>在python里面控制<code>amixer</code>模块，这次我们尝试使用<code>subprocess.Popen(cmd)</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">slowUp</span>():</span></span><br><span class="line">    <span class="comment"># %0 and %100</span></span><br><span class="line">    volume = <span class="number">65</span></span><br><span class="line">    <span class="comment"># 每次增加%1，一直从 %65 ～ %90</span></span><br><span class="line">    <span class="keyword">for</span> volume <span class="keyword">in</span> range(<span class="number">65</span>, <span class="number">100</span>, <span class="number">1</span>):</span><br><span class="line">        <span class="comment"># 延迟 0.3 秒递增</span></span><br><span class="line">        time.sleep(<span class="number">0.3</span>)</span><br><span class="line">        command = [<span class="string">&quot;amixer&quot;</span>, <span class="string">&quot;sset&quot;</span>, <span class="string">&quot;Headphone&quot;</span>, <span class="string">&quot;&#123;&#125;%&quot;</span>.format(volume)]</span><br><span class="line">        subprocess.Popen(command)</span><br></pre></td></tr></table></figure>
+<br/>
+<p>**但有个很重要的问题：**我们要怎么使用这个渐入函数呢？直接嵌入到播放第一首歌前面吗？肯定不对的，因为程序会先执行完<code>slowUp()</code>函数完成了音量的递增之后，再开始播放音乐。这样是毫无意义的。</p>
+<p><strong>有两个解决办法。</strong></p>
+<p>第一个是多线程，但对多线程不太熟悉，用不好可能很容易崩，后面认真学习后，会再进行代码重构。</p>
+<p>第二种就比较机灵点：设置<strong>两个时间一样</strong>的<code>crontab</code>任务，一个执行播放音乐的py脚本，另一个执行渐入渐入的脚本。也就是把多线程这件事交给了<code>crontab</code>！</p>
+<p><strong>夸夸自己，真是太机智了！</strong></p>
+<hr />
+<h2 id="六-end总结"><a class="markdownIt-Anchor" href="#六-end总结"></a> 六、END&amp;总结</h2>
+<p>这篇文章只是介绍了如何使用「网易云音乐NodeJS版API接口」播放每日推荐歌曲，看起来顺风顺水，实际上遇到的坑真的数不过来。但我们一定要**「善于思考，善于记录」**，坚持每天输出一些内容，到最后就掌握越来越多技能。</p>
+<p>下一篇文章，详细讲一下部署项目的部署问题。源代码也将整合。</p>
+<h5 id="相关文章"><a class="markdownIt-Anchor" href="#相关文章"></a> 相关文章</h5>
+<ol>
+<li>
+<p><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（一）｜macOS 入门使用树莓派 3B+</a></p>
+</li>
+<li>
+<p><a href="https://blog.tangspoon.cn/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94API%E4%BD%BF%E7%94%A8/#more">智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气的播报</a></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>智能闹钟</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>智能闹钟</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>树莓派开启crontab日志</title>
+    <url>/2020/12/22/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223205438951.png" alt="image-20201223205438951" style="zoom:50%;" />
+<a id="more"></a>
+<p>今天的树莓派闹钟情况有点问题，想查看一下crontab任务完成情况，结果找了半天找不到log。原来是树莓派系统默认禁止了生成日志文件。解决办法也很简单。</p>
+<br/>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;rsyslog.conf</span><br></pre></td></tr></table></figure>
+<p>在文件中找到：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.*                     &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
+<p>把<code>#</code>去掉，然后’esc’，输入<code>:wq</code></p>
+<p>输入一下代码重新启动日志服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo service rsyslog restart</span><br></pre></td></tr></table></figure>
+<p>执行一个crontab任务，再到<code>/var/log/cron.log</code>就可以查看到执行情况</p>
+<hr />
+<p>参考资料：</p>
+<p><a href="https://my.oschina.net/u/4341499/blog/4280350">https://my.oschina.net/u/4341499/blog/4280350</a></p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
   </entry>
   <entry>
     <title>正则表达式-01</title>
@@ -1340,108 +1461,39 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>测试用例-基础知识</title>
-    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
+    <title>格式化时间</title>
+    <url>/2020/12/21/%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%97%B6%E9%97%B4/</url>
+    <content><![CDATA[<p>在和风天气API获取日落时间时，没仔细看清楚官方文档，绕了一个大圈。但是也学到了时间格式化的一些操作，在这里继续记录下来。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201221193040002.png" alt="image-20201221193040002" /></p>
 <a id="more"></a>
-<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
-<blockquote>
-<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
-</blockquote>
-<ol>
-<li>
-<p>测试用例是什么？</p>
-<p>测试用例是“一组输入、执行条件、预期结果”</p>
-</li>
-<li>
-<p>什么是一个好的测试用例？</p>
-<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
-</li>
-<li>
-<p>测试用例的预期结果不需要验证吗？</p>
-<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
-</li>
-</ol>
-<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
-<ol>
-<li>
-<p>指导测试的「实施」</p>
-<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
-</li>
-<li>
-<p>「规划」测试数据</p>
-<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
-</li>
-<li>
-<p>评估测试结果的度量基准</p>
-<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
-</li>
-</ol>
-<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
-<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
-<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
-<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
-<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
-<ol>
-<li>
-<p>分析需求，确定「输入」「数据类型」。</p>
-<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
-<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
-</li>
-<li>
-<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
-<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
-<p>2）「划分」有效等价类与无效等价类</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
-</li>
-<li>
-<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
-</li>
-<li>
-<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
-</li>
-</ol>
 <hr />
-<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
-<blockquote>
-<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
-</blockquote>
-<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
-<p>首先，得明白上点、离点、内点的概念。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
-<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
-<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
-<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
-<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
+<h2 id="一-获取系统日期并格式化"><a class="markdownIt-Anchor" href="#一-获取系统日期并格式化"></a> 一、获取系统日期并格式化</h2>
+<p>因为使用sunmoon接口<code>https://devapi.qweather.com/v7/astronomy/sunmoon?</code>需要使用当天日期，格式例如<code>20201218</code>，Linux的时间显示格式为<code>Mon 21 Dec 18:39:36 CST 2020</code>，因此我们需要把系统格式化。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221191037433.png" alt="image-20201221191037433" style="zoom:70%;" />
+<p>可以使用Python的<code>datetime</code>模块，使用方式如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">formatTime</span>():</span></span><br><span class="line">	<span class="comment"># 实例化对象</span></span><br><span class="line">    dt = datetime.now()</span><br><span class="line">    year = dt.year</span><br><span class="line">    month = dt.month</span><br><span class="line">    day = dt.day</span><br><span class="line">    <span class="comment"># 组合时间</span></span><br><span class="line">    today = str(year) + str(month) + str(day)</span><br><span class="line">    <span class="comment"># print(&#x27;today: &#x27;,today)</span></span><br><span class="line">    <span class="keyword">return</span> today</span><br></pre></td></tr></table></figure>
+<h2 id="二-发送日落请求"><a class="markdownIt-Anchor" href="#二-发送日落请求"></a> 二、发送日落请求</h2>
+<p>获取了格式化的<code>date</code>之后，我们就可以获取日落时间了。过程如下。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSunsetTime</span>():</span></span><br><span class="line">    sunset_url = <span class="string">&#x27;https://devapi.qweather.com/v7/astronomy/sunmoon?&#x27;</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;101280101&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;6dee7771746148fbbee9cedeb9c1ffc4&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;date&#x27;</span>: date,</span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    sun_html = requests.get(sunset_url, params)</span><br><span class="line">    sun_content = sun_html.json()</span><br><span class="line">    sunset_time = sun_content[<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    print(<span class="string">&#x27;sunset_time:&#x27;</span>, sunset_time)</span><br><span class="line">    print(<span class="string">&#x27;sunset_time is: &#x27;</span>, type(sunset_time))</span><br><span class="line">    <span class="keyword">return</span> sunset_time</span><br></pre></td></tr></table></figure>
+<br/>
+<p>以下红框是我们需要的时间，在使用<code>type()</code>验证了日落时间是<code>str</code>类型后，我们可以通过<strong>正则表达式</strong>来提取我们需要的<code>17:47</code></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221192116078.png" alt="image-20201221192116078" style="zoom:50%;" />
+<h2 id="三-正则表达式提取做需要的字符串"><a class="markdownIt-Anchor" href="#三-正则表达式提取做需要的字符串"></a> 三、正则表达式提取做需要的字符串</h2>
+<p>使用<code>re</code>模块下的<code>findall</code>配合正则表达式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 分离日落时间，获得几点几分</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getSunsetHM</span>():</span></span><br><span class="line">    <span class="comment"># 使用正则表达式</span></span><br><span class="line">    sunsetime = getSunsetTime()</span><br><span class="line">    sunsetHM = (re.findall(<span class="string">r&quot;T(.+?)\+&quot;</span>, sunsetime))</span><br><span class="line">    print(sunsetHM)</span><br><span class="line">    <span class="keyword">return</span> sunsetHM</span><br></pre></td></tr></table></figure>
+<br/>
+<p>提取结果显示</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221192820537.png" alt="image-20201221192820537" style="zoom:50%;" />
 <hr />
-<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
-<hr />
-<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
-<hr />
-<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
-<blockquote>
 <p>参考资料：</p>
-<ol>
-<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
-<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
-</ol>
-</blockquote>
+<p><a href="https://blog.csdn.net/liao392781/article/details/80181088">https://blog.csdn.net/liao392781/article/details/80181088</a></p>
+<p><a href="https://blog.csdn.net/shomy_liu/article/details/44141483">https://blog.csdn.net/shomy_liu/article/details/44141483</a></p>
 ]]></content>
       <categories>
-        <category>软件测试</category>
+        <category>正则表达式</category>
       </categories>
       <tags>
-        <tag>软件测试</tag>
+        <tag>正则表达式</tag>
       </tags>
   </entry>
   <entry>
@@ -1573,6 +1625,111 @@ Github中。</p>
 </ol>
 <blockquote>
 <p>一个优秀的测试工程师必须具有很宽广的知识面，如果你不能对被测系统的设计有深入的理解、不明白安全攻击的基本原理、没有掌握性能测试的基本设计方法，很难设计出“有的放矢”的测试用例。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>测试用例-基础知识</title>
+    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
+<a id="more"></a>
+<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
+<blockquote>
+<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
+</blockquote>
+<ol>
+<li>
+<p>测试用例是什么？</p>
+<p>测试用例是“一组输入、执行条件、预期结果”</p>
+</li>
+<li>
+<p>什么是一个好的测试用例？</p>
+<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
+</li>
+<li>
+<p>测试用例的预期结果不需要验证吗？</p>
+<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
+</li>
+</ol>
+<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
+<ol>
+<li>
+<p>指导测试的「实施」</p>
+<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
+</li>
+<li>
+<p>「规划」测试数据</p>
+<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
+</li>
+<li>
+<p>评估测试结果的度量基准</p>
+<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
+</li>
+</ol>
+<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
+<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
+<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
+<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
+<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
+<ol>
+<li>
+<p>分析需求，确定「输入」「数据类型」。</p>
+<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
+<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
+</li>
+<li>
+<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
+<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
+<p>2）「划分」有效等价类与无效等价类</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
+</li>
+<li>
+<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
+</li>
+<li>
+<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
+</li>
+</ol>
+<hr />
+<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
+<blockquote>
+<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
+</blockquote>
+<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
+<p>首先，得明白上点、离点、内点的概念。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
+<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
+<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
+<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
+<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
+<hr />
+<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
+<hr />
+<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
+<hr />
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
+<blockquote>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
+<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
+</ol>
 </blockquote>
 ]]></content>
       <categories>
