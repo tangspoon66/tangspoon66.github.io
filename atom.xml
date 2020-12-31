@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2020-12-26T09:00:43.949Z</updated>
+  <updated>2020-12-31T09:42:11.599Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -15,6 +15,30 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>智能闹钟（五）｜如何优雅地关闭闹钟？</title>
+    <link href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/"/>
+    <id>https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/</id>
+    <published>2020-12-31T09:40:56.000Z</published>
+    <updated>2020-12-31T09:42:11.599Z</updated>
+    
+    <content type="html"><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223222003013.png" alt="image-20201223222003013" style="zoom:45%;" /><p>网上相关项目基本都是只有播放功能，没有写关闭音乐，这明显不符合我们真实的使用场景。而日常生活中我们最容易接触的工具是手机，那如何通过手机优雅地关闭闹钟呢？</p><a id="more"></a><h2 id="一-目录结构"><a class="markdownIt-Anchor" href="#一-目录结构"></a> 一、目录结构</h2><p>在<code>clock</code>project内包含有5个脚本，<code>Netease.py</code>是主程序，<code>TextToVoice.py</code>用于文字转语音，<code>VolControl.py</code>实现渐入功能，<code>getWeather.py</code>用于获得每日天气，<code>shtudown.py</code>用于关闭闹钟。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201223184351927.png" alt="image-20201223184351927" style="zoom:50%;" /><h2 id="二-关闭闹钟思路"><a class="markdownIt-Anchor" href="#二-关闭闹钟思路"></a> 二、关闭闹钟思路</h2><p>有人说关闭闹钟不就直接使用<code>pkill</code>命令结束掉mplayer进程不就可以了吗？但是，程序默认是循环播放32首歌曲+2次天气播报的，所以mplayer一共会执行34次。</p><p>由此，我们也很容易可以得出解决方案：<code>pkill</code>34次mplayer即可。</p><p>shutdown.py如下：</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">35</span>):</span><br><span class="line">    os.system(<span class="string">&#x27;pkill -f mplayer&#x27;</span>)</span><br></pre></td></tr></table></figure><p>可是难道我们每次关闭都要经过：打开电脑，进入<code>ssh</code>，然后<code>sudo -i</code>，然后执行<code>python xxx/xxx/shutdown.py</code>？要是这样，我就根本不想用这个闹钟了！</p><p>突然想起之前刷B站时看到一个up主大概介绍了iOS的<strong>快捷指令</strong>！是可以运行脚本的！</p><h2 id="三-ios快捷指令关闭"><a class="markdownIt-Anchor" href="#三-ios快捷指令关闭"></a> 三、iOS快捷指令关闭</h2><p>设置路径：快捷指令主页右上角<code>+</code> – 添加操作 – 脚本 – 通过SSH运行脚本（一直往下拉） – 然后填好信息 – 保存指令<code>sudo python /home/clock/shutdown.py</code>。详细操作可查看下方图片。</p><p>这样我们就可以每天通过快捷指令，直接关闭闹钟了。</p><img src="https://picbed.tangspoon.cn/uPic/image-20201231173454629.png" alt="image-20201231173454629" style="zoom:33%;" /><img src="https://picbed.tangspoon.cn/uPic/image-20201231173544692.png" alt="image-20201231173544692" style="zoom:50%;" /><img src="https://picbed.tangspoon.cn/uPic/image-20201231173749629.png" alt="image-20201231173749629" style="zoom:50%;" /><h2 id="四-安卓怎么办"><a class="markdownIt-Anchor" href="#四-安卓怎么办"></a> 四、安卓怎么办？</h2><p>我在酷安搜索<code>ssh</code>软件，一个都没有？但无意中发现有一个软件用于PC电脑的远程开关机，查看了一下简介，是通过<code>ssh</code>连接到电脑，然后执行关机指令的。那么同样的，也能用于执行我的<code>shutdown.py</code>！</p><img src="https://picbed.tangspoon.cn/uPic/image-20201223225208634.png" alt="image-20201223225208634" style="zoom:33%;" /><br/><p>填写好信息后，点击第三个按钮保存配置，然后点击第二个按钮就可以关闭闹钟了！</p><p>还可以把关闭按钮添加在通知栏中，就可以更快速关闭闹钟了！</p><img src="https://picbed.tangspoon.cn/uPic/image-20201223225549628.png" alt="image-20201223225549628" style="zoom:33%;" />]]></content>
+    
+    
+    <summary type="html">&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20201223222003013.png&quot; alt=&quot;image-20201223222003013&quot; style=&quot;zoom:45%;&quot; /&gt;
+&lt;p&gt;网上相关项目基本都是只有播放功能，没有写关闭音乐，这明显不符合我们真实的使用场景。而日常生活中我们最容易接触的工具是手机，那如何通过手机优雅地关闭闹钟呢？&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="智能闹钟" scheme="https://blog.tangspoon.cn/categories/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F/"/>
+    
+    
+    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
+    
+    <category term="智能闹钟" scheme="https://blog.tangspoon.cn/tags/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F/"/>
+    
+  </entry>
   
   <entry>
     <title>Flask 学习笔记 - Hello</title>
@@ -459,30 +483,6 @@
     <category term="软件测试" scheme="https://blog.tangspoon.cn/tags/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95/"/>
     
     <category term="troubleshooting" scheme="https://blog.tangspoon.cn/tags/troubleshooting/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>后盾人MySQL-多表操作</title>
-    <link href="https://blog.tangspoon.cn/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/"/>
-    <id>https://blog.tangspoon.cn/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</id>
-    <published>2020-10-28T13:39:51.000Z</published>
-    <updated>2020-11-08T04:45:12.940Z</updated>
-    
-    <content type="html"><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3><blockquote><p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p></blockquote><a id="more"></a><h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2><h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4><ul><li>查询一班的所有同学</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure><ul><li>每个班级发表的文章数量，来操作多张表的关联操作</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure><ul><li>一班的所有女生发表的文章</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure><ul><li>哪个班级发表的文章超过两篇</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure><ul><li>每个班级文章的总点击数与平均点击数</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure><ul><li>每个班级有多少同学</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure><img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" /><p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p><ul><li>学生人数大于两个的班级名称</li></ul><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure><h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4><p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p><p>获取没有设置QQ的用户</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>]]></content>
-    
-    
-    <summary type="html">&lt;h3 id=&quot;前言&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#前言&quot;&gt;&lt;/a&gt; 前言&lt;/h3&gt;
-&lt;blockquote&gt;
-&lt;p&gt;MySQL 表的操作还是有很多需要理解的地方，在此感谢&lt;a href=&quot;https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5&quot;&gt;后盾人&lt;/a&gt;的文章。&lt;/p&gt;
-&lt;/blockquote&gt;</summary>
-    
-    
-    
-    <category term="MySQL" scheme="https://blog.tangspoon.cn/categories/MySQL/"/>
-    
-    
-    <category term="MySQL" scheme="https://blog.tangspoon.cn/tags/MySQL/"/>
     
   </entry>
   
