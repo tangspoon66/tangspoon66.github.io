@@ -706,46 +706,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
-    <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
-<h3 id="一-背景"><a class="markdownIt-Anchor" href="#一-背景"></a> 一、背景</h3>
-<p>在《Python自动化测试实战》中，使用的是HTMLTestRunner，但教程使用的是windows系统，本人使用的macOS与其有点出入。Baidu和Google的帖子全都是在手动下载py文件，然后手动放到Python的lib文件夹中，但本macOS无效。</p>
-<a id="more"></a>
-<h3 id="二-解决过程"><a class="markdownIt-Anchor" href="#二-解决过程"></a> 二、解决过程</h3>
-<p>然后尝试换个思路，自动化测试报告中肯定不止只有老旧的HTMLTestRunner这个库呀，会不会有功能更加丰富、使用更方便、美观的第三方库呢？果然，有一个<a href="https://pypi.org/project/unittestreport/">unittestreport</a> 让人极为惊喜。</p>
-<p>安装过程显示是非常简单的，直接使用pip安装。但我install之后import还是没反应。疑惑。这时，突然想起Pycharm中的Interpreter的配置，是可以直接安装第三方库的。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207160205161.png" alt="image-20201207160205161" style="zoom:50%;" />
-<p>在Install Package后，就可以成功使用unittestreport了。</p>
-<h3 id="三-如何使用"><a class="markdownIt-Anchor" href="#三-如何使用"></a> 三、如何使用</h3>
-<p>在<a href="http://testingpai.com/article/1595507317340">此文章</a>中有提示。我自己写了个简单的demo，可直接运行，<a href="https://file.tangspoon.cn/t/qbXL4C">点此下载</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittestteport <span class="keyword">import</span> TestRunner,HTMLTestRunner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：加载测试套件</span></span><br><span class="line">suite1 = unittest.defaultTestLoader.discover(<span class="string">r&quot;xxx\xxx\cases&quot;</span>)</span><br><span class="line"><span class="comment"># 第二步：创建运行对象，传入测试套件</span></span><br><span class="line">runner = HTMLTestRunner(stream=open(<span class="string">&quot;report.html&quot;</span>,<span class="string">&#x27;wb&#x27;</span>), title=<span class="string">&#x27;木森的测试报告&#x27;</span>,)</span><br><span class="line"><span class="comment"># 第三步：执行测试</span></span><br><span class="line">runner.run()</span><br></pre></td></tr></table></figure>
-<h3 id="四-advanced"><a class="markdownIt-Anchor" href="#四-advanced"></a> 四、advanced</h3>
-<h4 id="1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"><a class="markdownIt-Anchor" href="#1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"></a> 1. 为什么pip安装不能直接使用，而直接在Pycharm Interpreter安装就可以使用呢？</h4>
-<p>打开Pycharm Interpreter的Avaliable Packages界面，仔细查看，会发现其实会有一个钩子选项。从这里可以得到提示，可能与一个叫site packages的文件夹有关。可以从这里入手。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-<p>我们看看Project中的External Libraries都有哪些，打开一看，有了site-packes！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207162437233.png" alt="image-20201207162437233" style="zoom:45%;" />
-<p>在里面可以找到我们刚刚导入的unittestreport，还有之前折腾失败的HTMLTestRunner。</p>
-<p>pip安装失败，难道是pip安装的路径有问题？那我们查一下通过pip安装的unittestreport是在哪里。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207163426073.png" alt="image-20201207163426073" /></p>
-<p>在上述路径中删除一个库，PyCharm的External Libraries中的site-packages中就少了被删除的库，由此可证明其实<code>pip install unittestreport</code>已经成功了，只是我们还未在项目的解释器（PyCharm的Interpreter）中添加而已。其实这就像和我们使用selenium一样，每次新建一个project，<strong>就需要在解释器中添加相应的包才能使用的。</strong></p>
-<h4 id="2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"><a class="markdownIt-Anchor" href="#2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"></a> 2. 为什么网上手动引入HTMLTestRunner.py的方法行不通呢？</h4>
-<p>我们研究了上面的问题后，其实可以发现：我们是要在/Users/换成自己的用户名/opt/anaconda3/lib/python3.7/site-packages/中，创建一个HTMLTestRunner文件夹，然后把py文件放进即可。而不是放入什么bin目录或者lib目录。</p>
-<p><strong>手动引入其他第三方库类似。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207165459498.png" alt="image-20201207165459498" style="zoom:50%;" />
-<p><strong>或者更简单的，我们可以直接通过PyCharm的解释器在线添加packages。</strong></p>
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-        <category>自动化测试</category>
-      </categories>
-      <tags>
-        <tag>自动化测试</tag>
-        <tag>troubleshooting</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>后盾人MySQL-基本操作</title>
     <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<blockquote>
@@ -915,6 +875,46 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
+    <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
+<h3 id="一-背景"><a class="markdownIt-Anchor" href="#一-背景"></a> 一、背景</h3>
+<p>在《Python自动化测试实战》中，使用的是HTMLTestRunner，但教程使用的是windows系统，本人使用的macOS与其有点出入。Baidu和Google的帖子全都是在手动下载py文件，然后手动放到Python的lib文件夹中，但本macOS无效。</p>
+<a id="more"></a>
+<h3 id="二-解决过程"><a class="markdownIt-Anchor" href="#二-解决过程"></a> 二、解决过程</h3>
+<p>然后尝试换个思路，自动化测试报告中肯定不止只有老旧的HTMLTestRunner这个库呀，会不会有功能更加丰富、使用更方便、美观的第三方库呢？果然，有一个<a href="https://pypi.org/project/unittestreport/">unittestreport</a> 让人极为惊喜。</p>
+<p>安装过程显示是非常简单的，直接使用pip安装。但我install之后import还是没反应。疑惑。这时，突然想起Pycharm中的Interpreter的配置，是可以直接安装第三方库的。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207160205161.png" alt="image-20201207160205161" style="zoom:50%;" />
+<p>在Install Package后，就可以成功使用unittestreport了。</p>
+<h3 id="三-如何使用"><a class="markdownIt-Anchor" href="#三-如何使用"></a> 三、如何使用</h3>
+<p>在<a href="http://testingpai.com/article/1595507317340">此文章</a>中有提示。我自己写了个简单的demo，可直接运行，<a href="https://file.tangspoon.cn/t/qbXL4C">点此下载</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittestteport <span class="keyword">import</span> TestRunner,HTMLTestRunner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：加载测试套件</span></span><br><span class="line">suite1 = unittest.defaultTestLoader.discover(<span class="string">r&quot;xxx\xxx\cases&quot;</span>)</span><br><span class="line"><span class="comment"># 第二步：创建运行对象，传入测试套件</span></span><br><span class="line">runner = HTMLTestRunner(stream=open(<span class="string">&quot;report.html&quot;</span>,<span class="string">&#x27;wb&#x27;</span>), title=<span class="string">&#x27;木森的测试报告&#x27;</span>,)</span><br><span class="line"><span class="comment"># 第三步：执行测试</span></span><br><span class="line">runner.run()</span><br></pre></td></tr></table></figure>
+<h3 id="四-advanced"><a class="markdownIt-Anchor" href="#四-advanced"></a> 四、advanced</h3>
+<h4 id="1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"><a class="markdownIt-Anchor" href="#1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"></a> 1. 为什么pip安装不能直接使用，而直接在Pycharm Interpreter安装就可以使用呢？</h4>
+<p>打开Pycharm Interpreter的Avaliable Packages界面，仔细查看，会发现其实会有一个钩子选项。从这里可以得到提示，可能与一个叫site packages的文件夹有关。可以从这里入手。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+<p>我们看看Project中的External Libraries都有哪些，打开一看，有了site-packes！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207162437233.png" alt="image-20201207162437233" style="zoom:45%;" />
+<p>在里面可以找到我们刚刚导入的unittestreport，还有之前折腾失败的HTMLTestRunner。</p>
+<p>pip安装失败，难道是pip安装的路径有问题？那我们查一下通过pip安装的unittestreport是在哪里。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207163426073.png" alt="image-20201207163426073" /></p>
+<p>在上述路径中删除一个库，PyCharm的External Libraries中的site-packages中就少了被删除的库，由此可证明其实<code>pip install unittestreport</code>已经成功了，只是我们还未在项目的解释器（PyCharm的Interpreter）中添加而已。其实这就像和我们使用selenium一样，每次新建一个project，<strong>就需要在解释器中添加相应的包才能使用的。</strong></p>
+<h4 id="2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"><a class="markdownIt-Anchor" href="#2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"></a> 2. 为什么网上手动引入HTMLTestRunner.py的方法行不通呢？</h4>
+<p>我们研究了上面的问题后，其实可以发现：我们是要在/Users/换成自己的用户名/opt/anaconda3/lib/python3.7/site-packages/中，创建一个HTMLTestRunner文件夹，然后把py文件放进即可。而不是放入什么bin目录或者lib目录。</p>
+<p><strong>手动引入其他第三方库类似。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207165459498.png" alt="image-20201207165459498" style="zoom:50%;" />
+<p><strong>或者更简单的，我们可以直接通过PyCharm的解释器在线添加packages。</strong></p>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+        <category>自动化测试</category>
+      </categories>
+      <tags>
+        <tag>自动化测试</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>吐血原创整理｜怎么把java web项目部署到centos7中？</title>
     <url>/2020/12/12/%E5%90%90%E8%A1%80%E5%8E%9F%E5%88%9B%E6%95%B4%E7%90%86%EF%BD%9C%E6%80%8E%E4%B9%88%E6%8A%8Ajava-web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0centos7%E4%B8%AD%EF%BC%9F/</url>
     <content><![CDATA[<p>今天打开FinalShell，在vps列表最底下发现了一个叫“pr”的备注，瞬间想起6美元上的一个灵车pacificrack。双击后，震惊，链接居然绿了！连接速度居然还变快了……想不到近一年过去了还没翻车。既然这样，那就用来干点“正事”吧，把失败了的宠物论坛重新搭建起来，折腾一下。</p>
@@ -1077,7 +1077,6 @@ Github中。</p>
 ]]></content>
       <categories>
         <category>linux</category>
-        <category>troubleshooting</category>
       </categories>
       <tags>
         <tag>troubleshooting</tag>
@@ -1190,6 +1189,64 @@ Github中。</p>
       <tags>
         <tag>树莓派</tag>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气播报</title>
+    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
+<a id="more"></a>
+<br/>
+<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
+<hr />
+<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
+<p>首先我们得明白需求：</p>
+<ol>
+<li>
+<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
+<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
+<br/>
+</li>
+<li>
+<p>每天最低、最高温度：参考整体温度</p>
+</li>
+<li>
+<p>日落时间：希望每天都可以看到好看的晚霞</p>
+<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
+</li>
+</ol>
+<blockquote>
+<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
+</blockquote>
+<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
+<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
+<h3 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h3>
+<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
+<h2 id="三-语音合成播报天气"><a class="markdownIt-Anchor" href="#三-语音合成播报天气"></a> 三、语音合成播报天气</h2>
+<p><a href="https://ai.baidu.com/tech/speech/tts">点击这里</a>，先注册百度TTS。然后创建一个应用，获得三条信息</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201224110716260.png" alt="image-20201224110716260" style="zoom:50%;" />
+<br/>
+<p>结合上面的天气模块，直接合成：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> aip <span class="keyword">import</span> AipSpeech</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> getWeather <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 百度TTS信息</span></span><br><span class="line">APP_ID = <span class="string">&#x27;xxxx&#x27;</span></span><br><span class="line">API_KEY = <span class="string">&#x27;xxxxxxxxxx&#x27;</span></span><br><span class="line">SECRET_KEY = <span class="string">&#x27;xxxxxxxxxxxxxxxxxx&#x27;</span></span><br><span class="line"></span><br><span class="line">client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取天气模块的信息</span></span><br><span class="line">now_temp, now_text = getNowWeather()</span><br><span class="line">tempMax, tempMin, sunsetTime = get3d()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正常天气</span></span><br><span class="line">text_normal = <span class="string">&#x27;xxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">              + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;，祝您傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 最高温度小于14度时</span></span><br><span class="line">text_lowtemp = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度！&#x27;</span> + <span class="string">&#x27;最高温度也才：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">               + <span class="string">&#x27;，也是好冷的呢！要多穿衣服哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 下雨</span></span><br><span class="line">text_rain = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;外边正在下雨呢，记得带伞～&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">            + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span> + <span class="string">&#x27;对了，记得带伞哦！再见&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># per: 3是性感大叔 4是妹妹；spd: 是语速，vol是: 音量</span></span><br><span class="line"><span class="keyword">if</span> int(tempMax) &lt; <span class="number">14</span>:</span><br><span class="line">    result = client.synthesis(text_lowtemp, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"><span class="keyword">elif</span> now_text <span class="keyword">is</span> <span class="string">&#x27;雨&#x27;</span>:</span><br><span class="line">    result = client.synthesis(text_rain, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    result = client.synthesis(text_normal, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 播放模块</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> isinstance(result, dict):</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(result)</span><br><span class="line">os.system(<span class="string">&#x27;mplayer &quot;%s&quot; &gt; /dev/null 2&gt;&amp;1&#x27;</span> % <span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
+<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
+<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
+<br/>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -1348,102 +1405,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气播报</title>
-    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
-<a id="more"></a>
-<br/>
-<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
-<hr />
-<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
-<p>首先我们得明白需求：</p>
-<ol>
-<li>
-<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
-<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
-<br/>
-</li>
-<li>
-<p>每天最低、最高温度：参考整体温度</p>
-</li>
-<li>
-<p>日落时间：希望每天都可以看到好看的晚霞</p>
-<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
-</li>
-</ol>
-<blockquote>
-<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
-</blockquote>
-<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
-<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
-<h3 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h3>
-<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
-<h2 id="三-语音合成播报天气"><a class="markdownIt-Anchor" href="#三-语音合成播报天气"></a> 三、语音合成播报天气</h2>
-<p><a href="https://ai.baidu.com/tech/speech/tts">点击这里</a>，先注册百度TTS。然后创建一个应用，获得三条信息</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201224110716260.png" alt="image-20201224110716260" style="zoom:50%;" />
-<br/>
-<p>结合上面的天气模块，直接合成：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> aip <span class="keyword">import</span> AipSpeech</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> getWeather <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 百度TTS信息</span></span><br><span class="line">APP_ID = <span class="string">&#x27;xxxx&#x27;</span></span><br><span class="line">API_KEY = <span class="string">&#x27;xxxxxxxxxx&#x27;</span></span><br><span class="line">SECRET_KEY = <span class="string">&#x27;xxxxxxxxxxxxxxxxxx&#x27;</span></span><br><span class="line"></span><br><span class="line">client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取天气模块的信息</span></span><br><span class="line">now_temp, now_text = getNowWeather()</span><br><span class="line">tempMax, tempMin, sunsetTime = get3d()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正常天气</span></span><br><span class="line">text_normal = <span class="string">&#x27;xxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">              + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;，祝您傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 最高温度小于14度时</span></span><br><span class="line">text_lowtemp = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度！&#x27;</span> + <span class="string">&#x27;最高温度也才：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">               + <span class="string">&#x27;，也是好冷的呢！要多穿衣服哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 下雨</span></span><br><span class="line">text_rain = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;外边正在下雨呢，记得带伞～&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">            + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span> + <span class="string">&#x27;对了，记得带伞哦！再见&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># per: 3是性感大叔 4是妹妹；spd: 是语速，vol是: 音量</span></span><br><span class="line"><span class="keyword">if</span> int(tempMax) &lt; <span class="number">14</span>:</span><br><span class="line">    result = client.synthesis(text_lowtemp, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"><span class="keyword">elif</span> now_text <span class="keyword">is</span> <span class="string">&#x27;雨&#x27;</span>:</span><br><span class="line">    result = client.synthesis(text_rain, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    result = client.synthesis(text_normal, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 播放模块</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> isinstance(result, dict):</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(result)</span><br><span class="line">os.system(<span class="string">&#x27;mplayer &quot;%s&quot; &gt; /dev/null 2&gt;&amp;1&#x27;</span> % <span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
-<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
-<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
-<br/>
-]]></content>
-      <categories>
-        <category>智能闹钟</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>智能闹钟</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>智能闹钟（五）｜如何优雅地关闭闹钟？</title>
-    <url>/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223222003013.png" alt="image-20201223222003013" style="zoom:45%;" />
-<p>网上相关项目基本都是只有播放功能，没有写关闭音乐，这明显不符合我们真实的使用场景。而日常生活中我们最容易接触的工具是手机，那如何通过手机优雅地关闭闹钟呢？</p>
-<a id="more"></a>
-<h2 id="一-目录结构"><a class="markdownIt-Anchor" href="#一-目录结构"></a> 一、目录结构</h2>
-<p>在<code>clock</code>project内包含有5个脚本，<code>Netease.py</code>是主程序，<code>TextToVoice.py</code>用于文字转语音，<code>VolControl.py</code>实现渐入功能，<code>getWeather.py</code>用于获得每日天气，<code>shtudown.py</code>用于关闭闹钟。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201223184351927.png" alt="image-20201223184351927" style="zoom:50%;" />
-<h2 id="二-关闭闹钟思路"><a class="markdownIt-Anchor" href="#二-关闭闹钟思路"></a> 二、关闭闹钟思路</h2>
-<p>有人说关闭闹钟不就直接使用<code>pkill</code>命令结束掉mplayer进程不就可以了吗？但是，程序默认是循环播放32首歌曲+2次天气播报的，所以mplayer一共会执行34次。</p>
-<p>由此，我们也很容易可以得出解决方案：<code>pkill</code>34次mplayer即可。</p>
-<p>shutdown.py如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">35</span>):</span><br><span class="line">    os.system(<span class="string">&#x27;pkill -f mplayer&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>可是难道我们每次关闭都要经过：打开电脑，进入<code>ssh</code>，然后<code>sudo -i</code>，然后执行<code>python xxx/xxx/shutdown.py</code>？要是这样，我就根本不想用这个闹钟了！</p>
-<p>突然想起之前刷B站时看到一个up主大概介绍了iOS的<strong>快捷指令</strong>！是可以运行脚本的！</p>
-<h2 id="三-ios快捷指令关闭"><a class="markdownIt-Anchor" href="#三-ios快捷指令关闭"></a> 三、iOS快捷指令关闭</h2>
-<p>设置路径：快捷指令主页右上角<code>+</code> – 添加操作 – 脚本 – 通过SSH运行脚本（一直往下拉） – 然后填好信息 – 保存指令<code>sudo python /home/clock/shutdown.py</code>。详细操作可查看下方图片。</p>
-<p>这样我们就可以每天通过快捷指令，直接关闭闹钟了。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201231173454629.png" alt="image-20201231173454629" style="zoom:33%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201231173544692.png" alt="image-20201231173544692" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201231173749629.png" alt="image-20201231173749629" style="zoom:50%;" />
-<h2 id="四-安卓怎么办"><a class="markdownIt-Anchor" href="#四-安卓怎么办"></a> 四、安卓怎么办？</h2>
-<p>我在酷安搜索<code>ssh</code>软件，一个都没有？但无意中发现有一个软件用于PC电脑的远程开关机，查看了一下简介，是通过<code>ssh</code>连接到电脑，然后执行关机指令的。那么同样的，也能用于执行我的<code>shutdown.py</code>！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201223225208634.png" alt="image-20201223225208634" style="zoom:33%;" />
-<br/>
-<p>填写好信息后，点击第三个按钮保存配置，然后点击第二个按钮就可以关闭闹钟了！</p>
-<p>还可以把关闭按钮添加在通知栏中，就可以更快速关闭闹钟了！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201223225549628.png" alt="image-20201223225549628" style="zoom:33%;" />
-]]></content>
-      <categories>
-        <category>智能闹钟</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>智能闹钟</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>智能闹钟（四）| 整合搭建</title>
     <url>/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>这是一个可以播放「网易云每日推荐歌曲」的闹钟，还可以给女朋友播报天气🌞☁️☔️</p>
@@ -1509,6 +1470,44 @@ Github中。</p>
 <p><a href="https://blog.tangspoon.cn/2020/12/22/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%89%EF%BC%89%7C%20%E4%BD%BF%E7%94%A8%E3%80%8C%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90NodeJS%E7%89%88API%E6%8E%A5%E5%8F%A3%E3%80%8D%E8%8E%B7%E5%8F%96%E6%AF%8F%E6%97%A5%E6%8E%A8%E8%8D%90%E6%AD%8C%E6%9B%B2/#more">智能闹钟（三）| 使用「网易云音乐 NodeJS 版 API 接口」播放每日推荐歌曲</a></p>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>智能闹钟（五）｜如何优雅地关闭闹钟？</title>
+    <url>/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223222003013.png" alt="image-20201223222003013" style="zoom:45%;" />
+<p>网上相关项目基本都是只有播放功能，没有写关闭音乐，这明显不符合我们真实的使用场景。而日常生活中我们最容易接触的工具是手机，那如何通过手机优雅地关闭闹钟呢？</p>
+<a id="more"></a>
+<h2 id="一-目录结构"><a class="markdownIt-Anchor" href="#一-目录结构"></a> 一、目录结构</h2>
+<p>在<code>clock</code>project内包含有5个脚本，<code>Netease.py</code>是主程序，<code>TextToVoice.py</code>用于文字转语音，<code>VolControl.py</code>实现渐入功能，<code>getWeather.py</code>用于获得每日天气，<code>shtudown.py</code>用于关闭闹钟。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201223184351927.png" alt="image-20201223184351927" style="zoom:50%;" />
+<h2 id="二-关闭闹钟思路"><a class="markdownIt-Anchor" href="#二-关闭闹钟思路"></a> 二、关闭闹钟思路</h2>
+<p>有人说关闭闹钟不就直接使用<code>pkill</code>命令结束掉mplayer进程不就可以了吗？但是，程序默认是循环播放32首歌曲+2次天气播报的，所以mplayer一共会执行34次。</p>
+<p>由此，我们也很容易可以得出解决方案：<code>pkill</code>34次mplayer即可。</p>
+<p>shutdown.py如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, <span class="number">35</span>):</span><br><span class="line">    os.system(<span class="string">&#x27;pkill -f mplayer&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>可是难道我们每次关闭都要经过：打开电脑，进入<code>ssh</code>，然后<code>sudo -i</code>，然后执行<code>python xxx/xxx/shutdown.py</code>？要是这样，我就根本不想用这个闹钟了！</p>
+<p>突然想起之前刷B站时看到一个up主大概介绍了iOS的<strong>快捷指令</strong>！是可以运行脚本的！</p>
+<h2 id="三-ios快捷指令关闭"><a class="markdownIt-Anchor" href="#三-ios快捷指令关闭"></a> 三、iOS快捷指令关闭</h2>
+<p>设置路径：快捷指令主页右上角<code>+</code> – 添加操作 – 脚本 – 通过SSH运行脚本（一直往下拉） – 然后填好信息 – 保存指令<code>sudo python /home/clock/shutdown.py</code>。详细操作可查看下方图片。</p>
+<p>这样我们就可以每天通过快捷指令，直接关闭闹钟了。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201231173454629.png" alt="image-20201231173454629" style="zoom:33%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201231173544692.png" alt="image-20201231173544692" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201231173749629.png" alt="image-20201231173749629" style="zoom:50%;" />
+<h2 id="四-安卓怎么办"><a class="markdownIt-Anchor" href="#四-安卓怎么办"></a> 四、安卓怎么办？</h2>
+<p>我在酷安搜索<code>ssh</code>软件，一个都没有？但无意中发现有一个软件用于PC电脑的远程开关机，查看了一下简介，是通过<code>ssh</code>连接到电脑，然后执行关机指令的。那么同样的，也能用于执行我的<code>shutdown.py</code>！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201223225208634.png" alt="image-20201223225208634" style="zoom:33%;" />
+<br/>
+<p>填写好信息后，点击第三个按钮保存配置，然后点击第二个按钮就可以关闭闹钟了！</p>
+<p>还可以把关闭按钮添加在通知栏中，就可以更快速关闭闹钟了！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201223225549628.png" alt="image-20201223225549628" style="zoom:33%;" />
 ]]></content>
       <categories>
         <category>树莓派</category>
@@ -1714,111 +1713,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>测试用例-基础知识</title>
-    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
-<a id="more"></a>
-<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
-<blockquote>
-<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
-</blockquote>
-<ol>
-<li>
-<p>测试用例是什么？</p>
-<p>测试用例是“一组输入、执行条件、预期结果”</p>
-</li>
-<li>
-<p>什么是一个好的测试用例？</p>
-<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
-</li>
-<li>
-<p>测试用例的预期结果不需要验证吗？</p>
-<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
-</li>
-</ol>
-<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
-<ol>
-<li>
-<p>指导测试的「实施」</p>
-<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
-</li>
-<li>
-<p>「规划」测试数据</p>
-<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
-</li>
-<li>
-<p>评估测试结果的度量基准</p>
-<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
-</li>
-</ol>
-<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
-<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
-<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
-<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
-<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
-<ol>
-<li>
-<p>分析需求，确定「输入」「数据类型」。</p>
-<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
-<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
-</li>
-<li>
-<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
-<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
-<p>2）「划分」有效等价类与无效等价类</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
-</li>
-<li>
-<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
-</li>
-<li>
-<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
-</li>
-</ol>
-<hr />
-<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
-<blockquote>
-<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
-</blockquote>
-<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
-<p>首先，得明白上点、离点、内点的概念。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
-<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
-<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
-<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
-<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
-<hr />
-<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
-<hr />
-<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
-<hr />
-<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
-<blockquote>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
-<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
-</ol>
-</blockquote>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>简单的“用户登陆”用例设计真的简单吗？</title>
     <url>/2020/11/01/%E7%AE%80%E5%8D%95%E7%9A%84%E2%80%9C%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86%E2%80%9D%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1%E7%9C%9F%E7%9A%84%E7%AE%80%E5%8D%95%E5%90%97%EF%BC%9F/</url>
     <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
@@ -1947,6 +1841,111 @@ Github中。</p>
 </ol>
 <blockquote>
 <p>一个优秀的测试工程师必须具有很宽广的知识面，如果你不能对被测系统的设计有深入的理解、不明白安全攻击的基本原理、没有掌握性能测试的基本设计方法，很难设计出“有的放矢”的测试用例。</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>测试用例-基础知识</title>
+    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
+<a id="more"></a>
+<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
+<blockquote>
+<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
+</blockquote>
+<ol>
+<li>
+<p>测试用例是什么？</p>
+<p>测试用例是“一组输入、执行条件、预期结果”</p>
+</li>
+<li>
+<p>什么是一个好的测试用例？</p>
+<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
+</li>
+<li>
+<p>测试用例的预期结果不需要验证吗？</p>
+<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
+</li>
+</ol>
+<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
+<ol>
+<li>
+<p>指导测试的「实施」</p>
+<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
+</li>
+<li>
+<p>「规划」测试数据</p>
+<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
+</li>
+<li>
+<p>评估测试结果的度量基准</p>
+<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
+</li>
+</ol>
+<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
+<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
+<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
+<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
+<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
+<ol>
+<li>
+<p>分析需求，确定「输入」「数据类型」。</p>
+<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
+<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
+</li>
+<li>
+<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
+<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
+<p>2）「划分」有效等价类与无效等价类</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
+</li>
+<li>
+<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
+</li>
+<li>
+<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
+</li>
+</ol>
+<hr />
+<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
+<blockquote>
+<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
+</blockquote>
+<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
+<p>首先，得明白上点、离点、内点的概念。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
+<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
+<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
+<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
+<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
+<hr />
+<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
+<hr />
+<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
+<hr />
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
+<blockquote>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
+<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
+</ol>
 </blockquote>
 ]]></content>
       <categories>
