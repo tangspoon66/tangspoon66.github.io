@@ -178,72 +178,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>JS学习笔记-02</title>
-    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
-    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
-<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
-<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
-<a id="more"></a>
-<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
-<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
-<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<ul>
-<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
-</ul>
-</blockquote>
-<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
-<p>请利用循环遍历数组中的每个名字</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
-<blockquote>
-<ul>
-<li>
-<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
-</li>
-<li>
-<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
-</li>
-</ul>
-</blockquote>
-<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
-<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
-<blockquote>
-<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
-</blockquote>
-<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
-<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
-<p>其他操作如下：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
-<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
-<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
-<p>重复元素在<code>Set</code>中自动被过滤：</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
-<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
-<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
-<p>通过<code>delete(key)</code>方法可以删除元素：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
-<blockquote>
-<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
-</blockquote>
-<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS学习笔记-01</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</url>
     <content><![CDATA[<p>基础的语法不再赘述，只强调以前未接触过的。</p>
@@ -352,6 +286,72 @@ Github中。</p>
 <figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xiaoming=&#123;</span><br><span class="line">  	name=<span class="string">&quot;小明&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;name&#x27;</span>); <span class="comment">//true</span></span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;toString&#x27;</span>); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS学习笔记-02</title>
+    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
+    <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
+<h4 id="for"><a class="markdownIt-Anchor" href="#for"></a> for</h4>
+<p><code>for</code>循环三个条件可省略，但如果无退出条件，则死循环。退出：break</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> x=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span>(;;)&#123;</span><br><span class="line">  <span class="keyword">if</span>(x&gt;<span class="number">100</span>)&#123;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  x++;</span><br><span class="line">&#125;</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<h4 id="forin"><a class="markdownIt-Anchor" href="#forin"></a> for…in</h4>
+<p>用处：主要服务于「对象（key）」，能枚举数组的索引与值（例二、例三）</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//例一</span></span><br><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(key); <span class="comment">//&#x27;name&#x27;  &#x27;age&#x27;  &#x27;school&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例二</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;name&#x27;</span>,<span class="string">&#x27;age&#x27;</span>,<span class="string">&#x27;sex&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(i); <span class="comment">//‘0’，‘1’，‘2‘</span></span><br><span class="line">  <span class="comment">/*为什么输出0，1，2？？因为数组也是对象，只是把下标当作key，元素是value。forin输出的是key，所以就012*/</span></span><br><span class="line">  <span class="comment">/*请注意，for ... in对Array的循环得到的是String而不是Number。*/</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//例三</span></span><br><span class="line"><span class="keyword">var</span> arr=[<span class="string">&#x27;A&#x27;</span>,<span class="string">&#x27;B&#x27;</span>,<span class="string">&#x27;C&#x27;</span>];</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> i <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i]); <span class="comment">//&#x27;A&#x27; &#x27;B&#x27; &#x27;C&#x27;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要过滤继承属性，使用day01学的<code>hasOwnProperty()</code>方法实现。例如：</p>
+<p>ps：或者使用<code>for...of</code>，这也是为什么设计<code>for...of</code>的原因之一。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> o=&#123;</span><br><span class="line">  name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">  age: <span class="number">12</span>,</span><br><span class="line">  school: <span class="string">&#x27;js&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> o)&#123;</span><br><span class="line">  <span class="keyword">if</span>(o.hasOwnProperty(key))&#123;  </span><br><span class="line">    <span class="built_in">console</span>.log(key);  <span class="comment">//不然会输出toString属性</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>hasOwnProperty()是「对象」使用的「方法」，所以是o.hasOwnProperty()，而方法处理的是「对象里面的属性<code>key</code>」</li>
+</ul>
+</blockquote>
+<h4 id="练习"><a class="markdownIt-Anchor" href="#练习"></a> 练习</h4>
+<p>请利用循环遍历数组中的每个名字</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="meta">&#x27;use strict&#x27;</span>; </span><br><span class="line"><span class="keyword">var</span> arr = [<span class="string">&#x27;Bart&#x27;</span>, <span class="string">&#x27;Lisa&#x27;</span>, <span class="string">&#x27;Adam&#x27;</span>];</span><br><span class="line"><span class="comment">//法1</span></span><br><span class="line"><span class="keyword">for</span>(<span class="keyword">var</span> key <span class="keyword">in</span> arr)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[key]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//法2</span></span><br><span class="line"><span class="keyword">var</span> i=arr.length<span class="number">-1</span>;</span><br><span class="line"><span class="keyword">while</span>(i&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">  <span class="built_in">console</span>.log(arr[i])</span><br><span class="line">  i--;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="forof"><a class="markdownIt-Anchor" href="#forof"></a> for…of</h3>
+<blockquote>
+<ul>
+<li>
+<p>for…in 循环主要是为了「遍历对象」（列出里面有什么属性。ps：不列value）而生，不适用于遍历数组。</p>
+</li>
+<li>
+<p>for…of 循环可以用来遍历数组、类数组对象，字符串、Set、Map 以及 Generator 对象</p>
+</li>
+</ul>
+</blockquote>
+<p>参考 <a href="https://www.zhangxinxu.com/wordpress/2018/08/for-in-es6-for-of/">张鑫旭大佬的文章</a></p>
+<h3 id="map和set"><a class="markdownIt-Anchor" href="#map和set"></a> Map和Set</h3>
+<blockquote>
+<p><code>Map</code>和<code>Set</code>是ES6标准新增的数据类型，请根据浏览器的支持情况决定是否要使用。</p>
+</blockquote>
+<h4 id="map"><a class="markdownIt-Anchor" href="#map"></a> Map</h4>
+<p><code>Map</code>是一组「键值对」的结构，具有极快的查找速度。例：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m <span class="keyword">new</span> <span class="built_in">Map</span>([<span class="string">&#x27;Micheal&#x27;</span>,<span class="number">95</span>],[<span class="string">&#x27;Bob&#x27;</span>,<span class="number">88</span>],[<span class="string">&#x27;Tracy&#x27;</span>,<span class="number">93</span>])</span><br><span class="line">m.get(<span class="string">&#x27;Micheal&#x27;</span>); <span class="comment">//返回的是95！</span></span><br><span class="line"><span class="comment">//注意⚠️ [&#x27;x&#x27;,y]中的x是键，y才是值，我们要get的是值，不是键值对的名字</span></span><br></pre></td></tr></table></figure>
+<p>其他操作如下：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> m= <span class="keyword">new</span> <span class="built_in">Map</span>();  <span class="comment">//新建空Map</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">100</span>);  <span class="comment">//添加新 key-value</span></span><br><span class="line">m.set(<span class="string">&#x27;tang&#x27;</span>,<span class="number">1</span>);  <span class="comment">//覆盖上面的100，返回1</span></span><br><span class="line">m.has(<span class="string">&#x27;tang&#x27;</span>);  <span class="comment">//返回true</span></span><br><span class="line">m.delete(<span class="string">&#x27;tang&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<h4 id="set"><a class="markdownIt-Anchor" href="#set"></a> Set</h4>
+<p>与<code>Map</code>不同，Set只存「key」，不存「value」。key不能重复。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 = <span class="keyword">new</span> <span class="built_in">Set</span>(); <span class="comment">// 空Set</span></span><br><span class="line"><span class="keyword">var</span> s2 = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]); <span class="comment">// 含1, 2, 3</span></span><br></pre></td></tr></table></figure>
+<p>重复元素在<code>Set</code>中自动被过滤：</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="keyword">new</span> <span class="built_in">Set</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="string">&#x27;3&#x27;</span>]);</span><br><span class="line">s; <span class="comment">// Set &#123;1, 2, 3, &quot;3&quot;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>注意数字<code>3</code>和字符串<code>'3'</code>是不同的元素。</p>
+<p>通过<code>add(key)</code>方法可以添加元素到<code>Set</code>中，可以重复添加，但不会有效果：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3, 4&#125;</span><br><span class="line">s.add(4);</span><br><span class="line">s; &#x2F;&#x2F; 仍然是 Set &#123;1, 2, 3, 4&#125;</span><br></pre></td></tr></table></figure>
+<p>通过<code>delete(key)</code>方法可以删除元素：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var s &#x3D; new Set([1, 2, 3]);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2, 3&#125;</span><br><span class="line">s.delete(3);</span><br><span class="line">s; &#x2F;&#x2F; Set &#123;1, 2&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="iterable-forof"><a class="markdownIt-Anchor" href="#iterable-forof"></a> iterable &amp; for…of</h3>
+<blockquote>
+<p><code>Array</code>可以下标循环，但遍历<code>Map</code> 和<code>Set</code>就无法使用下标。为了统一集合类型，ES6引入了<code>iterable</code>类型，<code>Array</code> 、<code>Map</code>和<code>Set</code> 都属于<code>iterable</code>类型。</p>
+</blockquote>
+<p>具有<code>iterable</code>类型的「集合」，可以通过<code>for...of</code>循环来遍历</p>
 ]]></content>
       <categories>
         <category>JavaScript</category>
@@ -568,26 +568,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/10/13/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<a id="more"></a>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-  </entry>
-  <entry>
     <title>Python中的init()到底怎么理解？</title>
     <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
@@ -611,6 +591,26 @@ Github中。</p>
       <tags>
         <tag>Python</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/10/13/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<a id="more"></a>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>个人理解TCP/IP</title>
@@ -746,58 +746,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>后盾人MySQL-多表操作</title>
-    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<blockquote>
-<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
-<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
-<ul>
-<li>查询一班的所有同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一班的所有女生发表的文章</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>哪个班级发表的文章超过两篇</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级文章的总点击数与平均点击数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级有多少同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
-<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
-<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
-<ul>
-<li>学生人数大于两个的班级名称</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
-<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
-<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
-<p>获取没有设置QQ的用户</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>MySQL</category>
-      </categories>
-      <tags>
-        <tag>MySQL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>后盾人MySQL-基本操作</title>
     <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
     <content><![CDATA[<blockquote>
@@ -906,6 +854,58 @@ Github中。</p>
 <li>添加多条件记录</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">insert into stu(sname,class_id,age) values(&#39;小明&#39;,2,32),(&#39;小张&#39;,3,45);</span><br><span class="line"># 注意不要忘了values</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>后盾人MySQL-多表操作</title>
+    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<blockquote>
+<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
+<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
+<ul>
+<li>查询一班的所有同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一班的所有女生发表的文章</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>哪个班级发表的文章超过两篇</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级文章的总点击数与平均点击数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级有多少同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
+<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
+<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
+<ul>
+<li>学生人数大于两个的班级名称</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
+<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
+<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
+<p>获取没有设置QQ的用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>MySQL</category>
@@ -1080,6 +1080,20 @@ Github中。</p>
       </categories>
       <tags>
         <tag>troubleshooting</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用一键脚本记录</title>
+    <url>/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<h1 id="常用一键脚本记录"><a class="markdownIt-Anchor" href="#常用一键脚本记录"></a> 常用一键脚本记录</h1>
+<p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p>
+<h2 id="1-添加swap"><a class="markdownIt-Anchor" href="#1-添加swap"></a> 1. 添加swap</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure>
+<h2 id="2-lnmp一键可选择安装"><a class="markdownIt-Anchor" href="#2-lnmp一键可选择安装"></a> 2. lnmp一键可选择安装</h2>
+<p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>
+]]></content>
+      <tags>
         <tag>linux</tag>
       </tags>
   </entry>
@@ -1477,28 +1491,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>树莓派开启crontab日志</title>
-    <url>/2020/12/22/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223205438951.png" alt="image-20201223205438951" style="zoom:40%;" />
-<a id="more"></a>
-<p>今天的树莓派闹钟情况有点问题，想查看一下crontab任务完成情况，结果找了半天找不到log。原来是树莓派系统默认禁止了生成日志文件。解决办法也很简单。</p>
-<br/>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;rsyslog.conf</span><br></pre></td></tr></table></figure>
-<p>在文件中找到：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.*                     &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
-<p>把<code>#</code>去掉，然后’esc’，输入<code>:wq</code></p>
-<p>输入一下代码重新启动日志服务</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo service rsyslog restart</span><br></pre></td></tr></table></figure>
-<p>执行一个crontab任务，再到<code>/var/log/cron.log</code>就可以查看到执行情况</p>
-<hr />
-<p>参考资料：</p>
-<p><a href="https://my.oschina.net/u/4341499/blog/4280350">https://my.oschina.net/u/4341499/blog/4280350</a></p>
-]]></content>
-      <categories>
-        <category>树莓派</category>
-      </categories>
-  </entry>
-  <entry>
     <title>智能闹钟（四）| 整合搭建</title>
     <url>/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>这是一个可以播放「网易云每日推荐歌曲」的闹钟，还可以给女朋友播报天气🌞☁️☔️</p>
@@ -1575,6 +1567,28 @@ Github中。</p>
         <tag>树莓派</tag>
         <tag>Python</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>树莓派开启crontab日志</title>
+    <url>/2020/12/22/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223205438951.png" alt="image-20201223205438951" style="zoom:40%;" />
+<a id="more"></a>
+<p>今天的树莓派闹钟情况有点问题，想查看一下crontab任务完成情况，结果找了半天找不到log。原来是树莓派系统默认禁止了生成日志文件。解决办法也很简单。</p>
+<br/>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;rsyslog.conf</span><br></pre></td></tr></table></figure>
+<p>在文件中找到：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.*                     &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
+<p>把<code>#</code>去掉，然后’esc’，输入<code>:wq</code></p>
+<p>输入一下代码重新启动日志服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo service rsyslog restart</span><br></pre></td></tr></table></figure>
+<p>执行一个crontab任务，再到<code>/var/log/cron.log</code>就可以查看到执行情况</p>
+<hr />
+<p>参考资料：</p>
+<p><a href="https://my.oschina.net/u/4341499/blog/4280350">https://my.oschina.net/u/4341499/blog/4280350</a></p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
   </entry>
   <entry>
     <title>格式化时间</title>
@@ -1750,6 +1764,111 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>测试用例-基础知识</title>
+    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
+    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
+<a id="more"></a>
+<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
+<blockquote>
+<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
+</blockquote>
+<ol>
+<li>
+<p>测试用例是什么？</p>
+<p>测试用例是“一组输入、执行条件、预期结果”</p>
+</li>
+<li>
+<p>什么是一个好的测试用例？</p>
+<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
+</li>
+<li>
+<p>测试用例的预期结果不需要验证吗？</p>
+<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
+</li>
+</ol>
+<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
+<ol>
+<li>
+<p>指导测试的「实施」</p>
+<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
+</li>
+<li>
+<p>「规划」测试数据</p>
+<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
+</li>
+<li>
+<p>评估测试结果的度量基准</p>
+<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
+</li>
+</ol>
+<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
+<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
+<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
+<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
+<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
+<ol>
+<li>
+<p>分析需求，确定「输入」「数据类型」。</p>
+<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
+<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
+</li>
+<li>
+<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
+<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
+<p>2）「划分」有效等价类与无效等价类</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
+</li>
+<li>
+<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
+</li>
+<li>
+<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
+</li>
+</ol>
+<hr />
+<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
+<blockquote>
+<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
+</blockquote>
+<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
+<p>首先，得明白上点、离点、内点的概念。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
+<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
+<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
+<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
+<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
+<hr />
+<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
+<hr />
+<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
+<hr />
+<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
+<blockquote>
+<p>参考资料：</p>
+<ol>
+<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
+<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>简单的“用户登陆”用例设计真的简单吗？</title>
     <url>/2020/11/01/%E7%AE%80%E5%8D%95%E7%9A%84%E2%80%9C%E7%94%A8%E6%88%B7%E7%99%BB%E9%99%86%E2%80%9D%E7%94%A8%E4%BE%8B%E8%AE%BE%E8%AE%A1%E7%9C%9F%E7%9A%84%E7%AE%80%E5%8D%95%E5%90%97%EF%BC%9F/</url>
     <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
@@ -1878,111 +1997,6 @@ Github中。</p>
 </ol>
 <blockquote>
 <p>一个优秀的测试工程师必须具有很宽广的知识面，如果你不能对被测系统的设计有深入的理解、不明白安全攻击的基本原理、没有掌握性能测试的基本设计方法，很难设计出“有的放矢”的测试用例。</p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>测试用例-基础知识</title>
-    <url>/2020/11/16/%E6%B5%8B%E8%AF%95%E7%94%A8%E4%BE%8B-%E5%9F%BA%E7%A1%80%E7%9F%A5%E8%AF%86/</url>
-    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>很多人说功能测试只是“点点点”，根本不是一门技术活。但实际上，“点点点”靠的是前期测试设计阶段生成的相应文档：《测试用例》。可以说，测试用例是功能测试的核心。在这里，我们来了解一下测试用例的相关知识。</p>
-<a id="more"></a>
-<h2 id="测试用例-误区"><a class="markdownIt-Anchor" href="#测试用例-误区"></a> 测试用例-误区</h2>
-<blockquote>
-<p>首先，我们深刻理解测试用例的基本概念，打牢根基对日后cases的编写应该很有帮助。</p>
-</blockquote>
-<ol>
-<li>
-<p>测试用例是什么？</p>
-<p>测试用例是“一组输入、执行条件、预期结果”</p>
-</li>
-<li>
-<p>什么是一个好的测试用例？</p>
-<p>“能发现当前未发现的缺陷的用例就是一个好的用例。”当然是这样的，但是我们要注意，不要盲目片面地去设计出“难以发现的缺陷”，忘了测试的存在。测试用例实际上是个集合，所以对它的评价也只能对cases的集合来进行。作为测试依据的测试用例，必须要能完整覆盖「测试需求」，而不应该针对单个的测试用例去评判好坏。</p>
-</li>
-<li>
-<p>测试用例的预期结果不需要验证吗？</p>
-<p>比如我们测试一个论坛的更改昵称的功能，我们的预期结果不应该仅仅只有“昵称更改成功”，还应该包含着对预期结果的验证：在数据库中执行查询语句，看查询结果是否与预期一致。</p>
-</li>
-</ol>
-<h2 id="测试用例-作用"><a class="markdownIt-Anchor" href="#测试用例-作用"></a> 测试用例-作用</h2>
-<ol>
-<li>
-<p>指导测试的「实施」</p>
-<p>整个整个测试过程分成好几个阶段，每个阶段都有不同优先级与重要级的cases。</p>
-</li>
-<li>
-<p>「规划」测试数据</p>
-<p>在实践中，数据和用例是分开的。按照测试用例配备一组或若干组测试「原始数据」，以及标准测试结果。除正常数据之外，还必须根据测试用例设计大量的「边缘数据」和「错误数据」。</p>
-</li>
-<li>
-<p>评估测试结果的度量基准</p>
-<p>在测试执行阶段完成后，我们得进行测试结果的评估，然后编写测试报告。做大部分的判断都是需要量化的结果的，测试也不例外。我们怎么判断一个软件的质量如何呢？测试用例就能给我们提供帮助。我们可以用测试用例中统计出测试覆盖率、测试合格率、重要测试合格率等等。</p>
-</li>
-</ol>
-<h2 id="测试用例-设计方法"><a class="markdownIt-Anchor" href="#测试用例-设计方法"></a> 测试用例-设计方法</h2>
-<h3 id="等价类划分"><a class="markdownIt-Anchor" href="#等价类划分"></a> 等价类划分</h3>
-<h4 id="输入数据的划分方式可以从哪几个方面划分"><a class="markdownIt-Anchor" href="#输入数据的划分方式可以从哪几个方面划分"></a> 输入数据的划分方式（可以从哪几个方面划分？）</h4>
-<p>输入数据的「个数、集合、规则、取值范围、布尔值」。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116115530110.png" alt="image-20201116115530110" style="zoom:50%;" />
-<h4 id="设计测试用例的步骤"><a class="markdownIt-Anchor" href="#设计测试用例的步骤"></a> 设计测试用例的步骤</h4>
-<ol>
-<li>
-<p>分析需求，确定「输入」「数据类型」。</p>
-<p>例如，固定电话号码的测试，固话号码的输入为：区号+电话号，前者的数据类型为：3/4位的数字，后者的类型为：7/8位的电话号。</p>
-<p><strong>所以，分析需求，得从输入与数据类型两个维度来看。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116122413990.png" alt="image-20201116122413990" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116123007606.png" alt="image-20201116123007606" style="zoom:50%;" />
-</li>
-<li>
-<p>根据「输入规则」，使用上面的划分方式效&amp;无效等价类</p>
-<p>1）规则列表（可以从长度，集合，规则，取之范围……来看）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140515364.png" alt="image-20201116140515364" style="zoom:50%;" />
-<p>2）「划分」有效等价类与无效等价类</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116140757649.png" alt="image-20201116140757649" style="zoom:50%;" />
-</li>
-<li>
-<p>设计用例，覆盖有效等价类（一条用例尽可能多的覆盖有效等价类）</p>
-</li>
-<li>
-<p>设计用例，覆盖无效等价类（一条用例只能覆盖一条无效等价类）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116141015502.png" alt="image-20201116141015502" style="zoom:50%;" />
-</li>
-</ol>
-<hr />
-<h3 id="边界值"><a class="markdownIt-Anchor" href="#边界值"></a> 边界值</h3>
-<blockquote>
-<p>边界值分析法一般是搭配「等价类划分」使用来设计测试用例</p>
-</blockquote>
-<h4 id="基本概念"><a class="markdownIt-Anchor" href="#基本概念"></a> 基本概念</h4>
-<p>首先，得明白上点、离点、内点的概念。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116142302992.png" alt="image-20201116142302992" style="zoom:50%;" />
-<h4 id="什么时候用边界值"><a class="markdownIt-Anchor" href="#什么时候用边界值"></a> 什么时候用边界值？</h4>
-<p>在使用「等价类划分」时，划分有效&amp;无效等价类这一步时，要结合边界值来设计测试用例。</p>
-<p>还是以固话号码为例。区号长度3/4位，上点：3、4，离点：2、5，内点：3/4（与上点重复）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116144337242.png" alt="image-20201116144337242" style="zoom:50%;" />
-<p>所以，在设计测试用例时，“3. 以0开头的小于3位的数字（离点：2位）”设计成“01（2位，而不是1位） 1234567”。</p>
-<hr />
-<h3 id="判定表法"><a class="markdownIt-Anchor" href="#判定表法"></a> 判定表法</h3>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201116145508305.png" alt="image-20201116145508305" style="zoom:50%;" />
-<hr />
-<h3 id="因果图"><a class="markdownIt-Anchor" href="#因果图"></a> 因果图</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150217436.png" alt="image-20201116150217436" /></p>
-<hr />
-<h3 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h3>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201116150700289.png" alt="image-20201116150700289" /></p>
-<blockquote>
-<p>参考资料：</p>
-<ol>
-<li><a href="https://www.bilibili.com/video/BV1QJ411g7nR?p=8">https://www.bilibili.com/video/BV1QJ411g7nR?p=8</a></li>
-<li><a href="https://www.cnblogs.com/kuihua/p/5925092.html">https://www.cnblogs.com/kuihua/p/5925092.html</a></li>
-</ol>
 </blockquote>
 ]]></content>
       <categories>
