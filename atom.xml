@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2021-12-05T04:08:25.121Z</updated>
+  <updated>2021-12-05T04:14:31.153Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -21,21 +21,19 @@
     <link href="https://blog.tangspoon.cn/2021/12/05/%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8%E7%94%B5%E8%A7%86%E7%9B%92%E5%AD%90%E5%88%B7%E6%9C%BA%EF%BD%9C%E5%BD%93%E8%B4%9D%E5%B8%82%E5%9C%BA%E9%9A%8F%E4%BE%BF%E8%A3%85APP/"/>
     <id>https://blog.tangspoon.cn/2021/12/05/%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8%E7%94%B5%E8%A7%86%E7%9B%92%E5%AD%90%E5%88%B7%E6%9C%BA%EF%BD%9C%E5%BD%93%E8%B4%9D%E5%B8%82%E5%9C%BA%E9%9A%8F%E4%BE%BF%E8%A3%85APP/</id>
     <published>2021-12-05T03:08:01.000Z</published>
-    <updated>2021-12-05T04:08:25.121Z</updated>
+    <updated>2021-12-05T04:14:31.153Z</updated>
     
-    <content type="html"><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205120819625.png" alt="image-20211205120819625" /></p><h2 id="一-下载固件"><a class="markdownIt-Anchor" href="#一-下载固件"></a> 一、下载固件</h2><blockquote><p>这一步非常重要，搞不好会变砖。</p></blockquote><h3 id="1-确定机型"><a class="markdownIt-Anchor" href="#1-确定机型"></a> 1. 确定机型</h3><p>我的是：魔百盒CM201-2</p><p><img src="https://picbed.tangspoon.cn/uPic/IMG_3714.JPG" alt="IMG_3714" /></p><h3 id="2-确定芯片型号可跳过但有风险"><a class="markdownIt-Anchor" href="#2-确定芯片型号可跳过但有风险"></a> 2. 确定芯片型号（可跳过，但有风险）</h3><blockquote><p>为什么可跳过呢？因为会有一些型号通刷包，就像我这个CM201-2就有，但可能会有变砖风险。</p></blockquote><p>这一步需要拆开外壳，拧开两个隐藏在脚垫的螺丝就行。我的板子型号：M8273。</p><p><img src="https://picbed.tangspoon.cn/uPic/IMG_3595%25202.JPG" alt="IMG_3595 2" /></p><h3 id="3-寻找-下载固件"><a class="markdownIt-Anchor" href="#3-寻找-下载固件"></a> 3. 寻找、下载固件</h3><p>带着机型、板子型号到搜索引擎搜索固件。在这里给两个比较靠谱的论坛：</p><p>小白刷机网「免费」：<a href="http://xiaobaishuaji.com/">http://xiaobaishuaji.com/</a></p><p>智能电视网「大多付费，但信息多」：<a href="https://www.znds.com/">https://www.znds.com/</a></p><p>麒麟刷机网「内容非常详尽」：<a href="https://www.szjytx.com/">https://www.szjytx.com/</a></p><h3 id="4-后路"><a class="markdownIt-Anchor" href="#4-后路"></a> 4. 后路</h3><p>是在找不到固件的话，可以加入上面三个论坛的交流群，会有很多大佬直接甩个链接给你下载。</p><p>我进了一个「魔百盒（IPTV盒子）技」，群号：517426928，氛围很好。（无广告哈）</p><img src="https://picbed.tangspoon.cn/uPic/image-20211205113956266.png" alt="image-20211205113956266" style="zoom:50%;" /><blockquote><p>CM201-2 ZG M8273版本的固件</p><p>百度云下载链接：<a href="https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY">https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY</a> 提取码：5nir</p><p>115：<a href="https://115.com/s/sw3vijh3z1i#">https://115.com/s/sw3vijh3z1i#</a>    访问码：ra18</p><p>腾讯微云：<a href="https://share.weiyun.com/yXW7Czpr">https://share.weiyun.com/yXW7Czpr</a> 密码：o9tkro</p></blockquote><h2 id="二-备份原版固件可跳过"><a class="markdownIt-Anchor" href="#二-备份原版固件可跳过"></a> 二、备份原版固件（可跳过）</h2><p>这一步我是跳过了的，因为需要ttl备份，花的时间太多，而且看了一下闲鱼这种破解好的机顶盒才几十一个。变砖了也不心疼。</p><p>相关备份有很多教程，每个型号都不一样，请自行搜索。</p><h2 id="三-开始刷机"><a class="markdownIt-Anchor" href="#三-开始刷机"></a> 三、开始刷机</h2><blockquote><ol><li>准备一个8G或以下的U盘</li><li>不要看刷机包里面的教程！！有问题！！</li></ol></blockquote><h3 id="1-文件处理"><a class="markdownIt-Anchor" href="#1-文件处理"></a> 1. 文件处理</h3><p>解压文件包后，如下。（第一个文件夹只有两个文件）</p><p><img src="https://picbed.tangspoon.cn/uPic/image-20211205114147760.png" alt="image-20211205114147760" /></p><blockquote><p>这里一定要按照我的步骤操作，<strong>不要</strong>看压缩包里面的“免拆刷机步骤.txt”</p></blockquote><p>在U盘中新建一个LOST.DIR的文件夹，然后把上图中第一个文件夹里面的“full-CM201-2-002.460.006-20180324120441.zip”复制到U盘里刚刚新建的LOST.DIR里面，然后把update.zip直接复制在U盘根目录。（如下）</p><p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-04-20211205110830145.jpg" alt="Xnip2021-12-03_23-07-04" /></p><p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-14.jpg" alt="Xnip2021-12-03_23-07-14" /></p><h3 id="2-机顶盒操作刷机"><a class="markdownIt-Anchor" href="#2-机顶盒操作刷机"></a> 2. 机顶盒操作刷机</h3><p>盒子开机，连续顺序点按遥控菜单键和音量减键，进入Recovery刷机模式。</p><p>选择从u盘刷入full-CM201-2-002.460.006-20180324120441.zip。</p><p>刷完机后重新启动机器，按遥控器的<strong>设置按钮</strong>。</p><p>无线/有线连接网络，查看网络信息，记下盒子的IP地址。（这一步可以直接路由器中查看盒子的ip）</p><p>运行免拆目录里的-双击执行-文件，按要求输入盒子IP地址。（这一步尽量用Windows系统电脑，因为macOS电脑好像会有问题）</p><p>批处理执行完毕后，盒子重启自动刷机直至完毕。</p><p><img src="https://picbed.tangspoon.cn/uPic/IMG_3715.JPG" alt="IMG_3715" /></p><h2 id="四-唠叨几句"><a class="markdownIt-Anchor" href="#四-唠叨几句"></a> 四、唠叨几句</h2><p>刷机有风险，看自己承受能力折腾。</p><p>魔百盒有很多代工厂，每个配件可能都会不一样，都会导致刷机的失败。所以，尽量找那种和所有硬件信息（cpu、wifi模块、闪存类型……）都匹配的固件。</p><p>刷机过程可能不会和教程一模一样，就自己理解整个流程，灵活变通一下吧。而且反正几十块一个而已，变砖了大不了重新买一个，大胆搞，学多点东西。</p><p>（我要看人生一串去了）</p><p><img src="https://picbed.tangspoon.cn/uPic/IMG_3716.JPG" alt="IMG_3716" /></p>]]></content>
+    <content type="html"><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205120819625.png" alt="image-20211205120819625" /></p><a id="more"></a><h2 id="一-下载固件"><a class="markdownIt-Anchor" href="#一-下载固件"></a> 一、下载固件</h2><blockquote><p>这一步非常重要，搞不好会变砖。</p></blockquote><h3 id="1-确定机型"><a class="markdownIt-Anchor" href="#1-确定机型"></a> 1. 确定机型</h3><p>我的是：魔百盒CM201-2</p><p><img src="https://picbed.tangspoon.cn/uPic/IMG_3714.JPG" alt="IMG_3714" /></p><h3 id="2-确定芯片型号可跳过但有风险"><a class="markdownIt-Anchor" href="#2-确定芯片型号可跳过但有风险"></a> 2. 确定芯片型号（可跳过，但有风险）</h3><blockquote><p>为什么可跳过呢？因为会有一些型号通刷包，就像我这个CM201-2就有，但可能会有变砖风险。</p></blockquote><p>这一步需要拆开外壳，拧开两个隐藏在脚垫的螺丝就行。我的板子型号：M8273。</p><p><img src="https://picbed.tangspoon.cn/uPic/image-20211205121237365.png" alt="image-20211205121237365" /></p><h3 id="3-寻找-下载固件"><a class="markdownIt-Anchor" href="#3-寻找-下载固件"></a> 3. 寻找、下载固件</h3><p>带着机型、板子型号到搜索引擎搜索固件。在这里给两个比较靠谱的论坛：</p><p>小白刷机网「免费」：<a href="http://xiaobaishuaji.com/">http://xiaobaishuaji.com/</a></p><p>智能电视网「大多付费，但信息多」：<a href="https://www.znds.com/">https://www.znds.com/</a></p><p>麒麟刷机网「内容非常详尽」：<a href="https://www.szjytx.com/">https://www.szjytx.com/</a></p><h3 id="4-后路"><a class="markdownIt-Anchor" href="#4-后路"></a> 4. 后路</h3><p>是在找不到固件的话，可以加入上面三个论坛的交流群，会有很多大佬直接甩个链接给你下载。</p><p>我进了一个「魔百盒（IPTV盒子）技」，群号：517426928，氛围很好。（无广告哈）</p><img src="https://picbed.tangspoon.cn/uPic/image-20211205113956266.png" alt="image-20211205113956266" style="zoom:50%;" /><blockquote><p>CM201-2 ZG M8273版本的固件</p><p>百度云下载链接：<a href="https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY">https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY</a> 提取码：5nir</p><p>115：<a href="https://115.com/s/sw3vijh3z1i#">https://115.com/s/sw3vijh3z1i#</a>    访问码：ra18</p><p>腾讯微云：<a href="https://share.weiyun.com/yXW7Czpr">https://share.weiyun.com/yXW7Czpr</a> 密码：o9tkro</p></blockquote><h2 id="二-备份原版固件可跳过"><a class="markdownIt-Anchor" href="#二-备份原版固件可跳过"></a> 二、备份原版固件（可跳过）</h2><p>这一步我是跳过了的，因为需要ttl备份，花的时间太多，而且看了一下闲鱼这种破解好的机顶盒才几十一个。变砖了也不心疼。</p><p>相关备份有很多教程，每个型号都不一样，请自行搜索。</p><h2 id="三-开始刷机"><a class="markdownIt-Anchor" href="#三-开始刷机"></a> 三、开始刷机</h2><blockquote><ol><li>准备一个8G或以下的U盘</li><li>不要看刷机包里面的教程！！有问题！！</li></ol></blockquote><h3 id="1-文件处理"><a class="markdownIt-Anchor" href="#1-文件处理"></a> 1. 文件处理</h3><p>解压文件包后，如下。（第一个文件夹只有两个文件）</p><p><img src="https://picbed.tangspoon.cn/uPic/image-20211205114147760.png" alt="image-20211205114147760" /></p><blockquote><p>这里一定要按照我的步骤操作，<strong>不要</strong>看压缩包里面的“免拆刷机步骤.txt”</p></blockquote><p>在U盘中新建一个LOST.DIR的文件夹，然后把上图中第一个文件夹里面的“full-CM201-2-002.460.006-20180324120441.zip”复制到U盘里刚刚新建的LOST.DIR里面，然后把update.zip直接复制在U盘根目录。（如下）</p><p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-04-20211205110830145.jpg" alt="Xnip2021-12-03_23-07-04" /></p><p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-14.jpg" alt="Xnip2021-12-03_23-07-14" /></p><h3 id="2-机顶盒操作刷机"><a class="markdownIt-Anchor" href="#2-机顶盒操作刷机"></a> 2. 机顶盒操作刷机</h3><p>盒子开机，连续顺序点按遥控菜单键和音量减键，进入Recovery刷机模式。</p><p>选择从u盘刷入full-CM201-2-002.460.006-20180324120441.zip。</p><p>刷完机后重新启动机器，按遥控器的<strong>设置按钮</strong>。</p><p>无线/有线连接网络，查看网络信息，记下盒子的IP地址。（这一步可以直接路由器中查看盒子的ip）</p><p>运行免拆目录里的-双击执行-文件，按要求输入盒子IP地址。（这一步尽量用Windows系统电脑，因为macOS电脑好像会有问题）</p><p>批处理执行完毕后，盒子重启自动刷机直至完毕。</p><p><img src="https://picbed.tangspoon.cn/uPic/IMG_3715.JPG" alt="IMG_3715" /></p><h2 id="四-唠叨几句"><a class="markdownIt-Anchor" href="#四-唠叨几句"></a> 四、唠叨几句</h2><p>刷机有风险，看自己承受能力折腾。</p><p>魔百盒有很多代工厂，每个配件可能都会不一样，都会导致刷机的失败。所以，尽量找那种和所有硬件信息（cpu、wifi模块、闪存类型……）都匹配的固件。</p><p>刷机过程可能不会和教程一模一样，就自己理解整个流程，灵活变通一下吧。而且反正几十块一个而已，变砖了大不了重新买一个，大胆搞，学多点东西。</p><p>（我要看人生一串去了）</p><p><img src="https://picbed.tangspoon.cn/uPic/IMG_3716.JPG" alt="IMG_3716" /></p>]]></content>
     
     
-      
-      
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20211205120819625.png&quot; alt=&quot;image-20211205120819625&quot; /&gt;&lt;/p&gt;
-&lt;h2 id=&quot;一-下载固件&quot;&gt;&lt;a class=&quot;ma</summary>
-      
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20211205120819625.png&quot; alt=&quot;image-20211205120819625&quot; /&gt;&lt;/p&gt;</summary>
     
     
     
+    <category term="硬件" scheme="https://blog.tangspoon.cn/categories/%E7%A1%AC%E4%BB%B6/"/>
     
-    <category term="-硬件" scheme="https://blog.tangspoon.cn/tags/%E7%A1%AC%E4%BB%B6/"/>
+    
+    <category term="硬件" scheme="https://blog.tangspoon.cn/tags/%E7%A1%AC%E4%BB%B6/"/>
     
   </entry>
   
@@ -44,7 +42,7 @@
     <link href="https://blog.tangspoon.cn/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/"/>
     <id>https://blog.tangspoon.cn/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/</id>
     <published>2021-12-05T02:51:05.000Z</published>
-    <updated>2021-12-05T03:05:27.693Z</updated>
+    <updated>2021-12-05T04:14:48.473Z</updated>
     
     <content type="html"><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205110525139.png" alt="image-20211205110525139" /></p><p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p><h2 id="1-添加swap"><a class="markdownIt-Anchor" href="#1-添加swap"></a> 1. 添加swap</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure><h2 id="2-lnmp一键可选择安装"><a class="markdownIt-Anchor" href="#2-lnmp一键可选择安装"></a> 2. lnmp一键可选择安装</h2><p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>]]></content>
     
@@ -80,9 +78,9 @@
     <category term="树莓派" scheme="https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
     
     
-    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
-    
     <category term="树莓派" scheme="https://blog.tangspoon.cn/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
     
   </entry>
   
@@ -126,9 +124,9 @@
     <category term="树莓派" scheme="https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
     
     
-    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
-    
     <category term="树莓派" scheme="https://blog.tangspoon.cn/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
     
   </entry>
   
@@ -149,9 +147,9 @@
     <category term="树莓派" scheme="https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
     
     
-    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
-    
     <category term="树莓派" scheme="https://blog.tangspoon.cn/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
     
   </entry>
   
@@ -213,9 +211,9 @@
     <category term="树莓派" scheme="https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
     
     
-    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
-    
     <category term="树莓派" scheme="https://blog.tangspoon.cn/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"/>
+    
+    <category term="Python" scheme="https://blog.tangspoon.cn/tags/Python/"/>
     
   </entry>
   
