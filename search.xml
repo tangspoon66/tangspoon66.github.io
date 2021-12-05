@@ -1086,7 +1086,7 @@ Github中。</p>
   <entry>
     <title>常用一键脚本记录</title>
     <url>/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<h1 id="常用一键脚本记录"><a class="markdownIt-Anchor" href="#常用一键脚本记录"></a> 常用一键脚本记录</h1>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205110525139.png" alt="image-20211205110525139" /></p>
 <p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p>
 <h2 id="1-添加swap"><a class="markdownIt-Anchor" href="#1-添加swap"></a> 1. 添加swap</h2>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure>

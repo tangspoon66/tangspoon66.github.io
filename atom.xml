@@ -6,7 +6,7 @@
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.tangspoon.cn/"/>
-  <updated>2021-12-05T02:58:55.038Z</updated>
+  <updated>2021-12-05T03:05:27.693Z</updated>
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
@@ -21,16 +21,15 @@
     <link href="https://blog.tangspoon.cn/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/"/>
     <id>https://blog.tangspoon.cn/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/</id>
     <published>2021-12-05T02:51:05.000Z</published>
-    <updated>2021-12-05T02:58:55.038Z</updated>
+    <updated>2021-12-05T03:05:27.693Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="常用一键脚本记录"><a class="markdownIt-Anchor" href="#常用一键脚本记录"></a> 常用一键脚本记录</h1><p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p><h2 id="1-添加swap"><a class="markdownIt-Anchor" href="#1-添加swap"></a> 1. 添加swap</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure><h2 id="2-lnmp一键可选择安装"><a class="markdownIt-Anchor" href="#2-lnmp一键可选择安装"></a> 2. lnmp一键可选择安装</h2><p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>]]></content>
+    <content type="html"><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205110525139.png" alt="image-20211205110525139" /></p><p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p><h2 id="1-添加swap"><a class="markdownIt-Anchor" href="#1-添加swap"></a> 1. 添加swap</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure><h2 id="2-lnmp一键可选择安装"><a class="markdownIt-Anchor" href="#2-lnmp一键可选择安装"></a> 2. lnmp一键可选择安装</h2><p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>]]></content>
     
     
       
       
-    <summary type="html">&lt;h1 id=&quot;常用一键脚本记录&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#常用一键脚本记录&quot;&gt;&lt;/a&gt; 常用一键脚本记录&lt;/h1&gt;
-&lt;p&gt;linux有非常多好用的一键脚本加快效率，在此做个记录。&lt;/p&gt;
-&lt;h2 id=&quot;1-添加swap&quot;&gt;&lt;a </summary>
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://picbed.tangspoon.cn/uPic/image-20211205110525139.png&quot; alt=&quot;image-20211205110525139&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;linux有非常多好用的一键脚本加快效率，在此做个</summary>
       
     
     
