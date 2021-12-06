@@ -1,101 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>About POM</title>
-    <url>/2020/12/04/About-POM/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
-<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
-<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
-<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
-<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
-<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
-<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
-<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
-<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
-<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
-<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
-<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
-<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
-<ol>
-<li>
-<p>使用unittest重新整合TestUnit部分</p>
-</li>
-<li>
-<p>加入流程异常捕捉断言测试。</p>
-<p>在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
-</li>
-<li>
-<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
-</li>
-</ol>
-<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
-<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
-Github中。</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>About unittest</title>
-    <url>/2020/12/04/About-unittest/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
-<p>该部分内容极为简单，不再赘述。</p>
-<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
-<ul>
-<li>作用：把测试用例组合到一起</li>
-<li>TestSuite()是一个类，需要实例化使用。</li>
-</ul>
-<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
-<p>格式：addTest(测试类名(‘测试用例’))</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
-<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
-<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
-<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
-<p>我们来看：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
-<ul>
-<li>start_dir ：要测试的模块名或测试用例目录。</li>
-<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
-<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
-</ul>
-<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
-<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
-<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
-<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
-<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
-<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Flask 学习笔记 - Hello</title>
     <url>/2020/12/26/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Hello/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
@@ -175,6 +80,101 @@ Github中。</p>
       </categories>
       <tags>
         <tag>Flask</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About unittest</title>
+    <url>/2020/12/04/About-unittest/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
+<p>该部分内容极为简单，不再赘述。</p>
+<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
+<ul>
+<li>作用：把测试用例组合到一起</li>
+<li>TestSuite()是一个类，需要实例化使用。</li>
+</ul>
+<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
+<p>格式：addTest(测试类名(‘测试用例’))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
+<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
+<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
+<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
+<p>我们来看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
+<ul>
+<li>start_dir ：要测试的模块名或测试用例目录。</li>
+<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
+<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
+</ul>
+<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
+<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
+<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About POM</title>
+    <url>/2020/12/04/About-POM/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
+<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
+<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
+<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
+<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
+<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
+<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
+<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
+<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
+<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
+<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
+<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
+<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
+<ol>
+<li>
+<p>使用unittest重新整合TestUnit部分</p>
+</li>
+<li>
+<p>加入流程异常捕捉断言测试。</p>
+<p>在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
+</li>
+<li>
+<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
+</li>
+</ol>
+<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
+<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
+Github中。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
       </tags>
   </entry>
   <entry>
@@ -361,58 +361,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Linux基本操作</title>
-    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
-<p>这篇博文开个Linux栏目吧。</p>
-<a id="more"></a>
-<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
-<ul>
-<li>新建文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
-<ul>
-<li>新建文件夹</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
-<ul>
-<li>移动/剪切/重命名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看当前所在路径</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
-<ul>
-<li>权限修改</li>
-</ul>
-<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
-<ul>
-<li>删除</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
-<ul>
-<li>读取文档内容</li>
-</ul>
-<blockquote>
-<p>常用语查看Linux的log日志文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Linux</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS学习笔记-03</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-03/</url>
     <content><![CDATA[<h3 id="函数"><a class="markdownIt-Anchor" href="#函数"></a> 函数</h3>
@@ -568,6 +516,58 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>Linux基本操作</title>
+    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
+<p>这篇博文开个Linux栏目吧。</p>
+<a id="more"></a>
+<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
+<ul>
+<li>新建文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新建文件夹</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
+<ul>
+<li>移动/剪切/重命名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前所在路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>权限修改</li>
+</ul>
+<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取文档内容</li>
+</ul>
+<blockquote>
+<p>常用语查看Linux的log日志文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python中的init()到底怎么理解？</title>
     <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
@@ -670,42 +670,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
-    <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
-<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<blockquote>
-<p>完美主义不允许。</p>
-</blockquote>
-<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
-<a id="more"></a>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
-<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
-<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
-<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
-<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
-<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
-<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
-<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
-<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
-<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
-<ul>
-<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
-<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
-<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>Hexo</tag>
-        <tag>troubleshooting</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>中国移动电视盒子刷机｜当贝市场</title>
     <url>/2021/12/05/%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8%E7%94%B5%E8%A7%86%E7%9B%92%E5%AD%90%E5%88%B7%E6%9C%BA%EF%BD%9C%E5%BD%93%E8%B4%9D%E5%B8%82%E5%9C%BA%E9%9A%8F%E4%BE%BF%E8%A3%85APP/</url>
     <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205120819625.png" alt="image-20211205120819625" /></p>
@@ -777,6 +741,42 @@ Github中。</p>
       </categories>
       <tags>
         <tag>硬件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
+    <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<blockquote>
+<p>完美主义不允许。</p>
+</blockquote>
+<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
+<a id="more"></a>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
+<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
+<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
+<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
+<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
+<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
+<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
+<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
+<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
+<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
+<ul>
+<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
+<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
+<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>Hexo</tag>
+        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -937,55 +937,73 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>后盾人MySQL-多表操作</title>
-    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<blockquote>
-<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
-</blockquote>
+    <title>原创｜转发B站UP主动态到微信python脚本</title>
+    <url>/2021/12/06/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%BD%AC%E5%8F%91B%E7%AB%99UP%E4%B8%BB%E5%8A%A8%E6%80%81%E5%88%B0%E5%BE%AE%E4%BF%A1python%E8%84%9A%E6%9C%AC/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20211206213430058.png" alt="image-20211206213430058" style="zoom:40%;" />
+<h2 id="一-需求"><a class="markdownIt-Anchor" href="#一-需求"></a> 一、需求</h2>
+<p>B站关注了非常多up主，每天动态99+，但其实绝大部分的UP主我都不感兴趣。我每天都得手动寻找那些必看的UP。在寻找的过程中，大数据推荐让我忍不住看了一个又一个的视频，浪费时间不够专注。</p>
+<p>所以，需要开发一个<strong>每天定时把我每天必看的UP主的动态转发到微信</strong>，这样避免了手动寻找和被大数据推荐的干扰，专注力大大提高。</p>
 <a id="more"></a>
-<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
-<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
-<ul>
-<li>查询一班的所有同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一班的所有女生发表的文章</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>哪个班级发表的文章超过两篇</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级文章的总点击数与平均点击数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级有多少同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
-<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
-<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
-<ul>
-<li>学生人数大于两个的班级名称</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
-<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
-<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
-<p>获取没有设置QQ的用户</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
+<h2 id="二-思路"><a class="markdownIt-Anchor" href="#二-思路"></a> 二、思路</h2>
+<p>如果动态的发出日和系统当天日期相等，就把动态链接发送到微信。所以我们第一步是要获取到动态的发出日。第二步要完成的是而把信息转发到微信的功能，可以借助**<a href="https://sct.ftqq.com/upgrade?fr=sc">server酱</a>**完成。</p>
+<h2 id="三-获取动态的发出日期"><a class="markdownIt-Anchor" href="#三-获取动态的发出日期"></a> 三、获取动态的发出日期</h2>
+<h3 id="1-抓取动态api"><a class="markdownIt-Anchor" href="#1-抓取动态api"></a> 1. 抓取动态API</h3>
+<p>上网找了一下，好像没有直接提供有关于动态的api，那我们F12看看。想要定位到UP主，api的参数肯定是带有uid，所以我们可以直接筛选出相关的api。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211206191118663.png" alt="image-20211206191118663" style="zoom:50%;" />
+<p>然后我们在两个api的response数据里面搜索<code>dynamic</code>，可以分析出第二条是应该就是我们可以用到的api了。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211206191429552.png" alt="image-20211206191429552" style="zoom:50%;" />
+<p><strong>Request URL:</strong></p>
+<p><a href="https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?visitor_uid=XXXXX&amp;host_uid=XXXXX&amp;offset_dynamic_id=0&amp;need_top=1&amp;platform=web">https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?visitor_uid=XXXXX&amp;host_uid=XXXXX&amp;offset_dynamic_id=0&amp;need_top=1&amp;platform=web</a></p>
+<p>从上面可以看出，参数有好几个。进一步在postman上测试出只有 <code>host_uid</code>是必须的参数。所以我们得出了Bilibili的动态api与必须参数：</p>
+<blockquote>
+<p><code>api</code>：<a href="https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history">https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history</a></p>
+<p><code>data</code>：host_uid（string，必填）</p>
+</blockquote>
+<h3 id="2-数据分析"><a class="markdownIt-Anchor" href="#2-数据分析"></a> 2. 数据分析</h3>
+<p>在response里面搜索time，找到有个叫<code>timestamp</code>的字段。这很明显是时间戳。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211206194517975.png" alt="image-20211206194517975" style="zoom:30%;" />
+<p>我们在<a href="https://tool.lu/timestamp/">时间戳在线转换网</a>里查看时间。经过对比，第一个<code>timestamp</code>就是我们需要的数据！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211206200625092.png" alt="image-20211206200625092" style="zoom:33%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20211206200652112.png" alt="image-20211206200652112" style="zoom:34%;" />
+<h2 id="四-server酱的使用"><a class="markdownIt-Anchor" href="#四-server酱的使用"></a> 四、server酱的使用</h2>
+<p><code>server酱</code>的应用场景：<a href="https://sct.ftqq.com/apps">https://sct.ftqq.com/apps</a></p>
+<p>使用<code>server酱</code>的使用也非常简单，官方有介绍（图中的<code>*</code>，是你们注册后的到的sendkey）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211206201723794.png" alt="image-20211206201723794" style="zoom: 33%;" />
+<p>我们只需要制造好<code>title</code>和 <code>desp</code>参数的内容即可完成功能。</p>
+<h2 id="五-uid列表的读取与写入"><a class="markdownIt-Anchor" href="#五-uid列表的读取与写入"></a> 五、uid列表的读取与写入</h2>
+<p>因为是个人使用，所以没有写数据库，直接从<code>uid.txt</code>中读取数据。</p>
+<p>但如果想要添加自己喜欢的up主要怎么更快捷的操作？答案可以从我的另一篇文章<a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/">《智能闹钟（五）｜如何优雅地关闭闹钟？》</a>中找到答案——IOS的快捷指令。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cd</span> /home</span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="built_in">echo</span> xxxx &gt;&gt; uid.txt</span><br></pre></td></tr></table></figure>
+<p>注意，图中的<code>每次均询问</code>是快捷指令的其中一个功能，在编辑脚本的时候可选。</p>
+<img src="https://picbed.tangspoon.cn/uPic/IMG_3759.jpg" alt="IMG_3759" style="zoom: 33%;" />
+<img src="https://picbed.tangspoon.cn/uPic/IMG_3760.jpg" alt="IMG_3760" style="zoom:25%;" />
+<h2 id="六-部署到vps"><a class="markdownIt-Anchor" href="#六-部署到vps"></a> 六、部署到vps</h2>
+<h3 id="1-建立uidtxt"><a class="markdownIt-Anchor" href="#1-建立uidtxt"></a> 1. 建立uid.txt</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch &#x2F;home&#x2F;uid.txt</span><br><span class="line"># 添加uid</span><br><span class="line">vi &#x2F;home&#x2F;uid.txt</span><br></pre></td></tr></table></figure>
+<h3 id="2-安装requests模块"><a class="markdownIt-Anchor" href="#2-安装requests模块"></a> 2. 安装requests模块</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># debian9</span><br><span class="line">apt-get install python-requests -y</span><br><span class="line"># centos</span><br><span class="line">yum install python-requests -y</span><br></pre></td></tr></table></figure>
+<h3 id="2-换成python3"><a class="markdownIt-Anchor" href="#2-换成python3"></a> 2. 换成python3</h3>
+<p>部署到vps可能会出现如下错误</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">“UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xc0 in position 7: ordi”</span><br></pre></td></tr></table></figure>
+<p>这是因为出现系统中默认使用python2，换成python3就可以解决问题</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除/usr/bin目录下的python link文件</span></span><br><span class="line">sudo **rm** -rf /usr/bin/python</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除后再建立新的链接关系：</span></span><br><span class="line">sudo **ln** -s /usr/bin/python3<span class="number">.5</span> /usr/bin/python</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果想切换回python2.7</span></span><br><span class="line">sudo **rm** -rf /usr/bin/pythonsudo **ln** -s /usr/bin/ptyhon2<span class="number">.7</span> /usr/bin/python</span><br></pre></td></tr></table></figure>
+<h3 id="3-设置crontab定时任务"><a class="markdownIt-Anchor" href="#3-设置crontab定时任务"></a> 3. 设置crontab定时任务</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">00 22 * * * python BDynamicToWechat.py</span><br><span class="line"># 每天晚上10点执行任务</span><br></pre></td></tr></table></figure>
+<h2 id="七-效果"><a class="markdownIt-Anchor" href="#七-效果"></a> 七、效果</h2>
+<img src="https://picbed.tangspoon.cn/uPic/IMG_3761.jpg" alt="IMG_3761" style="zoom:33%;" />
+<img src="https://picbed.tangspoon.cn/uPic/IMG_3762.jpg" alt="IMG_3762" style="zoom:33%;" />
+<h2 id="八-代码"><a class="markdownIt-Anchor" href="#八-代码"></a> 八、代码</h2>
+<p><strong>欢迎star</strong></p>
+<blockquote>
+<p>github地址：<a href="https://github.com/tangspoon66/BDynamicToWechat">https://github.com/tangspoon66/BDynamicToWechat</a></p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>python</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
+        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -1155,6 +1173,58 @@ Github中。</p>
       <tags>
         <tag>troubleshooting</tag>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>后盾人MySQL-多表操作</title>
+    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<blockquote>
+<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
+<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
+<ul>
+<li>查询一班的所有同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一班的所有女生发表的文章</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>哪个班级发表的文章超过两篇</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级文章的总点击数与平均点击数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级有多少同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
+<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
+<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
+<ul>
+<li>学生人数大于两个的班级名称</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
+<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
+<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
+<p>获取没有设置QQ的用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
       </tags>
   </entry>
   <entry>
