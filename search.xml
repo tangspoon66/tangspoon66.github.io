@@ -1,52 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>About unittest</title>
-    <url>/2020/12/04/About-unittest/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
-<p>该部分内容极为简单，不再赘述。</p>
-<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
-<ul>
-<li>作用：把测试用例组合到一起</li>
-<li>TestSuite()是一个类，需要实例化使用。</li>
-</ul>
-<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
-<p>格式：addTest(测试类名(‘测试用例’))</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
-<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
-<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
-<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
-<p>我们来看：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
-<ul>
-<li>start_dir ：要测试的模块名或测试用例目录。</li>
-<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
-<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
-</ul>
-<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
-<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
-<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
-<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
-<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
-<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>About POM</title>
     <url>/2020/12/04/About-POM/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
@@ -93,6 +47,134 @@ Github中。</p>
       <tags>
         <tag>软件测试</tag>
         <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About unittest</title>
+    <url>/2020/12/04/About-unittest/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
+<p>该部分内容极为简单，不再赘述。</p>
+<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
+<ul>
+<li>作用：把测试用例组合到一起</li>
+<li>TestSuite()是一个类，需要实例化使用。</li>
+</ul>
+<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
+<p>格式：addTest(测试类名(‘测试用例’))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
+<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
+<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
+<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
+<p>我们来看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
+<ul>
+<li>start_dir ：要测试的模块名或测试用例目录。</li>
+<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
+<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
+</ul>
+<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
+<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
+<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Flask 学习笔记 - Hello</title>
+    <url>/2020/12/26/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Hello/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
+<p>如何优雅地在<a href="https://github.com/tangspoon66/NeteaseCloud-Clock">智能闹钟</a>上设定闹钟呢？使用命令行谈和优雅。想着能不能做个内网简单网页，通过web界面控制（增加与删除）<code>crontab</code>呢？了解到python相关的前端框架<code>flask</code>似乎有点意思，先学习看看。</p>
+<a id="more"></a>
+<blockquote>
+<p>书名：<a href="https://read.helloflask.com">Flask 入门教程</a></p>
+<p>作者：<a href="http://greyli.com/">李辉</a></p>
+</blockquote>
+<h2 id="一-虚拟环境的使用"><a class="markdownIt-Anchor" href="#一-虚拟环境的使用"></a> 一、虚拟环境的使用</h2>
+<h3 id="1-创建虚拟环境"><a class="markdownIt-Anchor" href="#1-创建虚拟环境"></a> 1. 创建虚拟环境</h3>
+<ul>
+<li>保持全局环境的干净</li>
+<li>指定不同的依赖版本</li>
+<li>方便记录和管理依赖</li>
+</ul>
+<p>macOS创建虚拟环境方法：到你想要的文件夹，然后打开<code>terminal</code>，输入以下代码。然后在该文件夹会新生成一个<code>env</code>的文件夹。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python -m venv env</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>venv</code>是python中内置的模块，使用该模块来创建虚拟环境；<code>env</code>是虚拟环境的名字</p>
+</blockquote>
+<h3 id="2-激活虚拟环境"><a class="markdownIt-Anchor" href="#2-激活虚拟环境"></a> 2. 激活虚拟环境</h3>
+<p>网上大部分激活教程都是直接给出<code>. env/bin/activate</code>。但对新手来说似乎有点摸不着头脑：前面的<code>.</code>是啥？</p>
+<p>我们不妨直接打开activate文件试试。原来里面有说明具体用法！我们必须通过<code>source bin/activate</code>的方式激活，不能直接运行<code>activate</code>文件。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201225174954727.png" alt="image-20201225174954727" /></p>
+<p>而且，我们要激活<code>env</code>，当然先要进入到<code>env</code>环境当中，所以可得激活方法：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd env &amp;&amp; source bin&#x2F;activate</span><br></pre></td></tr></table></figure>
+<p>激活成功后，会变成下面这样：</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201225175417095.png" alt="image-20201225175417095" /></p>
+<h3 id="3-退出虚拟环境"><a class="markdownIt-Anchor" href="#3-退出虚拟环境"></a> 3. 退出虚拟环境</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deactivate</span><br></pre></td></tr></table></figure>
+<h2 id="二-安装flask"><a class="markdownIt-Anchor" href="#二-安装flask"></a> 二、安装flask</h2>
+<p><strong>激活虚拟环境后</strong>，执行：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install falsk</span><br></pre></td></tr></table></figure>
+<h2 id="三-搭建最简单的flask项目"><a class="markdownIt-Anchor" href="#三-搭建最简单的flask项目"></a> 三、搭建最简单的flask项目</h2>
+<p>因为是最简单的项目，所以我们都在<code>terminal</code>内进行吧。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在env内新建一个app文件夹，同时新建app.py</span><br><span class="line">mkdir app &amp;&amp; touch app.py</span><br><span class="line"># 编辑app.py</span><br><span class="line">vim app.py</span><br></pre></td></tr></table></figure>
+<p>然后粘贴以下内容后，退出并保存。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> flask </span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span>():</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;你好！&#x27;</span></span><br></pre></td></tr></table></figure>
+<h2 id="四-运行"><a class="markdownIt-Anchor" href="#四-运行"></a> 四、运行</h2>
+<p>然后在<code>app</code>文件夹内，运行项目</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">flask run</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201225180401088.png" alt="image-20201225180401088" /></p>
+<p>然后在浏览器访问：<code>http://localhost:5000</code></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201225180658962.png" alt="image-20201225180658962" style="zoom: 50%;" />
+<h2 id="五-细节注意"><a class="markdownIt-Anchor" href="#五-细节注意"></a> 五、细节注意</h2>
+<h3 id="1-主程序更换名字"><a class="markdownIt-Anchor" href="#1-主程序更换名字"></a> 1. 主程序更换名字</h3>
+<p>如果把<code>app.py</code>保存为<code>hello.py</code>，尝试运行后会报错。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201226112334472.png" alt="image-20201226112334472" style="zoom:50%;" />
+<p>原因是flask默认识别启动的是<code>app.py</code>或者<code>wsgi.py</code>。如果要识别其他名字，可以设置：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export FLASK_APP&#x3D;hello.py</span><br></pre></td></tr></table></figure>
+<h3 id="2-打开调试模式"><a class="markdownIt-Anchor" href="#2-打开调试模式"></a> 2. 打开调试模式</h3>
+<blockquote>
+<p>现在在启动 Flask 程序的时候，我们通常要和两个环境变量打交道：<code>FLASK_APP</code> 和 <code>FLASK_ENV</code>。因为我们的程序现在的名字是 <a href="http://app.py">app.py</a>，暂时不需要设置 <code>FLASK_APP</code>；<code>FLASK_ENV</code> 用来设置程序运行的环境，默认为 <code>production</code>。在开发时，我们需要开启调试模式（debug mode）。调试模式可以通过将系统环境变量 <code>FLASK_ENV</code> 设为 <code>development</code> 来开启。调试模式开启后，当程序出错，浏览器页面上会显示错误信息；代码出现变动后，程序会自动重载。</p>
+</blockquote>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201226113224956.png" alt="image-20201226113224956" /></p>
+<h3 id="1-手动打开"><a class="markdownIt-Anchor" href="#1-手动打开"></a> 1. 手动打开</h3>
+<p>每次进入虚拟环境<code>env</code>后手动打开 <code>Debug mode</code>方法</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export FLASK_ENV&#x3D;development</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201226113621763.png" alt="image-20201226113621763" style="zoom:50%;" />
+<h3 id="2-自动打开"><a class="markdownIt-Anchor" href="#2-自动打开"></a> 2. 自动打开</h3>
+<p>可是每次激活了虚拟环境都需要手动打开就很麻烦，我们来个一劳永逸的方法。</p>
+<p>进入到虚拟环境<code>env</code>中，然后运行</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新建文件</span><br><span class="line">touch .flaskenv</span><br></pre></td></tr></table></figure>
+<p>然后在文件内添加入以下内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">FLASK_ENV&#x3D;development</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201226114955265.png" alt="image-20201226114955265" /></p>
+<p>然后尝试重启一下<code>env</code>，就会自动打开<code>Debug mode</code>了。</p>
+<h2 id="六-一些解释"><a class="markdownIt-Anchor" href="#六-一些解释"></a> 六、一些解释</h2>
+<h3 id="1-项目根目录指的是"><a class="markdownIt-Anchor" href="#1-项目根目录指的是"></a> 1. 项目根目录指的是？</h3>
+<p><code>app</code>这个文件夹。（<code>env</code>文件夹是虚拟环境）</p>
+<h3 id="2-我们的程序指的是"><a class="markdownIt-Anchor" href="#2-我们的程序指的是"></a> 2. “我们的程序”指的是？</h3>
+<p>我们的程序指的是<code>app.py</code>里面的代码</p>
+]]></content>
+      <categories>
+        <category>Flask</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
       </tags>
   </entry>
   <entry>
@@ -210,88 +292,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Flask 学习笔记 - Hello</title>
-    <url>/2020/12/26/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Hello/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
-<p>如何优雅地在<a href="https://github.com/tangspoon66/NeteaseCloud-Clock">智能闹钟</a>上设定闹钟呢？使用命令行谈和优雅。想着能不能做个内网简单网页，通过web界面控制（增加与删除）<code>crontab</code>呢？了解到python相关的前端框架<code>flask</code>似乎有点意思，先学习看看。</p>
-<a id="more"></a>
-<blockquote>
-<p>书名：<a href="https://read.helloflask.com">Flask 入门教程</a></p>
-<p>作者：<a href="http://greyli.com/">李辉</a></p>
-</blockquote>
-<h2 id="一-虚拟环境的使用"><a class="markdownIt-Anchor" href="#一-虚拟环境的使用"></a> 一、虚拟环境的使用</h2>
-<h3 id="1-创建虚拟环境"><a class="markdownIt-Anchor" href="#1-创建虚拟环境"></a> 1. 创建虚拟环境</h3>
-<ul>
-<li>保持全局环境的干净</li>
-<li>指定不同的依赖版本</li>
-<li>方便记录和管理依赖</li>
-</ul>
-<p>macOS创建虚拟环境方法：到你想要的文件夹，然后打开<code>terminal</code>，输入以下代码。然后在该文件夹会新生成一个<code>env</code>的文件夹。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python -m venv env</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p><code>venv</code>是python中内置的模块，使用该模块来创建虚拟环境；<code>env</code>是虚拟环境的名字</p>
-</blockquote>
-<h3 id="2-激活虚拟环境"><a class="markdownIt-Anchor" href="#2-激活虚拟环境"></a> 2. 激活虚拟环境</h3>
-<p>网上大部分激活教程都是直接给出<code>. env/bin/activate</code>。但对新手来说似乎有点摸不着头脑：前面的<code>.</code>是啥？</p>
-<p>我们不妨直接打开activate文件试试。原来里面有说明具体用法！我们必须通过<code>source bin/activate</code>的方式激活，不能直接运行<code>activate</code>文件。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201225174954727.png" alt="image-20201225174954727" /></p>
-<p>而且，我们要激活<code>env</code>，当然先要进入到<code>env</code>环境当中，所以可得激活方法：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd env &amp;&amp; source bin&#x2F;activate</span><br></pre></td></tr></table></figure>
-<p>激活成功后，会变成下面这样：</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201225175417095.png" alt="image-20201225175417095" /></p>
-<h3 id="3-退出虚拟环境"><a class="markdownIt-Anchor" href="#3-退出虚拟环境"></a> 3. 退出虚拟环境</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deactivate</span><br></pre></td></tr></table></figure>
-<h2 id="二-安装flask"><a class="markdownIt-Anchor" href="#二-安装flask"></a> 二、安装flask</h2>
-<p><strong>激活虚拟环境后</strong>，执行：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install falsk</span><br></pre></td></tr></table></figure>
-<h2 id="三-搭建最简单的flask项目"><a class="markdownIt-Anchor" href="#三-搭建最简单的flask项目"></a> 三、搭建最简单的flask项目</h2>
-<p>因为是最简单的项目，所以我们都在<code>terminal</code>内进行吧。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 在env内新建一个app文件夹，同时新建app.py</span><br><span class="line">mkdir app &amp;&amp; touch app.py</span><br><span class="line"># 编辑app.py</span><br><span class="line">vim app.py</span><br></pre></td></tr></table></figure>
-<p>然后粘贴以下内容后，退出并保存。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> flask </span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello</span>():</span></span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;你好！&#x27;</span></span><br></pre></td></tr></table></figure>
-<h2 id="四-运行"><a class="markdownIt-Anchor" href="#四-运行"></a> 四、运行</h2>
-<p>然后在<code>app</code>文件夹内，运行项目</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">flask run</span><br></pre></td></tr></table></figure>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201225180401088.png" alt="image-20201225180401088" /></p>
-<p>然后在浏览器访问：<code>http://localhost:5000</code></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201225180658962.png" alt="image-20201225180658962" style="zoom: 50%;" />
-<h2 id="五-细节注意"><a class="markdownIt-Anchor" href="#五-细节注意"></a> 五、细节注意</h2>
-<h3 id="1-主程序更换名字"><a class="markdownIt-Anchor" href="#1-主程序更换名字"></a> 1. 主程序更换名字</h3>
-<p>如果把<code>app.py</code>保存为<code>hello.py</code>，尝试运行后会报错。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201226112334472.png" alt="image-20201226112334472" style="zoom:50%;" />
-<p>原因是flask默认识别启动的是<code>app.py</code>或者<code>wsgi.py</code>。如果要识别其他名字，可以设置：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export FLASK_APP&#x3D;hello.py</span><br></pre></td></tr></table></figure>
-<h3 id="2-打开调试模式"><a class="markdownIt-Anchor" href="#2-打开调试模式"></a> 2. 打开调试模式</h3>
-<blockquote>
-<p>现在在启动 Flask 程序的时候，我们通常要和两个环境变量打交道：<code>FLASK_APP</code> 和 <code>FLASK_ENV</code>。因为我们的程序现在的名字是 <a href="http://app.py">app.py</a>，暂时不需要设置 <code>FLASK_APP</code>；<code>FLASK_ENV</code> 用来设置程序运行的环境，默认为 <code>production</code>。在开发时，我们需要开启调试模式（debug mode）。调试模式可以通过将系统环境变量 <code>FLASK_ENV</code> 设为 <code>development</code> 来开启。调试模式开启后，当程序出错，浏览器页面上会显示错误信息；代码出现变动后，程序会自动重载。</p>
-</blockquote>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201226113224956.png" alt="image-20201226113224956" /></p>
-<h3 id="1-手动打开"><a class="markdownIt-Anchor" href="#1-手动打开"></a> 1. 手动打开</h3>
-<p>每次进入虚拟环境<code>env</code>后手动打开 <code>Debug mode</code>方法</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export FLASK_ENV&#x3D;development</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201226113621763.png" alt="image-20201226113621763" style="zoom:50%;" />
-<h3 id="2-自动打开"><a class="markdownIt-Anchor" href="#2-自动打开"></a> 2. 自动打开</h3>
-<p>可是每次激活了虚拟环境都需要手动打开就很麻烦，我们来个一劳永逸的方法。</p>
-<p>进入到虚拟环境<code>env</code>中，然后运行</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 新建文件</span><br><span class="line">touch .flaskenv</span><br></pre></td></tr></table></figure>
-<p>然后在文件内添加入以下内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">FLASK_ENV&#x3D;development</span><br></pre></td></tr></table></figure>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201226114955265.png" alt="image-20201226114955265" /></p>
-<p>然后尝试重启一下<code>env</code>，就会自动打开<code>Debug mode</code>了。</p>
-<h2 id="六-一些解释"><a class="markdownIt-Anchor" href="#六-一些解释"></a> 六、一些解释</h2>
-<h3 id="1-项目根目录指的是"><a class="markdownIt-Anchor" href="#1-项目根目录指的是"></a> 1. 项目根目录指的是？</h3>
-<p><code>app</code>这个文件夹。（<code>env</code>文件夹是虚拟环境）</p>
-<h3 id="2-我们的程序指的是"><a class="markdownIt-Anchor" href="#2-我们的程序指的是"></a> 2. “我们的程序”指的是？</h3>
-<p>我们的程序指的是<code>app.py</code>里面的代码</p>
-]]></content>
-      <categories>
-        <category>Flask</category>
-      </categories>
-      <tags>
-        <tag>Flask</tag>
       </tags>
   </entry>
   <entry>
@@ -597,6 +597,7 @@ Github中。</p>
     <url>/2021/12/08/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-01%EF%BD%9C%E5%A4%8D%E4%B9%A0/</url>
     <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437.png" alt="image-20211208153223437" /></p>
 <p>自己写了好几个python项目之后发现，好多知识都遗忘了，有些没有理解透导致执行效率不高。趁这段时间有空，重新学习一下。</p>
+<p>list、dict、tuple、set</p>
 <a id="more"></a>
 <p><code>2021-12-07</code></p>
 <h2 id="一-list列表"><a class="markdownIt-Anchor" href="#一-list列表"></a> 一、List列表</h2>
@@ -619,6 +620,9 @@ Github中。</p>
 <h3 id="2-tuple的修改"><a class="markdownIt-Anchor" href="#2-tuple的修改"></a> 2. tuple的修改</h3>
 <p><code>tuple是不可修改的</code>指的是每个元素的指向，永远不变。但我们可以嵌入一个数组，间接修改tuple</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple=(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,[lsit1])</span><br><span class="line">list1=[<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>]</span><br><span class="line">list1[<span class="number">0</span>]=<span class="string">&#x27;x&#x27;</span></span><br><span class="line">print(<span class="string">&#x27;tuple：&#x27;</span>,tuple)</span><br><span class="line"><span class="comment"># print结果 tuple： (1, 2, 3, 4, [&#x27;x&#x27;, &#x27;b&#x27;])</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-读取"><a class="markdownIt-Anchor" href="#3-读取"></a> 3. 读取</h3>
+<p>换成<code>list</code>，再读取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">tuple=(<span class="number">1</span>,<span class="number">2</span>)</span><br><span class="line">list=[]</span><br><span class="line">list=tuple</span><br><span class="line">print(list[<span class="number">0</span>]) <span class="comment"># 获取元组第一个数据</span></span><br></pre></td></tr></table></figure>
 <h2 id="三-dict字典"><a class="markdownIt-Anchor" href="#三-dict字典"></a> 三、dict字典</h2>
 <p>因为list列表越长，查找起来就越慢。用字典dict可以解决问题。</p>
 <p>字典中一个键值重复出现两次，那么以最后一次的值为准。</p>
@@ -662,6 +666,76 @@ Github中。</p>
       <tags>
         <tag>Python</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>Python学习日志-02｜复习</title>
+    <url>/2021/12/08/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-02%EF%BD%9C%E5%A4%8D%E4%B9%A0/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323.png" alt="image-20211208153223437" /></p>
+<p>第二天：函数的参数、传值、匿名函数</p>
+<a id="more"></a>
+<p><code>2021-12-17</code></p>
+<p>01和这个02相隔有点久，这段时间在搞从老妈子从垃圾桶旁捡回来的主机，150块把它整复活了～然后把树莓派卖了，换了一台斐讯的N1盒子继续挂网易云闹钟。</p>
+<h2 id="一-函数参数"><a class="markdownIt-Anchor" href="#一-函数参数"></a> 一、函数参数</h2>
+<p>python的函数可以有多个返回值，实际上是先创建了一个元组然后再返回的。</p>
+<h3 id="1-默认参数"><a class="markdownIt-Anchor" href="#1-默认参数"></a> 1. 默认参数</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># b是默认参数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">a,b=<span class="number">1</span></span>):</span></span><br><span class="line">	<span class="keyword">return</span> b</span><br></pre></td></tr></table></figure>
+<h4 id="1要在末尾"><a class="markdownIt-Anchor" href="#1要在末尾"></a> （1）要在末尾</h4>
+<h4 id="2不能使用list这种形式做默认参数默认值必须为不可更改的整数-字符串-true-false-none等"><a class="markdownIt-Anchor" href="#2不能使用list这种形式做默认参数默认值必须为不可更改的整数-字符串-true-false-none等"></a> （2）不能使用<code>list=[]</code>这种形式做默认参数，默认值必须为不可更改的：整数、字符串、True、False、None等。</h4>
+<blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">a,b=None</span>)</span></span><br><span class="line"><span class="function">	<span class="title">return</span> <span class="title">b</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"># <span class="title">def</span> <span class="title">test</span>(<span class="params">a,b=[]</span>) 不会报错，但一旦对<span class="title">b</span>修改，返回结果会出错</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="2-位置参数关键字参数"><a class="markdownIt-Anchor" href="#2-位置参数关键字参数"></a> 2. 位置参数（关键字参数）</h3>
+<p>python中可以根据<strong>参数名</strong>传参，所以不顺序传参也行（但最好顺序）。</p>
+<h3 id="3-不定长参数可变参数"><a class="markdownIt-Anchor" href="#3-不定长参数可变参数"></a> 3. 不定长参数（可变参数）</h3>
+<p>有时候在设计函数时，我们无法确定传入参数的多少，这时候就可以用<code>tuple元组</code>或<code>dist字典</code>来描述那些没有被定义的参数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># tuple</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">a=<span class="number">1</span>,*b</span>):</span></span><br><span class="line">	<span class="keyword">return</span> b</span><br><span class="line">re=test(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">print(re) <span class="comment">#结果：(2,3,4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># dist</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">a=<span class="number">1</span>,**b</span>):</span></span><br><span class="line">	<span class="keyword">return</span> b</span><br><span class="line">re=test(<span class="number">1</span>,b=(,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>))</span><br><span class="line">print(re) <span class="comment">#结果：&#123;&#x27;b&#x27;:(2,3,4,5)&#125;</span></span><br></pre></td></tr></table></figure>
+<p><code>*b</code>返回结果是元组</p>
+<p><code>**b</code>其实是不定长参数里的关键字参数，是通过关键字<code>b</code>确定的。</p>
+<h3 id="4-强制使用关键字参数"><a class="markdownIt-Anchor" href="#4-强制使用关键字参数"></a> 4. 强制使用关键字参数</h3>
+<p>把需要强制使用keyword的参数放在<code>*</code>后面。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">a,*,b</span>):</span></span><br><span class="line">	<span class="keyword">return</span> b</span><br><span class="line"></span><br><span class="line">re=test(<span class="number">1</span>,b=<span class="number">2</span>)</span><br><span class="line">print(re)</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211217172829525.png" alt="image-20211217172829525" style="zoom:50%;" />
+<h2 id="二-传值"><a class="markdownIt-Anchor" href="#二-传值"></a> 二、传值</h2>
+<p>除了<code>list</code>和<code>dist</code>可变之外，其他像整形、浮点型、字符串、tuple等都不可变。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>(<span class="params">a</span>):</span></span><br><span class="line">	print(a) <span class="comment">#a的值是不会被改变的</span></span><br><span class="line">	a=<span class="number">1000</span></span><br><span class="line">	print(a) <span class="comment"># 这里的a只是test()外的a的复制体，改变的也只是复制体的值</span></span><br><span class="line">	</span><br><span class="line">a=<span class="number">1</span></span><br><span class="line">test(a)</span><br><span class="line">print(a)</span><br><span class="line"><span class="comment"># 1</span></span><br><span class="line"><span class="comment"># 1000</span></span><br><span class="line"><span class="comment"># 1</span></span><br></pre></td></tr></table></figure>
+<h2 id="三-匿名函数"><a class="markdownIt-Anchor" href="#三-匿名函数"></a> 三、匿名函数</h2>
+<p>不用def整体命名整个函数，用最简单的形式写一个回调函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">sum=<span class="keyword">lambda</span> num1,num2:num1+num2</span><br><span class="line">print(sum(<span class="number">1</span>,<span class="number">2</span>))</span><br></pre></td></tr></table></figure>
+<p>基本形式：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">lambda</span> arg1,arg2 : expression</span><br></pre></td></tr></table></figure>
+<p>有个地方需要注意：下面的结果都是10001。因为num2是一个自由参数，是按<code>执行顺序</code>绑定值，不是定义时就绑定。</p>
+<blockquote>
+<p>可看python的执行顺序：<a href="https://pythontutor.com/visualize.html#mode=display">https://pythontutor.com/visualize.html#mode=display</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"></span><br><span class="line">num2 = <span class="number">100</span></span><br><span class="line">sum1 = <span class="keyword">lambda</span> num1 : num1 + num2 ;</span><br><span class="line"></span><br><span class="line">num2 = <span class="number">10000</span></span><br><span class="line">sum2 = <span class="keyword">lambda</span> num1 : num1 + num2 ;</span><br><span class="line"></span><br><span class="line">print( sum1( <span class="number">1</span> ) )</span><br><span class="line">print( sum2( <span class="number">1</span> ) )</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211217180821420.png" alt="image-20211217180821420" /></p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/10/13/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<a id="more"></a>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
   </entry>
   <entry>
     <title>个人理解TCP/IP</title>
@@ -719,26 +793,6 @@ Github中。</p>
       <tags>
         <tag>网络基础</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/10/13/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<a id="more"></a>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>中国移动电视盒子刷机｜当贝市场</title>
@@ -940,10 +994,12 @@ Github中。</p>
 <p>部署到vps可能会出现如下错误</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">“UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xc0 in position 7: ordi”</span><br></pre></td></tr></table></figure>
 <p>这是因为出现系统中默认使用python2，换成python3就可以解决问题</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除/usr/bin目录下的python link文件</span></span><br><span class="line">sudo **rm** -rf /usr/bin/python</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除后再建立新的链接关系：</span></span><br><span class="line">sudo **ln** -s /usr/bin/python3<span class="number">.5</span> /usr/bin/python</span><br></pre></td></tr></table></figure>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果想切换回python2.7</span></span><br><span class="line">sudo **rm** -rf /usr/bin/pythonsudo **ln** -s /usr/bin/ptyhon2<span class="number">.7</span> /usr/bin/python</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 删除/usr/bin目录下的python link文件</span></span><br><span class="line">sudo rm -rf /usr/bin/python</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除后再建立新的链接关系：</span></span><br><span class="line">sudo ln -s /usr/bin/python3<span class="number">.5</span> /usr/bin/python</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 如果想切换回python2.7</span></span><br><span class="line">sudo rm -rf /usr/bin/python</span><br><span class="line">sudo ln -s /usr/bin/ptyhon2<span class="number">.7</span> /usr/bin/python</span><br></pre></td></tr></table></figure>
 <h3 id="3-设置crontab定时任务"><a class="markdownIt-Anchor" href="#3-设置crontab定时任务"></a> 3. 设置crontab定时任务</h3>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">00 22 * * * python BDynamicToWechat.py</span><br><span class="line"># 每天晚上10点执行任务</span><br></pre></td></tr></table></figure>
+<h3 id="4-重启crontab"><a class="markdownIt-Anchor" href="#4-重启crontab"></a> 4. 重启crontab</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">service cron restart</span><br></pre></td></tr></table></figure>
 <h2 id="七-效果"><a class="markdownIt-Anchor" href="#七-效果"></a> 七、效果</h2>
 <img src="https://picbed.tangspoon.cn/uPic/IMG_3761.jpg" alt="IMG_3761" style="zoom:33%;" />
 <img src="https://picbed.tangspoon.cn/uPic/IMG_3762.jpg" alt="IMG_3762" style="zoom:33%;" />
@@ -1299,7 +1355,7 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>常用一键脚本记录</title>
+    <title>常用linux脚本记录</title>
     <url>/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/</url>
     <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205110525139.png" alt="image-20211205110525139" /></p>
 <p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p>
@@ -1308,6 +1364,8 @@ Github中。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure>
 <h2 id="2-lnmp一键可选择安装"><a class="markdownIt-Anchor" href="#2-lnmp一键可选择安装"></a> 2. lnmp一键可选择安装</h2>
 <p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>
+<h2 id="3-改成上海时间"><a class="markdownIt-Anchor" href="#3-改成上海时间"></a> 3. 改成上海时间</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1.删除自带的localtime</span><br><span class="line">rm -rf &#x2F;etc&#x2F;localtime</span><br><span class="line"># 2.创建软链接到localtime</span><br><span class="line">ln -s &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>linux</tag>
@@ -2242,185 +2300,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>面试宝典-01</title>
-    <url>/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</url>
-    <content><![CDATA[<h2 id="一-软件工程"><a class="markdownIt-Anchor" href="#一-软件工程"></a> 一、软件工程</h2>
-<h4 id="1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"><a class="markdownIt-Anchor" href="#1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"></a> 1. 软件生命周期有哪些阶段？常见的软件生命周期模型有哪些？</h4>
-<p>软件生命周期有：初始构思、需求分析、功能设计、内部设计、文档计划、测试计划、文档准备、集成、测试、维护、升级、再测试、逐步淘汰等。</p>
-<p>常见模型有：瀑布模型、迭代模型、快速原型模型、螺旋模型。（1）瀑布是最常见的模型；（2）迭代约等于小型的瀑布流项目，每一次迭代都可以产生一个产品，这个产品是最终产品的一个子集；（3）快速原型模型是迅速构建一个可以运行的软件模型，以便理解和澄清问题；（4）而螺旋模型则大多用在大型管理软件系统中，具有前面三者没有的风险分析。</p>
-<a id="more"></a>
-<h4 id="2-什么是版本控制常用的系统有哪些"><a class="markdownIt-Anchor" href="#2-什么是版本控制常用的系统有哪些"></a> 2. 什么是版本控制，常用的系统有哪些？</h4>
-<p>是一种软体工程技巧，确保不同的人编辑的统一文档都能得到更新。</p>
-<p>1）Git：分布式的版本控制系统。</p>
-<p>2）SVN：subversion，分支管理系统。</p>
-<h2 id="二-测试模型"><a class="markdownIt-Anchor" href="#二-测试模型"></a> 二、测试模型</h2>
-<h4 id="1-常见的测试模型"><a class="markdownIt-Anchor" href="#1-常见的测试模型"></a> 1. 常见的测试模型</h4>
-<p>1）V字型：这是一种古老的瀑布模型，反映了实际和测试之间的关系。局限:仅仅把测试过程作为编码之后的一个阶段，忽视了测试对需求分析,系统设计的验证，如果前面设计错误， 得一直到后期的验收测试才被发现，耗时耗力。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123616102.png" alt="image-20201108123616102" style="zoom:50%;" />
-<p>2）W型：测试与开发同时进行，在 V 模型的基础上，增加了在开发阶段的同步测试。局限：仍然不支持迭代，减少了一定错误发生率，但是需按照流水线进行设计、编码和测试</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123631829.png" alt="image-20201108123631829" style="zoom:50%;" />
-<h4 id="2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"><a class="markdownIt-Anchor" href="#2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"></a> 2. 请根据”V”模型分别概述测试人员在软件的需求定义阶段、设计阶段、编码阶段、系统集成阶段的「工作任务」及其相应「生成的文档」?</h4>
-<p>1）需求定义阶段：根据项目需求提取测试需求，形成「测试需求文档」；根据测试需求和项目计划生成「测试计划」。</p>
-<p>2）设计阶段：根据测试需求拟定测试方案并形成「测试方案文档」；根据测试方案文档指定测试用例，并形成「测试用例文档」</p>
-<p>3）编码阶段：执行测试并完善测试用例文档</p>
-<p>4）系统集成阶段：测试总结报告，阶段问题统计报告，测试问题报告</p>
-<h2 id="三-测试计划"><a class="markdownIt-Anchor" href="#三-测试计划"></a> 三、测试计划</h2>
-<h4 id="1-编写测试计划的目的是"><a class="markdownIt-Anchor" href="#1-编写测试计划的目的是"></a> 1. 编写测试计划的目的是？</h4>
-<p>使测试工作顺利进行；使项目参与人员沟通更顺畅；使测试工作更系统（人与系统）</p>
-<h4 id="2-测试计划编写六要素"><a class="markdownIt-Anchor" href="#2-测试计划编写六要素"></a> 2. 测试计划编写六要素</h4>
-<p>5W1H（谁、时间、地点、做了什么事、为什么、怎么做的H）</p>
-<h4 id="3-测试人员在软件开发过程中的任务是什么"><a class="markdownIt-Anchor" href="#3-测试人员在软件开发过程中的任务是什么"></a> 3. 测试人员在软件开发过程中的任务是什么？</h4>
-<p>寻找bug，衡量软件的品质，避免软件开发过程中的缺陷，关注用户体验。总的来说就是：确保软件质量。</p>
-<h2 id="四-测试种类"><a class="markdownIt-Anchor" href="#四-测试种类"></a> 四、测试种类</h2>
-<h4 id="1-请列出你所知道的软件测试种类至少五项"><a class="markdownIt-Anchor" href="#1-请列出你所知道的软件测试种类至少五项"></a> 1. 请列出你所知道的「软件测试种类」，至少五项。</h4>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123501083.png" alt="image-20201108123501083" style="zoom:50%;" />
-<h4 id="2-黑盒测试和白盒测试的常用测试方法有举个例子"><a class="markdownIt-Anchor" href="#2-黑盒测试和白盒测试的常用测试方法有举个例子"></a> 2. 黑盒测试和白盒测试的常用测试方法有？举个例子？</h4>
-<p>1）黑盒：等价类划分法、边界值法、因果图法和错误猜测法</p>
-<p>2）白盒：逻辑覆盖法、循环测试路径选择、基本路径测试</p>
-<p>例子：在一次输入多个条件的完整性查询中。利用等价类划分法和边界分析法，首先利用等价类划分法，制定一个或多个结果是OK的测试用例，然后确认多个NG的测试用例。然后再用边界值分析法，对结果分别是OK和NG的测试用例进行拓展和补充。</p>
-<h4 id="3-简述黑盒测试和白盒测试的优缺点"><a class="markdownIt-Anchor" href="#3-简述黑盒测试和白盒测试的优缺点"></a> 3. 简述黑盒测试和白盒测试的优缺点？</h4>
-<p>1）黑盒</p>
-<ul>
-<li>优点：a. 比较简单，不用了解内部代码的实现；b. 从用户的角度出发，很容易知道用户会用到哪些功能，会遇到什么问题；c. 与软件内部无关；d. 在做软件自动化测试时较方便。</li>
-<li>缺点：代码覆盖率较低；自动化测试的复用性较低。</li>
-</ul>
-<p>2）白盒</p>
-<ul>
-<li>优点：代码覆盖率高，提高代码质量，发现隐藏的问题。</li>
-<li>缺点：a. 测试基于代码，只能测试开发人员的对与不对，而不能知道设计的正确与否，可能会漏掉一些功能需求；b. 系统庞大时，测试开销会很大；c. 测试有很多路径，不可能测试完所有的路径。</li>
-</ul>
-<h4 id="4-单元测试的策略有哪些主要内容有"><a class="markdownIt-Anchor" href="#4-单元测试的策略有哪些主要内容有"></a> 4. 单元测试的策略有哪些，主要内容有？</h4>
-<p>逻辑覆盖，循环覆盖，代码走查，静态数据流分析，代码评审，桌前检查，同行评审</p>
-<h4 id="5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"><a class="markdownIt-Anchor" href="#5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"></a> 5. 白盒测试逻辑覆盖有哪几种覆盖标准，覆盖率最高的是？</h4>
-<p>语句覆盖，分支覆盖，条件覆盖，路径覆盖，分支条件覆盖。最高的是路径覆盖。</p>
-<h2 id="五-用例设计"><a class="markdownIt-Anchor" href="#五-用例设计"></a> 五、用例设计</h2>
-<h4 id="1-什么是测试用例测试用例的基本要素"><a class="markdownIt-Anchor" href="#1-什么是测试用例测试用例的基本要素"></a> 1. 什么是测试用例，测试用例的基本要素？</h4>
-<p>测试用例是为某个测试目标编写的一组输入、执行条件与预期结果，以便测试某个程序是否符合特定要求。</p>
-<p>基本要素：测试索引，测试环境，测试输入，测试操作，预期结果，评价标准</p>
-<h4 id="2-描述测试用例设计的完整过程"><a class="markdownIt-Anchor" href="#2-描述测试用例设计的完整过程"></a> 2. 描述测试用例设计的完整过程</h4>
-<p>1）根据概要设计、需求文档、测试计划、测试方案细分出测试项</p>
-<p>2）根据测试项，按照详细设计与测试方案中测试的覆盖率细分出测试子项</p>
-<p>3）用测试设计方法（等价类划分，边界值，因果图等）编写测试用例</p>
-<p>注意：用例一定要及时更新（补充与删除），要全面（考虑功能、性能、兼容性等）</p>
-<h4 id="3-有个广告的纸杯子请设计测试用例"><a class="markdownIt-Anchor" href="#3-有个广告的纸杯子请设计测试用例"></a> 3. 有个广告的纸杯子，请设计测试用例</h4>
-<p>基本功能测试（逻辑功能测试）。</p>
-<p>1）硬度：是否达到设计标准。 装载能力:在杯子内分别装入少量的、半杯的、满杯的，看其装载量是否达到设计标准。 装载种类:开水(是否产生异味)、温水、冷水、冰水、咖啡。。</p>
-<p>2）界面测试(UI 测试)。</p>
-<p>看其形状、大小设计是否适合人方便拿起。</p>
-<p>外观是否吸引人(广告嘛)，赏心悦目。</p>
-<p>带广告的图案沾水受是否掉色、模糊。</p>
-<p>3）易用性测试。</p>
-<p>看其形状、大小设计是否适合人方便拿起。</p>
-<p>残疾人士用此杯去喝水的容程度。 杯子设计是否上大下小，在运输过程中可以套在一起有效利用空间，在使用时也容易拿开。</p>
-<p>4）稳定性测试（24 X 7 测试）。装入液体后记录其多少以后漏水。</p>
-<p>5）安全性测试。杯子所用的材料(包括纸基、涂层和广告颜料)是否符合食品卫生标准，在内外温度等环境因素下是否会与所盛各种饮料相反应，而产生对人体有害的物质。</p>
-<p>6）本地化测试。为国际化和本地化的需要，广告图案和文字是否在政治、宗教和文化方面具有广泛的适用性。</p>
-<p>7）对设计的改进建议。“如果是一次性杯子，能否标示已使用(比如变色)”和“杯子是否有使用者标贴(多人使用时防止混淆)”。</p>
-<h4 id="4-一个身份证号码输入框怎么设计用例"><a class="markdownIt-Anchor" href="#4-一个身份证号码输入框怎么设计用例"></a> 4. 一个身份证号码输入框，怎么设计用例?</h4>
-<p>校验身份证号的规则有效性（地址码、生日编码、顺序码、校验码）</p>
-<p>检验15位身份证和18位身份正好可用</p>
-<p>校验末尾是x的情况</p>
-<p>校验不足15位、16-17位和18位的情况</p>
-<p>如果是必输项，空白时是否有提示与流程是否正常进行</p>
-<p>如果不是必输项，校验不输入时流程能否正常进行</p>
-<p>检验非数字的情况，是否会有正确提示信息（包括大小写字母，汉字，特殊字符与标点符号）</p>
-<h4 id="5-登陆功能怎么设计测试用例"><a class="markdownIt-Anchor" href="#5-登陆功能怎么设计测试用例"></a> 5. 登陆功能怎么设计测试用例？</h4>
-<p>具体需求:有一个登录页面，有一个账号和一个密码输入框, 一个提交按钮。</p>
-<p>此题的考察目的：1. 了解需求(测什么都是从了解需求开始)；2. 是否有设计 Test Case 的能力；3. 是否熟悉各种测试方法； 4. 是否有丰富的 Web 测试经验;；5. 是否了解 Web 开发。</p>
-<p>了解需求：1. 登陆界面是弹出窗口式的，还是直接在网页里面；2. 账号长度和密码的强度要求（比如需要多少位、大小写敏感、特殊字符混搭）；3. 界面美观是否有特殊要求（是否要进行UI测试）</p>
-<p>用例设计：</p>
-<h5 id="1功能测试function-test"><a class="markdownIt-Anchor" href="#1功能测试function-test"></a> 1）功能测试：Function Test</h5>
-<ol>
-<li>
-<p>输入正确的账号密码，点击提交按钮，验证是否能正确登陆（正常输入）</p>
-</li>
-<li>
-<p>输入错误的账号密码，验证登陆会失败，与给出相应的错误提示（错误输入）</p>
-</li>
-<li>
-<p>登陆成功后能否正确跳转到正确界面</p>
-</li>
-<li>
-<p>账号和密码如果太长或太短，应该怎么处理（安全性，密码太短都有提示）</p>
-</li>
-<li>
-<p>账号和密码中，有特殊字符（比如空格）和其他非英文情况（是否做了顾虑）</p>
-</li>
-<li>
-<p>账号和密码前后都有空格的处理</p>
-</li>
-<li>
-<p>输入密码时，大写键盘有提示</p>
-</li>
-<li>
-<p>密码是否加密显示</p>
-</li>
-<li>
-<p>什么都不输，点击提交按钮，看提示信息</p>
-</li>
-<li>
-<p>记住账号功能</p>
-</li>
-<li>
-<p>登陆失败后，不能记录密码的功能</p>
-</li>
-<li>
-<p>牵涉到验证码的，还要考虑验证难度是否过大，刷新或者换一个的按钮是否好用</p>
-</li>
-<li>
-<p>登陆页面中的注册、忘记密码、登出、用另一账号等链接是否正确</p>
-</li>
-</ol>
-<h5 id="2界面测试ui-test"><a class="markdownIt-Anchor" href="#2界面测试ui-test"></a> 2）界面测试：UI Test</h5>
-<ol>
-<li>布局是否合理，2个Testbox和1个按钮是否对其</li>
-<li>Testbox和按钮的长度，高度是否符合要求</li>
-<li>界面的设计风格是否与UI的设计风格统一</li>
-<li>界面的文字简洁易懂，没有错别字</li>
-</ol>
-<h5 id="3性能测试-performance-test"><a class="markdownIt-Anchor" href="#3性能测试-performance-test"></a> 3）性能测试 Performance Test</h5>
-<ol>
-<li>打开登陆页面，需要几秒</li>
-<li>输入正确的账号密码后，登陆成功跳转到新页面，不超过5秒</li>
-</ol>
-<h5 id="4安全性测试-security-test"><a class="markdownIt-Anchor" href="#4安全性测试-security-test"></a> 4）安全性测试 Security Test</h5>
-<ol>
-<li>登陆成功后生成的 Cookie 是否有 HttpOnly（降低脚本盗取风险）</li>
-<li>账号密码是否通过加密的方式，发送到Web服务器</li>
-<li>账号和密码的验证，应该是用服务器端验证，而不只是用客户端的JS分析</li>
-<li>账号和密码的输入框，应该屏蔽SQL注入攻击</li>
-<li>账号和密码的输入框，要禁止输入脚本（防止XSS攻击）</li>
-<li>错误登陆的次数使用限制（防止暴力破解）</li>
-<li>考虑是否支持多用户在同一机器上登陆</li>
-<li>考虑一用户在多台机器登陆</li>
-</ol>
-<h5 id="5可用性测试-usability-test"><a class="markdownIt-Anchor" href="#5可用性测试-usability-test"></a> 5）可用性测试 Usability Test</h5>
-<ol>
-<li>是否可以用全键盘操作，是否有快捷键</li>
-<li>输入账号，密码后回车，是否可以登陆</li>
-<li>输入框是否可以用Tab切换</li>
-</ol>
-<h5 id="6兼容性测试-compatibility-test"><a class="markdownIt-Anchor" href="#6兼容性测试-compatibility-test"></a> 6）兼容性测试 Compatibility Test</h5>
-<ol>
-<li>主流浏览器功能是否正常</li>
-<li>不同系统平台是否工作正常（Macos pc）</li>
-<li>移动设备是否工作正常</li>
-<li>不同分辨率</li>
-</ol>
-<h5 id="7本地化测试-localization-test"><a class="markdownIt-Anchor" href="#7本地化测试-localization-test"></a> 7）本地化测试 Localization Test</h5>
-<p>不同语言环境，页面显示是否正确</p>
-<h5 id="8辅助性测试"><a class="markdownIt-Anchor" href="#8辅助性测试"></a> 8）辅助性测试</h5>
-<p>高对比度下是否显示正常（视力不好的人）</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>软件测试基础理论</title>
     <url>/2020/10/20/%E8%BD%AF%E4%BB%B6%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0-01/</url>
     <content><![CDATA[<h3 id="软件测试的分类"><a class="markdownIt-Anchor" href="#软件测试的分类"></a> 软件测试的分类</h3>
@@ -2630,6 +2509,185 @@ Github中。</p>
       </categories>
       <tags>
         <tag>软件测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面试宝典-01</title>
+    <url>/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</url>
+    <content><![CDATA[<h2 id="一-软件工程"><a class="markdownIt-Anchor" href="#一-软件工程"></a> 一、软件工程</h2>
+<h4 id="1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"><a class="markdownIt-Anchor" href="#1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"></a> 1. 软件生命周期有哪些阶段？常见的软件生命周期模型有哪些？</h4>
+<p>软件生命周期有：初始构思、需求分析、功能设计、内部设计、文档计划、测试计划、文档准备、集成、测试、维护、升级、再测试、逐步淘汰等。</p>
+<p>常见模型有：瀑布模型、迭代模型、快速原型模型、螺旋模型。（1）瀑布是最常见的模型；（2）迭代约等于小型的瀑布流项目，每一次迭代都可以产生一个产品，这个产品是最终产品的一个子集；（3）快速原型模型是迅速构建一个可以运行的软件模型，以便理解和澄清问题；（4）而螺旋模型则大多用在大型管理软件系统中，具有前面三者没有的风险分析。</p>
+<a id="more"></a>
+<h4 id="2-什么是版本控制常用的系统有哪些"><a class="markdownIt-Anchor" href="#2-什么是版本控制常用的系统有哪些"></a> 2. 什么是版本控制，常用的系统有哪些？</h4>
+<p>是一种软体工程技巧，确保不同的人编辑的统一文档都能得到更新。</p>
+<p>1）Git：分布式的版本控制系统。</p>
+<p>2）SVN：subversion，分支管理系统。</p>
+<h2 id="二-测试模型"><a class="markdownIt-Anchor" href="#二-测试模型"></a> 二、测试模型</h2>
+<h4 id="1-常见的测试模型"><a class="markdownIt-Anchor" href="#1-常见的测试模型"></a> 1. 常见的测试模型</h4>
+<p>1）V字型：这是一种古老的瀑布模型，反映了实际和测试之间的关系。局限:仅仅把测试过程作为编码之后的一个阶段，忽视了测试对需求分析,系统设计的验证，如果前面设计错误， 得一直到后期的验收测试才被发现，耗时耗力。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123616102.png" alt="image-20201108123616102" style="zoom:50%;" />
+<p>2）W型：测试与开发同时进行，在 V 模型的基础上，增加了在开发阶段的同步测试。局限：仍然不支持迭代，减少了一定错误发生率，但是需按照流水线进行设计、编码和测试</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123631829.png" alt="image-20201108123631829" style="zoom:50%;" />
+<h4 id="2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"><a class="markdownIt-Anchor" href="#2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"></a> 2. 请根据”V”模型分别概述测试人员在软件的需求定义阶段、设计阶段、编码阶段、系统集成阶段的「工作任务」及其相应「生成的文档」?</h4>
+<p>1）需求定义阶段：根据项目需求提取测试需求，形成「测试需求文档」；根据测试需求和项目计划生成「测试计划」。</p>
+<p>2）设计阶段：根据测试需求拟定测试方案并形成「测试方案文档」；根据测试方案文档指定测试用例，并形成「测试用例文档」</p>
+<p>3）编码阶段：执行测试并完善测试用例文档</p>
+<p>4）系统集成阶段：测试总结报告，阶段问题统计报告，测试问题报告</p>
+<h2 id="三-测试计划"><a class="markdownIt-Anchor" href="#三-测试计划"></a> 三、测试计划</h2>
+<h4 id="1-编写测试计划的目的是"><a class="markdownIt-Anchor" href="#1-编写测试计划的目的是"></a> 1. 编写测试计划的目的是？</h4>
+<p>使测试工作顺利进行；使项目参与人员沟通更顺畅；使测试工作更系统（人与系统）</p>
+<h4 id="2-测试计划编写六要素"><a class="markdownIt-Anchor" href="#2-测试计划编写六要素"></a> 2. 测试计划编写六要素</h4>
+<p>5W1H（谁、时间、地点、做了什么事、为什么、怎么做的H）</p>
+<h4 id="3-测试人员在软件开发过程中的任务是什么"><a class="markdownIt-Anchor" href="#3-测试人员在软件开发过程中的任务是什么"></a> 3. 测试人员在软件开发过程中的任务是什么？</h4>
+<p>寻找bug，衡量软件的品质，避免软件开发过程中的缺陷，关注用户体验。总的来说就是：确保软件质量。</p>
+<h2 id="四-测试种类"><a class="markdownIt-Anchor" href="#四-测试种类"></a> 四、测试种类</h2>
+<h4 id="1-请列出你所知道的软件测试种类至少五项"><a class="markdownIt-Anchor" href="#1-请列出你所知道的软件测试种类至少五项"></a> 1. 请列出你所知道的「软件测试种类」，至少五项。</h4>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123501083.png" alt="image-20201108123501083" style="zoom:50%;" />
+<h4 id="2-黑盒测试和白盒测试的常用测试方法有举个例子"><a class="markdownIt-Anchor" href="#2-黑盒测试和白盒测试的常用测试方法有举个例子"></a> 2. 黑盒测试和白盒测试的常用测试方法有？举个例子？</h4>
+<p>1）黑盒：等价类划分法、边界值法、因果图法和错误猜测法</p>
+<p>2）白盒：逻辑覆盖法、循环测试路径选择、基本路径测试</p>
+<p>例子：在一次输入多个条件的完整性查询中。利用等价类划分法和边界分析法，首先利用等价类划分法，制定一个或多个结果是OK的测试用例，然后确认多个NG的测试用例。然后再用边界值分析法，对结果分别是OK和NG的测试用例进行拓展和补充。</p>
+<h4 id="3-简述黑盒测试和白盒测试的优缺点"><a class="markdownIt-Anchor" href="#3-简述黑盒测试和白盒测试的优缺点"></a> 3. 简述黑盒测试和白盒测试的优缺点？</h4>
+<p>1）黑盒</p>
+<ul>
+<li>优点：a. 比较简单，不用了解内部代码的实现；b. 从用户的角度出发，很容易知道用户会用到哪些功能，会遇到什么问题；c. 与软件内部无关；d. 在做软件自动化测试时较方便。</li>
+<li>缺点：代码覆盖率较低；自动化测试的复用性较低。</li>
+</ul>
+<p>2）白盒</p>
+<ul>
+<li>优点：代码覆盖率高，提高代码质量，发现隐藏的问题。</li>
+<li>缺点：a. 测试基于代码，只能测试开发人员的对与不对，而不能知道设计的正确与否，可能会漏掉一些功能需求；b. 系统庞大时，测试开销会很大；c. 测试有很多路径，不可能测试完所有的路径。</li>
+</ul>
+<h4 id="4-单元测试的策略有哪些主要内容有"><a class="markdownIt-Anchor" href="#4-单元测试的策略有哪些主要内容有"></a> 4. 单元测试的策略有哪些，主要内容有？</h4>
+<p>逻辑覆盖，循环覆盖，代码走查，静态数据流分析，代码评审，桌前检查，同行评审</p>
+<h4 id="5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"><a class="markdownIt-Anchor" href="#5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"></a> 5. 白盒测试逻辑覆盖有哪几种覆盖标准，覆盖率最高的是？</h4>
+<p>语句覆盖，分支覆盖，条件覆盖，路径覆盖，分支条件覆盖。最高的是路径覆盖。</p>
+<h2 id="五-用例设计"><a class="markdownIt-Anchor" href="#五-用例设计"></a> 五、用例设计</h2>
+<h4 id="1-什么是测试用例测试用例的基本要素"><a class="markdownIt-Anchor" href="#1-什么是测试用例测试用例的基本要素"></a> 1. 什么是测试用例，测试用例的基本要素？</h4>
+<p>测试用例是为某个测试目标编写的一组输入、执行条件与预期结果，以便测试某个程序是否符合特定要求。</p>
+<p>基本要素：测试索引，测试环境，测试输入，测试操作，预期结果，评价标准</p>
+<h4 id="2-描述测试用例设计的完整过程"><a class="markdownIt-Anchor" href="#2-描述测试用例设计的完整过程"></a> 2. 描述测试用例设计的完整过程</h4>
+<p>1）根据概要设计、需求文档、测试计划、测试方案细分出测试项</p>
+<p>2）根据测试项，按照详细设计与测试方案中测试的覆盖率细分出测试子项</p>
+<p>3）用测试设计方法（等价类划分，边界值，因果图等）编写测试用例</p>
+<p>注意：用例一定要及时更新（补充与删除），要全面（考虑功能、性能、兼容性等）</p>
+<h4 id="3-有个广告的纸杯子请设计测试用例"><a class="markdownIt-Anchor" href="#3-有个广告的纸杯子请设计测试用例"></a> 3. 有个广告的纸杯子，请设计测试用例</h4>
+<p>基本功能测试（逻辑功能测试）。</p>
+<p>1）硬度：是否达到设计标准。 装载能力:在杯子内分别装入少量的、半杯的、满杯的，看其装载量是否达到设计标准。 装载种类:开水(是否产生异味)、温水、冷水、冰水、咖啡。。</p>
+<p>2）界面测试(UI 测试)。</p>
+<p>看其形状、大小设计是否适合人方便拿起。</p>
+<p>外观是否吸引人(广告嘛)，赏心悦目。</p>
+<p>带广告的图案沾水受是否掉色、模糊。</p>
+<p>3）易用性测试。</p>
+<p>看其形状、大小设计是否适合人方便拿起。</p>
+<p>残疾人士用此杯去喝水的容程度。 杯子设计是否上大下小，在运输过程中可以套在一起有效利用空间，在使用时也容易拿开。</p>
+<p>4）稳定性测试（24 X 7 测试）。装入液体后记录其多少以后漏水。</p>
+<p>5）安全性测试。杯子所用的材料(包括纸基、涂层和广告颜料)是否符合食品卫生标准，在内外温度等环境因素下是否会与所盛各种饮料相反应，而产生对人体有害的物质。</p>
+<p>6）本地化测试。为国际化和本地化的需要，广告图案和文字是否在政治、宗教和文化方面具有广泛的适用性。</p>
+<p>7）对设计的改进建议。“如果是一次性杯子，能否标示已使用(比如变色)”和“杯子是否有使用者标贴(多人使用时防止混淆)”。</p>
+<h4 id="4-一个身份证号码输入框怎么设计用例"><a class="markdownIt-Anchor" href="#4-一个身份证号码输入框怎么设计用例"></a> 4. 一个身份证号码输入框，怎么设计用例?</h4>
+<p>校验身份证号的规则有效性（地址码、生日编码、顺序码、校验码）</p>
+<p>检验15位身份证和18位身份正好可用</p>
+<p>校验末尾是x的情况</p>
+<p>校验不足15位、16-17位和18位的情况</p>
+<p>如果是必输项，空白时是否有提示与流程是否正常进行</p>
+<p>如果不是必输项，校验不输入时流程能否正常进行</p>
+<p>检验非数字的情况，是否会有正确提示信息（包括大小写字母，汉字，特殊字符与标点符号）</p>
+<h4 id="5-登陆功能怎么设计测试用例"><a class="markdownIt-Anchor" href="#5-登陆功能怎么设计测试用例"></a> 5. 登陆功能怎么设计测试用例？</h4>
+<p>具体需求:有一个登录页面，有一个账号和一个密码输入框, 一个提交按钮。</p>
+<p>此题的考察目的：1. 了解需求(测什么都是从了解需求开始)；2. 是否有设计 Test Case 的能力；3. 是否熟悉各种测试方法； 4. 是否有丰富的 Web 测试经验;；5. 是否了解 Web 开发。</p>
+<p>了解需求：1. 登陆界面是弹出窗口式的，还是直接在网页里面；2. 账号长度和密码的强度要求（比如需要多少位、大小写敏感、特殊字符混搭）；3. 界面美观是否有特殊要求（是否要进行UI测试）</p>
+<p>用例设计：</p>
+<h5 id="1功能测试function-test"><a class="markdownIt-Anchor" href="#1功能测试function-test"></a> 1）功能测试：Function Test</h5>
+<ol>
+<li>
+<p>输入正确的账号密码，点击提交按钮，验证是否能正确登陆（正常输入）</p>
+</li>
+<li>
+<p>输入错误的账号密码，验证登陆会失败，与给出相应的错误提示（错误输入）</p>
+</li>
+<li>
+<p>登陆成功后能否正确跳转到正确界面</p>
+</li>
+<li>
+<p>账号和密码如果太长或太短，应该怎么处理（安全性，密码太短都有提示）</p>
+</li>
+<li>
+<p>账号和密码中，有特殊字符（比如空格）和其他非英文情况（是否做了顾虑）</p>
+</li>
+<li>
+<p>账号和密码前后都有空格的处理</p>
+</li>
+<li>
+<p>输入密码时，大写键盘有提示</p>
+</li>
+<li>
+<p>密码是否加密显示</p>
+</li>
+<li>
+<p>什么都不输，点击提交按钮，看提示信息</p>
+</li>
+<li>
+<p>记住账号功能</p>
+</li>
+<li>
+<p>登陆失败后，不能记录密码的功能</p>
+</li>
+<li>
+<p>牵涉到验证码的，还要考虑验证难度是否过大，刷新或者换一个的按钮是否好用</p>
+</li>
+<li>
+<p>登陆页面中的注册、忘记密码、登出、用另一账号等链接是否正确</p>
+</li>
+</ol>
+<h5 id="2界面测试ui-test"><a class="markdownIt-Anchor" href="#2界面测试ui-test"></a> 2）界面测试：UI Test</h5>
+<ol>
+<li>布局是否合理，2个Testbox和1个按钮是否对其</li>
+<li>Testbox和按钮的长度，高度是否符合要求</li>
+<li>界面的设计风格是否与UI的设计风格统一</li>
+<li>界面的文字简洁易懂，没有错别字</li>
+</ol>
+<h5 id="3性能测试-performance-test"><a class="markdownIt-Anchor" href="#3性能测试-performance-test"></a> 3）性能测试 Performance Test</h5>
+<ol>
+<li>打开登陆页面，需要几秒</li>
+<li>输入正确的账号密码后，登陆成功跳转到新页面，不超过5秒</li>
+</ol>
+<h5 id="4安全性测试-security-test"><a class="markdownIt-Anchor" href="#4安全性测试-security-test"></a> 4）安全性测试 Security Test</h5>
+<ol>
+<li>登陆成功后生成的 Cookie 是否有 HttpOnly（降低脚本盗取风险）</li>
+<li>账号密码是否通过加密的方式，发送到Web服务器</li>
+<li>账号和密码的验证，应该是用服务器端验证，而不只是用客户端的JS分析</li>
+<li>账号和密码的输入框，应该屏蔽SQL注入攻击</li>
+<li>账号和密码的输入框，要禁止输入脚本（防止XSS攻击）</li>
+<li>错误登陆的次数使用限制（防止暴力破解）</li>
+<li>考虑是否支持多用户在同一机器上登陆</li>
+<li>考虑一用户在多台机器登陆</li>
+</ol>
+<h5 id="5可用性测试-usability-test"><a class="markdownIt-Anchor" href="#5可用性测试-usability-test"></a> 5）可用性测试 Usability Test</h5>
+<ol>
+<li>是否可以用全键盘操作，是否有快捷键</li>
+<li>输入账号，密码后回车，是否可以登陆</li>
+<li>输入框是否可以用Tab切换</li>
+</ol>
+<h5 id="6兼容性测试-compatibility-test"><a class="markdownIt-Anchor" href="#6兼容性测试-compatibility-test"></a> 6）兼容性测试 Compatibility Test</h5>
+<ol>
+<li>主流浏览器功能是否正常</li>
+<li>不同系统平台是否工作正常（Macos pc）</li>
+<li>移动设备是否工作正常</li>
+<li>不同分辨率</li>
+</ol>
+<h5 id="7本地化测试-localization-test"><a class="markdownIt-Anchor" href="#7本地化测试-localization-test"></a> 7）本地化测试 Localization Test</h5>
+<p>不同语言环境，页面显示是否正确</p>
+<h5 id="8辅助性测试"><a class="markdownIt-Anchor" href="#8辅助性测试"></a> 8）辅助性测试</h5>
+<p>高对比度下是否显示正常（视力不好的人）</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
 </search>
