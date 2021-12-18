@@ -96,6 +96,30 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>Debian开启crontab日志</title>
+    <url>/2021/12/18/Debian%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211218114909331.png" alt="image-20211218114909331" /></p>
+<p>搭建网易云闹钟需要查看crontab的运行情况，在此记录下如何实时监控log</p>
+<a id="more"></a>
+<p>实时查看crontab的log</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
+<p>但debian是默认不开启的，我们需要手动开启</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;rsyslog.conf </span><br></pre></td></tr></table></figure>
+<p>找到👇，然后把<code>#</code>去掉</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.* &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
+<p>重启日志服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;rsyslog restart</span><br></pre></td></tr></table></figure>
+<p>重启crontab服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;crond restart</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Flask 学习笔记 - Hello</title>
     <url>/2020/12/26/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-Hello/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
@@ -530,10 +554,111 @@ Github中。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>Linux</category>
+        <category>linux</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>N1盒子折腾记</title>
+    <url>/2021/12/18/N1%E7%9B%92%E5%AD%90%E6%8A%98%E8%85%BE%E8%AE%B0/</url>
+    <content><![CDATA[<p>这段时间看到树莓派涨价太厉害，然后感觉我的树莓派3b+好像吃灰了一段时间，还有性能实在太过剩。之前有留意到斐讯的N1盒子性能也很强，也可以刷armbian，其实是可以用来替代树莓派的。在pdd 110💰入手了一台，包电源。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211218121833554.png" alt="image-20211218121833554" /></p>
+<a id="more"></a>
+<h2 id="一-刷机armbian"><a class="markdownIt-Anchor" href="#一-刷机armbian"></a> 一、刷机armbian</h2>
+<p>在pdd手上拿回来的是<code>openwrt</code>，但我还是喜欢armbian多一点，因为可自定义程度可以非常高。所以本教程是在openwrt的基础上刷armbian。刷其他系统大同小异，都是先制作好系统U盘👉插入N1盒子👉开机👉执行sh脚本或者nand-sata-install写入emmc。</p>
+<h3 id="1-前期准备"><a class="markdownIt-Anchor" href="#1-前期准备"></a> 1. 前期准备</h3>
+<h4 id="11-物料"><a class="markdownIt-Anchor" href="#11-物料"></a> 1.1 物料</h4>
+<p>HDMI线、16g U盘（不需要usb公对公）</p>
+<h4 id="12-系统-577-debian"><a class="markdownIt-Anchor" href="#12-系统-577-debian"></a> 1.2 系统 5.77 Debian</h4>
+<p>链接: <a href="https://pan.baidu.com/s/1kivlyMxyiZfGG3YTMI4NMw">https://pan.baidu.com/s/1kivlyMxyiZfGG3YTMI4NMw</a></p>
+<p>提取码: e3cm</p>
+<p><strong>强烈不建议选择Ubuntu的桌面版！强烈不建议选择Ubuntu的桌面版！因为到后面的python脚本和crontab会有问题。用 5.77 Debian 命令版5分钟就刷完，后期安装任何工具和依赖都非常快速。反倒Ubuntu桌面版有一大堆的问题。</strong></p>
+<h4 id="13-其他工具下载"><a class="markdownIt-Anchor" href="#13-其他工具下载"></a> 1.3 其他工具下载</h4>
+<p>U盘系统制作工具：<a href="https://www.balena.io/etcher/">balenaEtcher</a></p>
+<p>dbt文件：[在5.77 Debian下载链接里面有](#1.2 系统 5.77 Debian)</p>
+<h3 id="2-制作系统u盘"><a class="markdownIt-Anchor" href="#2-制作系统u盘"></a> 2. 制作系统U盘</h3>
+<h4 id="21-烧录"><a class="markdownIt-Anchor" href="#21-烧录"></a> 2.1 烧录</h4>
+<p>这一步直接使用balenaEtcher烧录就行，非常简单。</p>
+<h4 id="22-拷贝dbt文件"><a class="markdownIt-Anchor" href="#22-拷贝dbt文件"></a> 2.2 拷贝dbt文件</h4>
+<p>在烧录后的U盘里面，有个dbt文件夹。把下载下来的dbt文件👉复制到U盘的dbt文件夹内</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211218122227863.png" alt="image-20211218122227863" /></p>
+<h4 id="23-修改uenv文件"><a class="markdownIt-Anchor" href="#23-修改uenv文件"></a> 2.3 修改uEnv文件</h4>
+<p>在U盘系统目录里，有个uEnv.ini文件，把data_name=xxx修改成</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">dtb_name&#x3D;&#x2F;dtb&#x2F;meson-gxl-s905d-phicomm-n1-xiangsm.dtb</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211218122320412.png" alt="image-20211218122320412" /></p>
+<p><strong>至此，启动U盘制作完成。</strong></p>
+<h2 id="二-写入emmc"><a class="markdownIt-Anchor" href="#二-写入emmc"></a> 二、写入emmc</h2>
+<p>插入U盘就会自动加载，debian默认是root，密码1234。后面会要你更改。</p>
+<p>然后执行下面命令就可以写入emmc了</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nand-sata-install</span><br></pre></td></tr></table></figure>
+<p>网上有的教程说执行/root/install.sh可以，但还是建议以我上面的方式写入。</p>
+<p>重启</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">reboot</span><br></pre></td></tr></table></figure>
+<h2 id="三-其他配置"><a class="markdownIt-Anchor" href="#三-其他配置"></a> 三、其他配置</h2>
+<p>Wi-Fi、时区、apt源等等</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">armbian-config</span><br></pre></td></tr></table></figure>
+<p>到这里，N1盒子的armbian系统基本配置好啦～</p>
+<h2 id="四-相关文章"><a class="markdownIt-Anchor" href="#四-相关文章"></a> 四、相关文章</h2>
+<p><a href="https://yuerblog.cc/2019/10/23/%E6%96%90%E8%AE%AFn1-%E5%AE%8C%E7%BE%8E%E5%88%B7%E6%9C%BAarmbian%E6%95%99%E7%A8%8B/">斐讯N1 – 完美刷机Armbian教程</a>(建议阅读)</p>
+<p><a href="https://www.twoeggz.com/info/745423.html">秒变万能家庭服务器！斐讯N1 armbian安装指南</a></p>
+<p><a href="https://www.right.com.cn/forum/forum.php?mod=forumdisplay&amp;fid=158&amp;filter=typeid&amp;typeid=21">N1盒子Armbian-5.77 on N1, so far so good</a></p>
+<p><a href="https://wh0.is/p/%E6%96%90%E8%AE%AFn1%E8%A3%85ubuntuarmbian-%E5%B0%B4%E5%B0%AC%E5%A4%8D%E6%B4%BB%E8%AE%B0%E5%BD%95/">斐讯N1装Ubuntu(Armbian)+尴尬复活记录</a></p>
+]]></content>
+      <categories>
+        <category>硬件</category>
+      </categories>
+      <tags>
+        <tag>硬件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>N1盒子部署我的网易云闹钟折腾记</title>
+    <url>/2021/12/18/N1%E7%9B%92%E5%AD%90%E9%83%A8%E7%BD%B2%E6%88%91%E7%9A%84%E7%BD%91%E6%98%93%E4%BA%91%E9%97%B9%E9%92%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</url>
+    <content><![CDATA[<p>前面N1盒子刷armbian的目的之一就是为了更好的安装我的网易云闹钟，早上更好的叫醒我。</p>
+<p>但一路可谓是遇到了非常多坑。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211218122647253.png" alt="image-20211218122647253" /></p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211218121833554.png" alt="image-20211218121833554" /></p>
+<a id="more"></a>
+<h2 id="一-背景介绍"><a class="markdownIt-Anchor" href="#一-背景介绍"></a> 一、背景介绍</h2>
+<p>一开始我刷了带桌面的ubuntu，把我坑得不要不要的！在桌面版终端命令执行python脚本或者鼠标点击mp4文件都有声音出来，但是一旦ssh或者在crontab中执行python脚本就没有声音！！！前前后后折腾了一个晚上毫无结果。</p>
+<p>分析大概是桌面端的问题，也有可能是armbian和N1盒子不那么适配。所以还是换成了没有桌面端的debian。</p>
+<h2 id="二-系统配置"><a class="markdownIt-Anchor" href="#二-系统配置"></a> 二、系统配置</h2>
+<h3 id="1-更新apt"><a class="markdownIt-Anchor" href="#1-更新apt"></a> 1. 更新apt</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt-get upgrade</span><br></pre></td></tr></table></figure>
+<h3 id="2-换python3"><a class="markdownIt-Anchor" href="#2-换python3"></a> 2. 换python3</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 删除&#x2F;usr&#x2F;bin目录下的python link文件</span><br><span class="line">sudo rm -rf &#x2F;usr&#x2F;bin&#x2F;python</span><br><span class="line"></span><br><span class="line"># 删除后再建立新的链接关系：</span><br><span class="line">sudo ln -s &#x2F;usr&#x2F;bin&#x2F;python3.5 &#x2F;usr&#x2F;bin&#x2F;python</span><br></pre></td></tr></table></figure>
+<h3 id="3-安装pip3"><a class="markdownIt-Anchor" href="#3-安装pip3"></a> 3. 安装pip3</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get install python3-pip</span><br></pre></td></tr></table></figure>
+<h3 id="4-baidu-aip"><a class="markdownIt-Anchor" href="#4-baidu-aip"></a> 4. baidu-aip</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip3 install baidu-aip</span><br></pre></td></tr></table></figure>
+<h3 id="5-mpg123或mplayer"><a class="markdownIt-Anchor" href="#5-mpg123或mplayer"></a> 5. mpg123或mplayer</h3>
+<p>在树莓派上我是用mplayer的，但在N1盒子上使用mplayer播放音乐一卡一卡的。结果换成了mpg123就没问题了。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># mpg123</span><br><span class="line">apt-get install mpg123</span><br><span class="line"></span><br><span class="line"># mplayer</span><br><span class="line">apt-get install mplayer</span><br></pre></td></tr></table></figure>
+<h2 id="三-配置声卡"><a class="markdownIt-Anchor" href="#三-配置声卡"></a> 三、配置声卡</h2>
+<p>在pdd买了一个免驱的usb网卡，可以直接接3.5mm的音频。但使用mpg123播放音乐没有声音。根据前面树莓派的经验，应该是网卡配置有问题。因为armbian默认是card0的声卡，可能是一开始插了HDMI默认了是card0。我们要做的就是修改我们的usb设备为默认声卡就行。</p>
+<h3 id="1-查看所有声卡信息"><a class="markdownIt-Anchor" href="#1-查看所有声卡信息"></a> 1. 查看所有声卡信息</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">aplay -l </span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211218122844083.png" alt="image-20211218122844083" /></p>
+<p>我们需要usb声卡的 card 数字<code>1</code> 和 device数字<code>0</code></p>
+<h3 id="2-修改默认声卡文件"><a class="markdownIt-Anchor" href="#2-修改默认声卡文件"></a> 2. 修改默认声卡文件</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;asound.conf</span><br></pre></td></tr></table></figure>
+<p>默认是没有asound.conf文件的，不要紧，直接新建添加就行。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">defaults.pcm.card 1  </span><br><span class="line">defaults.pcm.device 0 </span><br><span class="line">defaults.ctl.card 1</span><br></pre></td></tr></table></figure>
+<h3 id="3-测试声卡"><a class="markdownIt-Anchor" href="#3-测试声卡"></a> 3. 测试声卡</h3>
+<p>upload一段mp3文件，然后使用mpg123播放查看有没有声音。如果没有，就reboot一下。大概率是OK的。</p>
+<h2 id="四-部署网易云闹钟项目"><a class="markdownIt-Anchor" href="#四-部署网易云闹钟项目"></a> 四、部署网易云闹钟项目</h2>
+<p>前面工具和相关依赖环境已经配置好了。直接git clone项目，然后修改相关配置就行。</p>
+<p>详细请看GitHub项目：<a href="https://github.com/tangspoon66/NeteaseCloud-Clock#%E4%BA%94%E5%BC%80%E5%A7%8B%E6%90%AD%E5%BB%BA">开始搭建</a></p>
+<h2 id="五-相关文章"><a class="markdownIt-Anchor" href="#五-相关文章"></a> 五、相关文章</h2>
+<p><a href="https://blog.csdn.net/hunanchenxingyu/article/details/48399585">alsa设置默认声卡</a></p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -709,6 +834,24 @@ Github中。</p>
 </blockquote>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"></span><br><span class="line">num2 = <span class="number">100</span></span><br><span class="line">sum1 = <span class="keyword">lambda</span> num1 : num1 + num2 ;</span><br><span class="line"></span><br><span class="line">num2 = <span class="number">10000</span></span><br><span class="line">sum2 = <span class="keyword">lambda</span> num1 : num1 + num2 ;</span><br><span class="line"></span><br><span class="line">print( sum1( <span class="number">1</span> ) )</span><br><span class="line">print( sum2( <span class="number">1</span> ) )</span><br></pre></td></tr></table></figure>
 <p><img src="https://picbed.tangspoon.cn/uPic/image-20211217180821420.png" alt="image-20211217180821420" /></p>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python学习日志-03｜复习</title>
+    <url>/2021/12/17/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-03%EF%BD%9C%E5%A4%8D%E4%B9%A0/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323.png" alt="image-20211208153223437" /></p>
+<p>第三天：迭代、</p>
+<a id="more"></a>
+<p><code>2021-12-18</code></p>
+<h2 id="一-迭代"><a class="markdownIt-Anchor" href="#一-迭代"></a> 一、迭代</h2>
+<p>python中<code>访问集合元素</code>的方式之一。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">dict1=&#123;<span class="string">&#x27;a&#x27;</span>:<span class="number">1</span>,<span class="string">&#x27;b&#x27;</span>:<span class="number">2</span>&#125;</span><br><span class="line"><span class="comment"># 遍历 dict 的key</span></span><br><span class="line"><span class="keyword">for</span> key <span class="keyword">in</span> dict1.keys():</span><br><span class="line">    print(key)</span><br><span class="line">    </span><br><span class="line"><span class="comment"># 遍历 dict 的values</span></span><br><span class="line"><span class="keyword">for</span> value <span class="keyword">in</span> dict1.values():</span><br><span class="line">    print(values)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 访问 字符串 集合里的元素</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&#x27;test&#x27;</span>:</span><br><span class="line">    print(i)</span><br><span class="line">    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>Python</category>
@@ -1350,8 +1493,8 @@ Github中。</p>
         <category>linux</category>
       </categories>
       <tags>
-        <tag>troubleshooting</tag>
         <tag>linux</tag>
+        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -1366,6 +1509,9 @@ Github中。</p>
 <p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>
 <h2 id="3-改成上海时间"><a class="markdownIt-Anchor" href="#3-改成上海时间"></a> 3. 改成上海时间</h2>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1.删除自带的localtime</span><br><span class="line">rm -rf &#x2F;etc&#x2F;localtime</span><br><span class="line"># 2.创建软链接到localtime</span><br><span class="line">ln -s &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime</span><br></pre></td></tr></table></figure>
+<h2 id="4-卸载python3"><a class="markdownIt-Anchor" href="#4-卸载python3"></a> 4. 卸载python3</h2>
+<p>用于把python3.7换成python3.5</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 卸载</span><br><span class="line">rpm -qa|grep python3|xargs rpm -ev --allmatches --nodeps</span><br><span class="line"># 删除所有残余文件</span><br><span class="line">whereis python3 |xargs rm -frv </span><br><span class="line"># 查看现有安装的python</span><br><span class="line">whereis python </span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>linux</tag>
@@ -1485,8 +1631,8 @@ Github中。</p>
         <category>树莓派</category>
       </categories>
       <tags>
-        <tag>树莓派</tag>
         <tag>linux</tag>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -2296,6 +2442,19 @@ Github中。</p>
       </categories>
       <tags>
         <tag>软件测试</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>解决｜UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe8 in position 0: ordinal not in range(128)</title>
+    <url>/2021/12/18/%E8%A7%A3%E5%86%B3%EF%BD%9CUnicodeDecodeError-ascii-codec-can-t-decode-byte-0xe8-in-position-0-ordinal-not-in-range-128/</url>
+    <content><![CDATA[<p>换成python3即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 删除&#x2F;usr&#x2F;bin目录下的python link文件</span><br><span class="line">sudo rm -rf &#x2F;usr&#x2F;bin&#x2F;python</span><br><span class="line"></span><br><span class="line"># 删除后再建立新的链接关系：</span><br><span class="line">sudo ln -s &#x2F;usr&#x2F;bin&#x2F;python3.5 &#x2F;usr&#x2F;bin&#x2F;python</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
         <tag>troubleshooting</tag>
       </tags>
   </entry>
