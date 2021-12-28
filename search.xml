@@ -50,30 +50,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Debian开启crontab日志</title>
-    <url>/2021/12/18/Debian%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20211218114909331.png" alt="image-20211218114909331" style="zoom: 43%;" />
-<p>搭建网易云闹钟需要查看crontab的运行情况，在此记录下如何实时监控log</p>
-<a id="more"></a>
-<p>实时查看crontab的log</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
-<p>但debian是默认不开启的，我们需要手动开启</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;rsyslog.conf </span><br></pre></td></tr></table></figure>
-<p>找到👇，然后把<code>#</code>去掉</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.* &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
-<p>重启日志服务</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;rsyslog restart</span><br></pre></td></tr></table></figure>
-<p>重启crontab服务</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;crond restart</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>About unittest</title>
     <url>/2020/12/04/About-unittest/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
@@ -117,6 +93,65 @@ Github中。</p>
       <tags>
         <tag>软件测试</tag>
         <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Debian开启crontab日志</title>
+    <url>/2021/12/18/Debian%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20211218114909331.png" alt="image-20211218114909331" style="zoom: 43%;" />
+<p>搭建网易云闹钟需要查看crontab的运行情况，在此记录下如何实时监控log</p>
+<a id="more"></a>
+<p>实时查看crontab的log</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
+<p>但debian是默认不开启的，我们需要手动开启</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;rsyslog.conf </span><br></pre></td></tr></table></figure>
+<p>找到👇，然后把<code>#</code>去掉</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.* &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
+<p>重启日志服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;rsyslog restart</span><br></pre></td></tr></table></figure>
+<p>重启crontab服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;etc&#x2F;init.d&#x2F;crond restart</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Flask-学习笔记02-模版与表单</title>
+    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
+<p>应用于智能快递柜的密码校验web</p>
+<a id="more"></a>
+<p>最简单的flask项目</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
+<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
+<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
+<p>在视图函数<code>return</code>就行，如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>关注body内部：</p>
+<p><code>action</code>：post请求重定向到<code>result路由</code></p>
+<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
+<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
+]]></content>
+      <categories>
+        <category>Flask</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
       </tags>
   </entry>
   <entry>
@@ -164,41 +199,6 @@ Github中。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python app.py</span><br></pre></td></tr></table></figure>
 <p><img src="https://picbed.tangspoon.cn/uPic/image-20211227171644922.png" alt="image-20211227171644922" /></p>
 <p>然后在浏览器访问：`http://localhost:8443</p>
-]]></content>
-      <categories>
-        <category>Flask</category>
-      </categories>
-      <tags>
-        <tag>Flask</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Flask-学习笔记02-模版与表单</title>
-    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
-<p>应用于智能快递柜的密码校验web</p>
-<a id="more"></a>
-<p>最简单的flask项目</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
-<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
-<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
-<p>在视图函数<code>return</code>就行，如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>关注body内部：</p>
-<p><code>action</code>：post请求重定向到<code>result路由</code></p>
-<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
-<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
 ]]></content>
       <categories>
         <category>Flask</category>
@@ -668,31 +668,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Python中的init()到底怎么理解？</title>
-    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
-<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
-<a id="more"></a>
-<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
-<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
-<p>那么<code>self</code>又是什么东西？</p>
-<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
-<hr />
-<blockquote>
-<p>参考资料</p>
-<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
-<p>最良心的Python教程：</p>
-<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>PyCharm远程连接树莓派同步编辑py文件</title>
     <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
@@ -721,6 +696,31 @@ Github中。</p>
       </categories>
       <tags>
         <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python中的init()到底怎么理解？</title>
+    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
+<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
+<a id="more"></a>
+<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
+<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
+<p>那么<code>self</code>又是什么东西？</p>
+<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
+<hr />
+<blockquote>
+<p>参考资料</p>
+<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
+<p>最良心的Python教程：</p>
+<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -907,11 +907,11 @@ Github中。</p>
 <p>想做一个智能快递柜，想法是快递员扫码进入网页，输入信息验证成功后，香橙派就控制打开电磁锁。因为对esp和MQTT协议不熟悉，所以只能选择香橙派+内网穿透曲线救国的方式实现效果。当然，成本也会高很多。（esp几块钱，香橙派二手70+）</p>
 <a id="more"></a>
 <h2 id="一-服务端"><a class="markdownIt-Anchor" href="#一-服务端"></a> 一、服务端</h2>
-<p>服务端应用在vps。</p>
+<p>服务端应用在vps。（如果是arm系统，需要更改wget的地址）</p>
 <h3 id="1-拉取源代码修改配置"><a class="markdownIt-Anchor" href="#1-拉取源代码修改配置"></a> 1. 拉取源代码&amp;修改配置</h3>
 <p>（我这个是0.38版本）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wegt https:&#x2F;&#x2F;github.com&#x2F;fatedier&#x2F;frp&#x2F;releases&#x2F;download&#x2F;v0.38.0&#x2F;frp_0.38.0_linux_amd64.tar.gz</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf frp_0.38.0_linux_amd64.tar.gz</span><br><span class="line">mv frp_0.38.0_linux_amd64.tar.gz frps</span><br><span class="line">cd frps</span><br><span class="line">vim frps.ini</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;fatedier&#x2F;frp&#x2F;releases&#x2F;download&#x2F;v0.38.0&#x2F;frp_0.38.0_linux_amd64.tar.gz</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf frp_0.38.0_linux_amd64.tar.gz</span><br><span class="line">mv frp_0.38.0_linux_amd64 frps</span><br><span class="line">cd frps</span><br><span class="line">vim frps.ini</span><br></pre></td></tr></table></figure>
 <img src="https://picbed.tangspoon.cn/uPic/image-20211224202926625.png" alt="image-20211224202926625" style="zoom:50%;" />
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[common]</span><br><span class="line">dashboard_port &#x3D; 7500</span><br><span class="line">bind_port &#x3D; 7000</span><br><span class="line">vhost_http_port &#x3D; 8443</span><br></pre></td></tr></table></figure>
 <p><code>bind_port</code>：server端和client端对接端口</p>
@@ -920,7 +920,7 @@ Github中。</p>
 <h3 id="2-放行端口"><a class="markdownIt-Anchor" href="#2-放行端口"></a> 2. 放行端口</h3>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">iptables -A INPUT -p tcp --dport 8443 -j ACCEPT</span><br><span class="line">iptables -A INPUT -p tcp --dport 7000 -j ACCEPT</span><br><span class="line">iptables -A INPUT -p tcp --dport 7500 -j ACCEPT</span><br><span class="line">iptables-save &gt; &#x2F;etc&#x2F;iptables.up.rules</span><br><span class="line">&#x2F;etc&#x2F;init.d&#x2F;ssh restart</span><br></pre></td></tr></table></figure>
 <h3 id="3-启动"><a class="markdownIt-Anchor" href="#3-启动"></a> 3. 启动</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;frps -c frps.ini</span><br><span class="line">nohup .&#x2F;frps -c .&#x2F;frps.ini &amp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nohup .&#x2F;frps -c .&#x2F;frps.ini &gt; frps.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 <p><code>nohup</code>：可以把frps后台启动</p>
 <blockquote>
 <p>关闭</p>
@@ -932,6 +932,7 @@ Github中。</p>
 <p>macOS下载：<a href="https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_darwin_amd64.tar.gz">frp_0.38.0_darwin_amd64.tar.gz</a></p>
 <p>linux下载：<a href="https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_linux_amd64.tar.gz">frp_0.38.0_linux_amd64.tar.gz</a></p>
 <p>Windows下载：<a href="https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_windows_amd64.zip">frp_0.38.0_windows_amd64.zip</a></p>
+<p>树莓派/香橙派下载：<a href="https://github.com/fatedier/frp/releases/download/v0.38.0/frp_0.38.0_linux_arm.tar.gz">frp_0.38.0_linux_arm.tar.gz</a></p>
 <p><strong>我这里以macOS版演示</strong></p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;github.com&#x2F;fatedier&#x2F;frp&#x2F;releases&#x2F;download&#x2F;v0.38.0&#x2F;frp_0.38.0_darwin_amd64.tar.gz</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">tar -zxvf frp_0.38.0_darwin_amd64.tar.gz</span><br><span class="line">mv frp_0.38.0_darwin_amd64 frpc</span><br><span class="line">cd frpc</span><br><span class="line">vim frpc.ini</span><br></pre></td></tr></table></figure>
@@ -941,7 +942,7 @@ Github中。</p>
 <p><code>local_port</code>：要和服务端填写的<code>vhost_http_port</code>一致</p>
 <p><code>custom_domains</code>：服务端的ip/域名</p>
 <h3 id="启动"><a class="markdownIt-Anchor" href="#启动"></a> 启动</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.&#x2F;frps -c frps.ini</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">nohup .&#x2F;frpc -c .&#x2F;frpc.ini &gt; frpc.log 2&gt;&amp;1 &amp;</span><br></pre></td></tr></table></figure>
 <p><img src="https://picbed.tangspoon.cn/uPic/image-20211224211909398.png" alt="image-20211224211909398" /></p>
 <h3 id="三-面板"><a class="markdownIt-Anchor" href="#三-面板"></a> 三、面板</h3>
 <p>访问地址：ip:7500</p>
@@ -1157,46 +1158,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
-    <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
-<h3 id="一-背景"><a class="markdownIt-Anchor" href="#一-背景"></a> 一、背景</h3>
-<p>在《Python自动化测试实战》中，使用的是HTMLTestRunner，但教程使用的是windows系统，本人使用的macOS与其有点出入。Baidu和Google的帖子全都是在手动下载py文件，然后手动放到Python的lib文件夹中，但本macOS无效。</p>
-<a id="more"></a>
-<h3 id="二-解决过程"><a class="markdownIt-Anchor" href="#二-解决过程"></a> 二、解决过程</h3>
-<p>然后尝试换个思路，自动化测试报告中肯定不止只有老旧的HTMLTestRunner这个库呀，会不会有功能更加丰富、使用更方便、美观的第三方库呢？果然，有一个<a href="https://pypi.org/project/unittestreport/">unittestreport</a> 让人极为惊喜。</p>
-<p>安装过程显示是非常简单的，直接使用pip安装。但我install之后import还是没反应。疑惑。这时，突然想起Pycharm中的Interpreter的配置，是可以直接安装第三方库的。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207160205161.png" alt="image-20201207160205161" style="zoom:50%;" />
-<p>在Install Package后，就可以成功使用unittestreport了。</p>
-<h3 id="三-如何使用"><a class="markdownIt-Anchor" href="#三-如何使用"></a> 三、如何使用</h3>
-<p>在<a href="http://testingpai.com/article/1595507317340">此文章</a>中有提示。我自己写了个简单的demo，可直接运行，<a href="https://file.tangspoon.cn/t/qbXL4C">点此下载</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittestteport <span class="keyword">import</span> TestRunner,HTMLTestRunner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：加载测试套件</span></span><br><span class="line">suite1 = unittest.defaultTestLoader.discover(<span class="string">r&quot;xxx\xxx\cases&quot;</span>)</span><br><span class="line"><span class="comment"># 第二步：创建运行对象，传入测试套件</span></span><br><span class="line">runner = HTMLTestRunner(stream=open(<span class="string">&quot;report.html&quot;</span>,<span class="string">&#x27;wb&#x27;</span>), title=<span class="string">&#x27;木森的测试报告&#x27;</span>,)</span><br><span class="line"><span class="comment"># 第三步：执行测试</span></span><br><span class="line">runner.run()</span><br></pre></td></tr></table></figure>
-<h3 id="四-advanced"><a class="markdownIt-Anchor" href="#四-advanced"></a> 四、advanced</h3>
-<h4 id="1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"><a class="markdownIt-Anchor" href="#1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"></a> 1. 为什么pip安装不能直接使用，而直接在Pycharm Interpreter安装就可以使用呢？</h4>
-<p>打开Pycharm Interpreter的Avaliable Packages界面，仔细查看，会发现其实会有一个钩子选项。从这里可以得到提示，可能与一个叫site packages的文件夹有关。可以从这里入手。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-<p>我们看看Project中的External Libraries都有哪些，打开一看，有了site-packes！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207162437233.png" alt="image-20201207162437233" style="zoom:45%;" />
-<p>在里面可以找到我们刚刚导入的unittestreport，还有之前折腾失败的HTMLTestRunner。</p>
-<p>pip安装失败，难道是pip安装的路径有问题？那我们查一下通过pip安装的unittestreport是在哪里。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207163426073.png" alt="image-20201207163426073" /></p>
-<p>在上述路径中删除一个库，PyCharm的External Libraries中的site-packages中就少了被删除的库，由此可证明其实<code>pip install unittestreport</code>已经成功了，只是我们还未在项目的解释器（PyCharm的Interpreter）中添加而已。其实这就像和我们使用selenium一样，每次新建一个project，<strong>就需要在解释器中添加相应的包才能使用的。</strong></p>
-<h4 id="2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"><a class="markdownIt-Anchor" href="#2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"></a> 2. 为什么网上手动引入HTMLTestRunner.py的方法行不通呢？</h4>
-<p>我们研究了上面的问题后，其实可以发现：我们是要在/Users/换成自己的用户名/opt/anaconda3/lib/python3.7/site-packages/中，创建一个HTMLTestRunner文件夹，然后把py文件放进即可。而不是放入什么bin目录或者lib目录。</p>
-<p><strong>手动引入其他第三方库类似。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207165459498.png" alt="image-20201207165459498" style="zoom:50%;" />
-<p><strong>或者更简单的，我们可以直接通过PyCharm的解释器在线添加packages。</strong></p>
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-        <category>自动化测试</category>
-      </categories>
-      <tags>
-        <tag>自动化测试</tag>
-        <tag>troubleshooting</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>原创｜转发B站UP主动态到微信python脚本</title>
     <url>/2021/12/06/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%BD%AC%E5%8F%91B%E7%AB%99UP%E4%B8%BB%E5%8A%A8%E6%80%81%E5%88%B0%E5%BE%AE%E4%BF%A1python%E8%84%9A%E6%9C%AC/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20211206213430058.png" alt="image-20211206213430058" style="zoom:40%;" />
@@ -1269,55 +1230,43 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>后盾人MySQL-多表操作</title>
-    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<blockquote>
-<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
-</blockquote>
+    <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
+    <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
+<h3 id="一-背景"><a class="markdownIt-Anchor" href="#一-背景"></a> 一、背景</h3>
+<p>在《Python自动化测试实战》中，使用的是HTMLTestRunner，但教程使用的是windows系统，本人使用的macOS与其有点出入。Baidu和Google的帖子全都是在手动下载py文件，然后手动放到Python的lib文件夹中，但本macOS无效。</p>
 <a id="more"></a>
-<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
-<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
-<ul>
-<li>查询一班的所有同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
-<ul>
-<li>一班的所有女生发表的文章</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>哪个班级发表的文章超过两篇</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级文章的总点击数与平均点击数</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>每个班级有多少同学</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
-<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
-<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
-<ul>
-<li>学生人数大于两个的班级名称</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
-<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
-<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
-<p>获取没有设置QQ的用户</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
+<h3 id="二-解决过程"><a class="markdownIt-Anchor" href="#二-解决过程"></a> 二、解决过程</h3>
+<p>然后尝试换个思路，自动化测试报告中肯定不止只有老旧的HTMLTestRunner这个库呀，会不会有功能更加丰富、使用更方便、美观的第三方库呢？果然，有一个<a href="https://pypi.org/project/unittestreport/">unittestreport</a> 让人极为惊喜。</p>
+<p>安装过程显示是非常简单的，直接使用pip安装。但我install之后import还是没反应。疑惑。这时，突然想起Pycharm中的Interpreter的配置，是可以直接安装第三方库的。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207160205161.png" alt="image-20201207160205161" style="zoom:50%;" />
+<p>在Install Package后，就可以成功使用unittestreport了。</p>
+<h3 id="三-如何使用"><a class="markdownIt-Anchor" href="#三-如何使用"></a> 三、如何使用</h3>
+<p>在<a href="http://testingpai.com/article/1595507317340">此文章</a>中有提示。我自己写了个简单的demo，可直接运行，<a href="https://file.tangspoon.cn/t/qbXL4C">点此下载</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittestteport <span class="keyword">import</span> TestRunner,HTMLTestRunner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：加载测试套件</span></span><br><span class="line">suite1 = unittest.defaultTestLoader.discover(<span class="string">r&quot;xxx\xxx\cases&quot;</span>)</span><br><span class="line"><span class="comment"># 第二步：创建运行对象，传入测试套件</span></span><br><span class="line">runner = HTMLTestRunner(stream=open(<span class="string">&quot;report.html&quot;</span>,<span class="string">&#x27;wb&#x27;</span>), title=<span class="string">&#x27;木森的测试报告&#x27;</span>,)</span><br><span class="line"><span class="comment"># 第三步：执行测试</span></span><br><span class="line">runner.run()</span><br></pre></td></tr></table></figure>
+<h3 id="四-advanced"><a class="markdownIt-Anchor" href="#四-advanced"></a> 四、advanced</h3>
+<h4 id="1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"><a class="markdownIt-Anchor" href="#1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"></a> 1. 为什么pip安装不能直接使用，而直接在Pycharm Interpreter安装就可以使用呢？</h4>
+<p>打开Pycharm Interpreter的Avaliable Packages界面，仔细查看，会发现其实会有一个钩子选项。从这里可以得到提示，可能与一个叫site packages的文件夹有关。可以从这里入手。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+<p>我们看看Project中的External Libraries都有哪些，打开一看，有了site-packes！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207162437233.png" alt="image-20201207162437233" style="zoom:45%;" />
+<p>在里面可以找到我们刚刚导入的unittestreport，还有之前折腾失败的HTMLTestRunner。</p>
+<p>pip安装失败，难道是pip安装的路径有问题？那我们查一下通过pip安装的unittestreport是在哪里。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207163426073.png" alt="image-20201207163426073" /></p>
+<p>在上述路径中删除一个库，PyCharm的External Libraries中的site-packages中就少了被删除的库，由此可证明其实<code>pip install unittestreport</code>已经成功了，只是我们还未在项目的解释器（PyCharm的Interpreter）中添加而已。其实这就像和我们使用selenium一样，每次新建一个project，<strong>就需要在解释器中添加相应的包才能使用的。</strong></p>
+<h4 id="2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"><a class="markdownIt-Anchor" href="#2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"></a> 2. 为什么网上手动引入HTMLTestRunner.py的方法行不通呢？</h4>
+<p>我们研究了上面的问题后，其实可以发现：我们是要在/Users/换成自己的用户名/opt/anaconda3/lib/python3.7/site-packages/中，创建一个HTMLTestRunner文件夹，然后把py文件放进即可。而不是放入什么bin目录或者lib目录。</p>
+<p><strong>手动引入其他第三方库类似。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207165459498.png" alt="image-20201207165459498" style="zoom:50%;" />
+<p><strong>或者更简单的，我们可以直接通过PyCharm的解释器在线添加packages。</strong></p>
 ]]></content>
       <categories>
-        <category>MySQL</category>
+        <category>troubleshooting</category>
+        <category>自动化测试</category>
       </categories>
       <tags>
-        <tag>MySQL</tag>
+        <tag>自动化测试</tag>
+        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -1429,6 +1378,58 @@ Github中。</p>
 <li>添加多条件记录</li>
 </ul>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">insert into stu(sname,class_id,age) values(&#39;小明&#39;,2,32),(&#39;小张&#39;,3,45);</span><br><span class="line"># 注意不要忘了values</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>MySQL</category>
+      </categories>
+      <tags>
+        <tag>MySQL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>后盾人MySQL-多表操作</title>
+    <url>/2020/10/28/%E5%90%8E%E7%9B%BE%E4%BA%BAMySQL-%E5%A4%9A%E8%A1%A8%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<blockquote>
+<p>MySQL 表的操作还是有很多需要理解的地方，在此感谢<a href="https://houdunren.gitee.io/note/mysql/8%20%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5.html#%E5%A4%9A%E8%A1%A8%E6%94%BB%E7%95%A5">后盾人</a>的文章。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="join"><a class="markdownIt-Anchor" href="#join"></a> JOIN</h2>
+<h4 id="inner-join"><a class="markdownIt-Anchor" href="#inner-join"></a> inner join</h4>
+<ul>
+<li>查询一班的所有同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select s.id,sname,cname from stu s join class c on s.class_id&#x3D;c.id where c.id&#x3D;1; </span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级发表的文章数量，来操作多张表的关联操作</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 文章：article</span><br><span class="line"># 但class与article未设置直接连接，还需用stu联合起来（stu作为桥梁：用stu的class_id把class的id联合，然后再用stu的id把article的stu_id联合）</span><br><span class="line">select c.id,count(*) from stu as s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id;</span><br><span class="line"># 1. 计算数量用count(*)；2. 为什么用group by后面的是c.id呢？因为题目要求是「每个班级发表的文章数量」，所以肯定是用class的id来排的。</span><br></pre></td></tr></table></figure>
+<ul>
+<li>一班的所有女生发表的文章</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一班：class</span><br><span class="line"># 女生：stu</span><br><span class="line"># 文章：article</span><br><span class="line">select c.id,a.title from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">where sex&#x3D;&#39;女&#39;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>哪个班级发表的文章超过两篇</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,count(*) as total from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">having total &gt;&#x3D;2;</span><br><span class="line"># 注意total是在count(*)设置的</span><br><span class="line"># having total也就是拥有count（*）这个数&gt;&#x3D;2的</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级文章的总点击数与平均点击数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">select c.id,sum(a.click) as class_sum,avg(a.click) from stu s</span><br><span class="line">join class c</span><br><span class="line">join article a</span><br><span class="line">on s.class_id&#x3D;c.id and s.id&#x3D;a.stu_id</span><br><span class="line">group by c.id</span><br><span class="line">order by class_sum asc;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>每个班级有多少同学</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 班级：class</span><br><span class="line"># 学生：stu</span><br><span class="line">select c.id,count(*) from stu s join class c on s.class_id&#x3D;c.id group by c.id;</span><br></pre></td></tr></table></figure>
+<img src="https://cdn.jsdelivr.net/gh/tangspoon66/tangspoon66.github.io@master/uPic/image-20201028233614831.png" alt="image-20201028233614831" style="zoom:50%;" />
+<p>上面是两张表连立后的新表，可以看到直接通过cname来统计每个班有多少人（有两个cname就证明有两个人）</p>
+<ul>
+<li>学生人数大于两个的班级名称</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT count(*) as total,c.cname FROM stu as s INNER JOIN class as c</span><br><span class="line">ON s.class_id &#x3D; c.id</span><br><span class="line">GROUP BY c.cname</span><br><span class="line">HAVING total&gt;&#x3D;2;</span><br></pre></td></tr></table></figure>
+<h4 id="outer-join"><a class="markdownIt-Anchor" href="#outer-join"></a> outer join</h4>
+<p>外链接包括<code>left join</code>与<code>right join</code>，可以简单理解为 <code>LEFT JOIN</code>会包含<strong>左侧所有表记录</strong>，<code>RIGHT JOIN</code> 会包含右侧表全部记录。</p>
+<p>获取没有设置QQ的用户</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">SELECT s.sname FROM stu AS s LEFT JOIN stu_info as i</span><br><span class="line">ON s.id &#x3D; i.stu_id</span><br><span class="line">WHERE i.qq is null;</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
         <category>MySQL</category>
@@ -1627,6 +1628,124 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>智能闹钟（一）｜macOS入门使用树莓派3B+</title>
+    <url>/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/</url>
+    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
+<p>最近，苹果手机坏了，暂时用回一加6古董机。iOS的捷径可以实现每日闹钟停止后可以自动播放网易云音乐的每日推荐歌曲，这个功能真的太喜欢了。但是会有10%的几率播放失败，而且安卓系统并没有类似功能。可能你会想到目前的智能音箱调闹钟不就可以了吗？首先，智能音箱对网络依赖极强，网络故障啥都干不了。其次，智能音箱并没有对接到网易云的每日推荐歌单，闹钟播放的歌曲都是随机的。</p>
+<p>因此，作为一个geek，还是自己亲手打造一个可以播放网易云每日推荐歌曲的闹钟吧！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219132040671.png" alt="image-20201219132040671" style="zoom:50%;" />
+<a id="more"></a>
+<hr />
+<h2 id="一-烧录镜像"><a class="markdownIt-Anchor" href="#一-烧录镜像"></a> 一、烧录镜像</h2>
+<h3 id="1-格式化内存卡"><a class="markdownIt-Anchor" href="#1-格式化内存卡"></a> 1. 格式化内存卡</h3>
+<p>macOS使用SD Memory Card Formatter格式化内存卡，<a href="https://www.sdcard.org/downloads/formatter/eula_mac/index.html">点击此处</a>进入官网下载。（拉到最下面点击accept）</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201219113330224.png" alt="image-20201219113330224" /></p>
+<p>打开SD Card Formatter，按照下图操作。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219105251370.png" alt="image-20201219105251370" style="zoom:50%;" />
+<p>如下，证明格式化成功</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219105330442.png" alt="image-20201219105330442" style="zoom:50%;" />
+<h3 id="2-下载树莓派镜像文件"><a class="markdownIt-Anchor" href="#2-下载树莓派镜像文件"></a> 2. 下载树莓派镜像文件</h3>
+<p><a href="https://www.raspberrypi.org/software/operating-systems/">点击此处</a>进入下载页面，我这里下载Lite版的，下载完后<strong>不用解压</strong>。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219110531165.png" alt="image-20201219110531165" style="zoom:25%;" />
+<h3 id="3-下载烧录工具"><a class="markdownIt-Anchor" href="#3-下载烧录工具"></a> 3. 下载烧录工具</h3>
+<p>macOS可以使用 Etcher烧录树莓派，戳这里进入官网：<a href="https://etcher.io/">https://etcher.io</a></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219110853874.png" alt="image-20201219110853874" style="zoom: 33%;" />
+<p>选择你刚才下载的镜像（zip 格式），然后选择你的储存卡，点 Flash！即可烧录系统。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219111417310.png" alt="image-20201219111417310" style="zoom:33%;" />
+<p>耐心等待一段时间，大概需要5分钟就可烧录成功。</p>
+<p><strong>注意：烧录后TF卡名字会变为：<code>boot</code>。</strong></p>
+<h3 id="4-编写ssh连接与wifi配置文件"><a class="markdownIt-Anchor" href="#4-编写ssh连接与wifi配置文件"></a> 4. 编写ssh连接与wifi配置文件</h3>
+<p>新建两个<code>txt</code>文件，分别命名为：<code>ssh</code>、<code>wpa_supplicant.conf</code></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219112541652.png" alt="image-20201219112541652" style="zoom:50%;" />
+<ul>
+<li>
+<p><code>ssh</code>文件是没有后缀的</p>
+</li>
+<li>
+<p><code>wpa_supplicant.conf</code>写入下面信息：</p>
+<blockquote>
+<ol>
+<li>SSID名字中不能有符号<code>.</code></li>
+<li>优先级范围为1-10</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">country&#x3D;CN</span><br><span class="line">ctrl_interface&#x3D;DIR&#x3D;&#x2F;var&#x2F;run&#x2F;wpa_supplicant Group&#x3D;netdev</span><br><span class="line">update_config&#x3D;1</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi1的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级，越大越优先</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi2的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>然后将这两个文件移动至烧录系统镜像后TF卡的根目录。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219113232972.png" alt="image-20201219113232972" style="zoom:50%;" />
+</li>
+</ul>
+<blockquote>
+<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
+<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
+</blockquote>
+<hr />
+<h2 id="二-准备开机"><a class="markdownIt-Anchor" href="#二-准备开机"></a> 二、准备开机</h2>
+<blockquote>
+<p>树莓派3B+的电源要求是5V 2.5A的，最好不要太低，否则会损坏机器。（近300块啊）</p>
+</blockquote>
+<h3 id="1-ssh连接"><a class="markdownIt-Anchor" href="#1-ssh连接"></a> 1. ssh连接</h3>
+<p>进入到我们的路由器中，然后查看树莓派的IP地址。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219115812140.png" alt="image-20201219115812140" style="zoom:50%;" />
+<p>ssh工具推荐使用FinalShell，按下图填写</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219120353131.png" alt="image-20201219120353131" style="zoom: 33%;" />
+<p>连接成功。可以看到会提示让我们修改ssh密码，但是因为我日常忘记各种密码，我就直接用默认的吧。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219123856310.png" alt="image-20201219123856310" style="zoom:33%;" />
+<h2 id="三-系统设置"><a class="markdownIt-Anchor" href="#三-系统设置"></a> 三、系统设置</h2>
+<h3 id="1-软件源更改"><a class="markdownIt-Anchor" href="#1-软件源更改"></a> 1. 软件源更改</h3>
+<p>一定要更改源，不然下载程序会非常慢。这里改成清华源。</p>
+<p>（1）先安装vim（你可以使用nano或者vi，我个人喜欢vim）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install vim</span><br></pre></td></tr></table></figure>
+<p>（2）修改<code>source.list</code>文件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br></pre></td></tr></table></figure>
+<p>先把里面的<strong>所有内容都注释掉</strong>，然后增加下面两行代码</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br></pre></td></tr></table></figure>
+<p>（3）再修改<code>raspi.list</code></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;raspi.list</span><br></pre></td></tr></table></figure>
+<p>同样，先把里面的<strong>所有内容都注释掉</strong>，然后增加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspberrypi&#x2F; buster main ui</span><br></pre></td></tr></table></figure>
+<p>（4）最后，进行更新</p>
+<blockquote>
+<p><strong>第二条命令执行时间会比较长。</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
+<h3 id="2-更改时区"><a class="markdownIt-Anchor" href="#2-更改时区"></a> 2. 更改时区</h3>
+<p>查看时区是否为你的当地时区</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">date</span><br></pre></td></tr></table></figure>
+<p>如果不是，执行命令更改成Asia-Shanghai</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dpkg-reconfigure tzdata</span><br></pre></td></tr></table></figure>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219134431642.png" alt="image-20201219134431642" style="zoom:50%;" />
+<p>基本设置done！</p>
+<hr />
+<h2 id="四-关闭派不能直接拔出电源"><a class="markdownIt-Anchor" href="#四-关闭派不能直接拔出电源"></a> 四、关闭派不能直接拔出电源！！</h2>
+<p>注意⚠️：</p>
+<p><strong>关闭树莓派不能直接拔出电源！！！</strong></p>
+<p>正确关闭树莓派方法是：先执行<code>sudo halt</code>，然后等待只有电源指示灯亮的时候（或者等待20s），再拔电源。</p>
+<hr />
+<p>下一篇我们利用Node.js版本的网易云api<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">NeteaseCloudMusicApi</a>，写一个py脚本，实现定时播放网易云音乐每日推荐歌曲。</p>
+<hr />
+<h2 id="五-相关文章"><a class="markdownIt-Anchor" href="#五-相关文章"></a> 五、相关文章</h2>
+<ol>
+<li><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气的播报</a></li>
+<li><a href="http://localhost:4000/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/#more">智能闹钟（三）| 使用「网易云音乐 NodeJS 版 API 接口」播放每日推荐歌曲</a></li>
+<li><a href="https://blog.tangspoon.cn/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/#more">智能闹钟（四）-整合搭建</a></li>
+<li><a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/#more">智能闹钟（五）｜如何优雅地关闭闹钟？</a></li>
+</ol>
+<br/>
+<br/>
+<p>参考资料：</p>
+<p><a href="https://stepneverstop.github.io/burn-system2raspberry-in-macos.html">https://stepneverstop.github.io/burn-system2raspberry-in-macos.html</a></p>
+<p><a href="https://sspai.com/post/37356">https://sspai.com/post/37356</a></p>
+<p><a href="https://www.icxbk.com/article/detail/1077.html">https://www.icxbk.com/article/detail/1077.html</a></p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+        <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>智能闹钟（三）| 使用「网易云音乐NodeJS版API接口」播放每日推荐歌曲</title>
     <url>/2020/12/22/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%89%EF%BC%89%7C%20%E4%BD%BF%E7%94%A8%E3%80%8C%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90NodeJS%E7%89%88API%E6%8E%A5%E5%8F%A3%E3%80%8D%E8%8E%B7%E5%8F%96%E6%AF%8F%E6%97%A5%E6%8E%A8%E8%8D%90%E6%AD%8C%E6%9B%B2/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201222151927493.png" alt="image-20201222151927493" style="zoom:50%;" />
@@ -1779,126 +1898,8 @@ Github中。</p>
         <category>树莓派</category>
       </categories>
       <tags>
+        <tag>树莓派</tag>
         <tag>Python</tag>
-        <tag>树莓派</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>智能闹钟（一）｜macOS入门使用树莓派3B+</title>
-    <url>/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/</url>
-    <content><![CDATA[<h2 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h2>
-<p>最近，苹果手机坏了，暂时用回一加6古董机。iOS的捷径可以实现每日闹钟停止后可以自动播放网易云音乐的每日推荐歌曲，这个功能真的太喜欢了。但是会有10%的几率播放失败，而且安卓系统并没有类似功能。可能你会想到目前的智能音箱调闹钟不就可以了吗？首先，智能音箱对网络依赖极强，网络故障啥都干不了。其次，智能音箱并没有对接到网易云的每日推荐歌单，闹钟播放的歌曲都是随机的。</p>
-<p>因此，作为一个geek，还是自己亲手打造一个可以播放网易云每日推荐歌曲的闹钟吧！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219132040671.png" alt="image-20201219132040671" style="zoom:50%;" />
-<a id="more"></a>
-<hr />
-<h2 id="一-烧录镜像"><a class="markdownIt-Anchor" href="#一-烧录镜像"></a> 一、烧录镜像</h2>
-<h3 id="1-格式化内存卡"><a class="markdownIt-Anchor" href="#1-格式化内存卡"></a> 1. 格式化内存卡</h3>
-<p>macOS使用SD Memory Card Formatter格式化内存卡，<a href="https://www.sdcard.org/downloads/formatter/eula_mac/index.html">点击此处</a>进入官网下载。（拉到最下面点击accept）</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201219113330224.png" alt="image-20201219113330224" /></p>
-<p>打开SD Card Formatter，按照下图操作。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219105251370.png" alt="image-20201219105251370" style="zoom:50%;" />
-<p>如下，证明格式化成功</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219105330442.png" alt="image-20201219105330442" style="zoom:50%;" />
-<h3 id="2-下载树莓派镜像文件"><a class="markdownIt-Anchor" href="#2-下载树莓派镜像文件"></a> 2. 下载树莓派镜像文件</h3>
-<p><a href="https://www.raspberrypi.org/software/operating-systems/">点击此处</a>进入下载页面，我这里下载Lite版的，下载完后<strong>不用解压</strong>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219110531165.png" alt="image-20201219110531165" style="zoom:25%;" />
-<h3 id="3-下载烧录工具"><a class="markdownIt-Anchor" href="#3-下载烧录工具"></a> 3. 下载烧录工具</h3>
-<p>macOS可以使用 Etcher烧录树莓派，戳这里进入官网：<a href="https://etcher.io/">https://etcher.io</a></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219110853874.png" alt="image-20201219110853874" style="zoom: 33%;" />
-<p>选择你刚才下载的镜像（zip 格式），然后选择你的储存卡，点 Flash！即可烧录系统。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219111417310.png" alt="image-20201219111417310" style="zoom:33%;" />
-<p>耐心等待一段时间，大概需要5分钟就可烧录成功。</p>
-<p><strong>注意：烧录后TF卡名字会变为：<code>boot</code>。</strong></p>
-<h3 id="4-编写ssh连接与wifi配置文件"><a class="markdownIt-Anchor" href="#4-编写ssh连接与wifi配置文件"></a> 4. 编写ssh连接与wifi配置文件</h3>
-<p>新建两个<code>txt</code>文件，分别命名为：<code>ssh</code>、<code>wpa_supplicant.conf</code></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219112541652.png" alt="image-20201219112541652" style="zoom:50%;" />
-<ul>
-<li>
-<p><code>ssh</code>文件是没有后缀的</p>
-</li>
-<li>
-<p><code>wpa_supplicant.conf</code>写入下面信息：</p>
-<blockquote>
-<ol>
-<li>SSID名字中不能有符号<code>.</code></li>
-<li>优先级范围为1-10</li>
-</ol>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">country&#x3D;CN</span><br><span class="line">ctrl_interface&#x3D;DIR&#x3D;&#x2F;var&#x2F;run&#x2F;wpa_supplicant Group&#x3D;netdev</span><br><span class="line">update_config&#x3D;1</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi1的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级，越大越优先</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">network&#x3D;&#123;</span><br><span class="line">	ssid&#x3D;&quot;Wifi2的名字&quot;</span><br><span class="line">	psk&#x3D;&quot;密码&quot;</span><br><span class="line">	priority&#x3D;优先级</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>然后将这两个文件移动至烧录系统镜像后TF卡的根目录。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219113232972.png" alt="image-20201219113232972" style="zoom:50%;" />
-</li>
-</ul>
-<blockquote>
-<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
-<p><strong>在Finder中推出TF卡！！！</strong> 要养成好习惯！不然容易烧卡！</p>
-</blockquote>
-<hr />
-<h2 id="二-准备开机"><a class="markdownIt-Anchor" href="#二-准备开机"></a> 二、准备开机</h2>
-<blockquote>
-<p>树莓派3B+的电源要求是5V 2.5A的，最好不要太低，否则会损坏机器。（近300块啊）</p>
-</blockquote>
-<h3 id="1-ssh连接"><a class="markdownIt-Anchor" href="#1-ssh连接"></a> 1. ssh连接</h3>
-<p>进入到我们的路由器中，然后查看树莓派的IP地址。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219115812140.png" alt="image-20201219115812140" style="zoom:50%;" />
-<p>ssh工具推荐使用FinalShell，按下图填写</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219120353131.png" alt="image-20201219120353131" style="zoom: 33%;" />
-<p>连接成功。可以看到会提示让我们修改ssh密码，但是因为我日常忘记各种密码，我就直接用默认的吧。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219123856310.png" alt="image-20201219123856310" style="zoom:33%;" />
-<h2 id="三-系统设置"><a class="markdownIt-Anchor" href="#三-系统设置"></a> 三、系统设置</h2>
-<h3 id="1-软件源更改"><a class="markdownIt-Anchor" href="#1-软件源更改"></a> 1. 软件源更改</h3>
-<p>一定要更改源，不然下载程序会非常慢。这里改成清华源。</p>
-<p>（1）先安装vim（你可以使用nano或者vi，我个人喜欢vim）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get install vim</span><br></pre></td></tr></table></figure>
-<p>（2）修改<code>source.list</code>文件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list</span><br></pre></td></tr></table></figure>
-<p>先把里面的<strong>所有内容都注释掉</strong>，然后增加下面两行代码</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br><span class="line">deb-src http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspbian&#x2F;raspbian&#x2F; buster main non-free contrib</span><br></pre></td></tr></table></figure>
-<p>（3）再修改<code>raspi.list</code></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">vim &#x2F;etc&#x2F;apt&#x2F;sources.list.d&#x2F;raspi.list</span><br></pre></td></tr></table></figure>
-<p>同样，先把里面的<strong>所有内容都注释掉</strong>，然后增加以下内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">deb http:&#x2F;&#x2F;mirrors.tuna.tsinghua.edu.cn&#x2F;raspberrypi&#x2F; buster main ui</span><br></pre></td></tr></table></figure>
-<p>（4）最后，进行更新</p>
-<blockquote>
-<p><strong>第二条命令执行时间会比较长。</strong></p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo apt-get update</span><br><span class="line">sudo apt-get upgrade</span><br></pre></td></tr></table></figure>
-<h3 id="2-更改时区"><a class="markdownIt-Anchor" href="#2-更改时区"></a> 2. 更改时区</h3>
-<p>查看时区是否为你的当地时区</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">date</span><br></pre></td></tr></table></figure>
-<p>如果不是，执行命令更改成Asia-Shanghai</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo dpkg-reconfigure tzdata</span><br></pre></td></tr></table></figure>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219134431642.png" alt="image-20201219134431642" style="zoom:50%;" />
-<p>基本设置done！</p>
-<hr />
-<h2 id="四-关闭派不能直接拔出电源"><a class="markdownIt-Anchor" href="#四-关闭派不能直接拔出电源"></a> 四、关闭派不能直接拔出电源！！</h2>
-<p>注意⚠️：</p>
-<p><strong>关闭树莓派不能直接拔出电源！！！</strong></p>
-<p>正确关闭树莓派方法是：先执行<code>sudo halt</code>，然后等待只有电源指示灯亮的时候（或者等待20s），再拔电源。</p>
-<hr />
-<p>下一篇我们利用Node.js版本的网易云api<a href="https://binaryify.github.io/NeteaseCloudMusicApi/#/">NeteaseCloudMusicApi</a>，写一个py脚本，实现定时播放网易云音乐每日推荐歌曲。</p>
-<hr />
-<h2 id="五-相关文章"><a class="markdownIt-Anchor" href="#五-相关文章"></a> 五、相关文章</h2>
-<ol>
-<li><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气的播报</a></li>
-<li><a href="http://localhost:4000/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/#more">智能闹钟（三）| 使用「网易云音乐 NodeJS 版 API 接口」播放每日推荐歌曲</a></li>
-<li><a href="https://blog.tangspoon.cn/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/#more">智能闹钟（四）-整合搭建</a></li>
-<li><a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/#more">智能闹钟（五）｜如何优雅地关闭闹钟？</a></li>
-</ol>
-<br/>
-<br/>
-<p>参考资料：</p>
-<p><a href="https://stepneverstop.github.io/burn-system2raspberry-in-macos.html">https://stepneverstop.github.io/burn-system2raspberry-in-macos.html</a></p>
-<p><a href="https://sspai.com/post/37356">https://sspai.com/post/37356</a></p>
-<p><a href="https://www.icxbk.com/article/detail/1077.html">https://www.icxbk.com/article/detail/1077.html</a></p>
-]]></content>
-      <categories>
-        <category>树莓派</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -1962,8 +1963,8 @@ Github中。</p>
         <category>树莓派</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>树莓派</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -2015,8 +2016,8 @@ Github中。</p>
         <category>树莓派</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>树莓派</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -2093,8 +2094,8 @@ Github中。</p>
         <category>树莓派</category>
       </categories>
       <tags>
-        <tag>Python</tag>
         <tag>树莓派</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
