@@ -1,101 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>About POM</title>
-    <url>/2020/12/04/About-POM/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
-<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
-<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
-<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
-<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
-<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
-<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
-<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
-<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
-<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
-<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
-<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
-<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
-<ol>
-<li>
-<p>使用unittest重新整合TestUnit部分</p>
-</li>
-<li>
-<p>加入流程异常捕捉断言测试。</p>
-<p>在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
-</li>
-<li>
-<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
-</li>
-</ol>
-<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
-<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
-Github中。</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>About unittest</title>
-    <url>/2020/12/04/About-unittest/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
-<p>该部分内容极为简单，不再赘述。</p>
-<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
-<ul>
-<li>作用：把测试用例组合到一起</li>
-<li>TestSuite()是一个类，需要实例化使用。</li>
-</ul>
-<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
-<p>格式：addTest(测试类名(‘测试用例’))</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
-<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
-<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
-<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
-<p>我们来看：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
-<ul>
-<li>start_dir ：要测试的模块名或测试用例目录。</li>
-<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
-<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
-</ul>
-<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
-<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
-<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
-<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
-<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
-<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Debian开启crontab日志</title>
     <url>/2021/12/18/Debian%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20211218114909331.png" alt="image-20211218114909331" style="zoom: 43%;" />
@@ -117,41 +22,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Flask-学习笔记02-模版与表单</title>
-    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
-<p>应用于智能快递柜的密码校验web</p>
-<a id="more"></a>
-<p>最简单的flask项目</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
-<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
-<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
-<p>在视图函数<code>return</code>就行，如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>关注body内部：</p>
-<p><code>action</code>：post请求重定向到<code>result路由</code></p>
-<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
-<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
-]]></content>
-      <categories>
-        <category>Flask</category>
-      </categories>
-      <tags>
-        <tag>Flask</tag>
       </tags>
   </entry>
   <entry>
@@ -202,6 +72,91 @@ Github中。</p>
 ]]></content>
       <categories>
         <category>Flask</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About POM</title>
+    <url>/2020/12/04/About-POM/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
+<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
+<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
+<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
+<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
+<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
+<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
+<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
+<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
+<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
+<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
+<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
+<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
+<ol>
+<li>
+<p>使用unittest重新整合TestUnit部分</p>
+</li>
+<li>
+<p>加入流程异常捕捉断言测试。</p>
+<p>在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
+</li>
+<li>
+<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
+</li>
+</ol>
+<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
+<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
+Github中。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Flask-学习笔记02-模版与表单</title>
+    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
+<p>应用于智能快递柜的密码校验web</p>
+<a id="more"></a>
+<p>最简单的flask项目</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
+<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
+<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
+<p>在视图函数<code>return</code>就行，如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>关注body内部：</p>
+<p><code>action</code>：post请求重定向到<code>result路由</code></p>
+<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
+<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
+]]></content>
+      <categories>
+        <category>Flask</category>
+        <category>只能快递柜</category>
       </categories>
       <tags>
         <tag>Flask</tag>
@@ -515,55 +470,49 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Linux基本操作</title>
-    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
-<p>这篇博文开个Linux栏目吧。</p>
+    <title>About unittest</title>
+    <url>/2020/12/04/About-unittest/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
 <a id="more"></a>
-<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
+<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
+<p>该部分内容极为简单，不再赘述。</p>
+<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
 <ul>
-<li>新建文件</li>
+<li>作用：把测试用例组合到一起</li>
+<li>TestSuite()是一个类，需要实例化使用。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
+<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
+<p>格式：addTest(测试类名(‘测试用例’))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
+<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
+<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
+<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
+<p>我们来看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
 <ul>
-<li>新建文件夹</li>
+<li>start_dir ：要测试的模块名或测试用例目录。</li>
+<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
+<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
-<ul>
-<li>移动/剪切/重命名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看当前所在路径</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
-<ul>
-<li>权限修改</li>
-</ul>
-<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
-<ul>
-<li>删除</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
-<ul>
-<li>读取文档内容</li>
-</ul>
-<blockquote>
-<p>常用语查看Linux的log日志文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
+<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
+<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
+<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
 ]]></content>
       <categories>
-        <category>linux</category>
+        <category>软件测试</category>
       </categories>
       <tags>
-        <tag>linux</tag>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
       </tags>
   </entry>
   <entry>
@@ -620,6 +569,89 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>Linux基本操作</title>
+    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
+<p>这篇博文开个Linux栏目吧。</p>
+<a id="more"></a>
+<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
+<ul>
+<li>新建文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新建文件夹</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
+<ul>
+<li>移动/剪切/重命名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前所在路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>权限修改</li>
+</ul>
+<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取文档内容</li>
+</ul>
+<blockquote>
+<p>常用语查看Linux的log日志文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PyCharm远程连接树莓派同步编辑py文件</title>
+    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
+<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
+<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
+<a id="more"></a>
+<hr />
+<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
+<br/>
+<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
+<br/>
+<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
+<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
+<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
+<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
+<p>Done！</p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>N1盒子部署我的网易云闹钟折腾记</title>
     <url>/2021/12/18/N1%E7%9B%92%E5%AD%90%E9%83%A8%E7%BD%B2%E6%88%91%E7%9A%84%E7%BD%91%E6%98%93%E4%BA%91%E9%97%B9%E9%92%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</url>
     <content><![CDATA[<p>前面N1盒子刷armbian的目的之一就是为了更好的安装我的网易云闹钟，早上更好的叫醒我。</p>
@@ -665,37 +697,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PyCharm远程连接树莓派同步编辑py文件</title>
-    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
-<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
-<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
-<a id="more"></a>
-<hr />
-<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
-<br/>
-<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
-<br/>
-<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
-<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
-<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
-<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
-<p>Done！</p>
-]]></content>
-      <categories>
-        <category>树莓派</category>
-      </categories>
-      <tags>
-        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -965,6 +966,7 @@ Github中。</p>
 ]]></content>
       <categories>
         <category>linux</category>
+        <category>智能快递柜</category>
       </categories>
       <tags>
         <tag>linux</tag>
@@ -989,6 +991,42 @@ Github中。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
+  </entry>
+  <entry>
+    <title>linux使用supervisor实现开机自启</title>
+    <url>/2022/01/04/linux%E4%BD%BF%E7%94%A8supervisor%E5%AE%9E%E7%8E%B0%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220104144501685.png" alt="image-20220104144501685" style="zoom:30%;" />
+<p>智能快递柜项目需要flask和内网穿透实现开机自启，使用supervisor非常方便。</p>
+<a id="more"></a>
+<p>相关Introduce在<a href="http://supervisord.org/introduction.html#overview">官网</a>有，这里只记录在<strong>香橙派</strong>armbian环境下的使用方法。</p>
+<h2 id="安装"><a class="markdownIt-Anchor" href="#安装"></a> 安装</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get install supervisor</span><br></pre></td></tr></table></figure>
+<h2 id="配置"><a class="markdownIt-Anchor" href="#配置"></a> 配置</h2>
+<h3 id="查看项目安装位置"><a class="markdownIt-Anchor" href="#查看项目安装位置"></a> 查看项目安装位置</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">whereis supervisor</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220104145552053.png" alt="image-20220104145552053" /></p>
+<h3 id="配置conf"><a class="markdownIt-Anchor" href="#配置conf"></a> 配置conf</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cd &#x2F;etc&#x2F;supervisor</span><br><span class="line"># 新建log方便下面使用</span><br><span class="line">touch supervisor.log</span><br><span class="line">vim supervisor.conf</span><br></pre></td></tr></table></figure>
+<p>在文件最后添加以下内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">[program:xxx]</span><br><span class="line">command&#x3D;xxxxxxx                                                  </span><br><span class="line">autostart&#x3D;true                                                                        </span><br><span class="line">autorestart&#x3D;true                                                             </span><br><span class="line">stdout_logfile &#x3D; &#x2F;etc&#x2F;supervisor&#x2F;supervisor.log</span><br><span class="line">startsecs &#x3D; 5</span><br><span class="line">stopwaitsecs&#x3D;0</span><br></pre></td></tr></table></figure>
+<p><code>line1</code>: 填写项目名称（例如我的是express_system）</p>
+<p><code>line2</code>：执行脚本的命令（例如我的是python /root/express_system/app.py）</p>
+<p><code>autostart</code>：在 supervisord 启动的时候也自动启动</p>
+<p><code>autorestart</code>：程序异常退出后自动重启</p>
+<p><code>startsecs</code>：启动 5 秒后没有异常退出，就当作已经正常启动了</p>
+<p><code>stopwaitsecs</code>：停止等待时间</p>
+<h3 id="重启"><a class="markdownIt-Anchor" href="#重启"></a> 重启</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">supervisorctl reload</span><br></pre></td></tr></table></figure>
+<h2 id="supervisor其他命令"><a class="markdownIt-Anchor" href="#supervisor其他命令"></a> supervisor其他命令</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 输入查看自启程序的状态</span><br><span class="line">supervisorctl</span><br><span class="line"></span><br><span class="line">#关闭所有任务</span><br><span class="line">supervisorctl shutdown</span><br><span class="line"></span><br><span class="line"># 启动某个进</span><br><span class="line">supervisorctl start programxxx</span><br><span class="line"></span><br><span class="line"># 重启某个进程</span><br><span class="line">supervisorctl restart programxxx</span><br><span class="line"></span><br><span class="line"># 停止全部进程 注：start、restart、stop都不会载入最新的配置文件</span><br><span class="line">supervisorctl stop all</span><br><span class="line"></span><br><span class="line"># 载入最新的配置文件，停止原有进程并按新的配置启动、管理所有进程。</span><br><span class="line">supervisorctl reload</span><br><span class="line"></span><br><span class="line"># 根据最新的配置文件，启动新配置或有改动的进程，配置没有改动的进程不会受影响而重启。</span><br><span class="line">supervisorctl update</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>linux</category>
+        <category>智能快递柜</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
   </entry>
   <entry>
     <title>个人理解TCP/IP</title>
@@ -1122,6 +1160,46 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
+    <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
+<h3 id="一-背景"><a class="markdownIt-Anchor" href="#一-背景"></a> 一、背景</h3>
+<p>在《Python自动化测试实战》中，使用的是HTMLTestRunner，但教程使用的是windows系统，本人使用的macOS与其有点出入。Baidu和Google的帖子全都是在手动下载py文件，然后手动放到Python的lib文件夹中，但本macOS无效。</p>
+<a id="more"></a>
+<h3 id="二-解决过程"><a class="markdownIt-Anchor" href="#二-解决过程"></a> 二、解决过程</h3>
+<p>然后尝试换个思路，自动化测试报告中肯定不止只有老旧的HTMLTestRunner这个库呀，会不会有功能更加丰富、使用更方便、美观的第三方库呢？果然，有一个<a href="https://pypi.org/project/unittestreport/">unittestreport</a> 让人极为惊喜。</p>
+<p>安装过程显示是非常简单的，直接使用pip安装。但我install之后import还是没反应。疑惑。这时，突然想起Pycharm中的Interpreter的配置，是可以直接安装第三方库的。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207160205161.png" alt="image-20201207160205161" style="zoom:50%;" />
+<p>在Install Package后，就可以成功使用unittestreport了。</p>
+<h3 id="三-如何使用"><a class="markdownIt-Anchor" href="#三-如何使用"></a> 三、如何使用</h3>
+<p>在<a href="http://testingpai.com/article/1595507317340">此文章</a>中有提示。我自己写了个简单的demo，可直接运行，<a href="https://file.tangspoon.cn/t/qbXL4C">点此下载</a></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittestteport <span class="keyword">import</span> TestRunner,HTMLTestRunner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：加载测试套件</span></span><br><span class="line">suite1 = unittest.defaultTestLoader.discover(<span class="string">r&quot;xxx\xxx\cases&quot;</span>)</span><br><span class="line"><span class="comment"># 第二步：创建运行对象，传入测试套件</span></span><br><span class="line">runner = HTMLTestRunner(stream=open(<span class="string">&quot;report.html&quot;</span>,<span class="string">&#x27;wb&#x27;</span>), title=<span class="string">&#x27;木森的测试报告&#x27;</span>,)</span><br><span class="line"><span class="comment"># 第三步：执行测试</span></span><br><span class="line">runner.run()</span><br></pre></td></tr></table></figure>
+<h3 id="四-advanced"><a class="markdownIt-Anchor" href="#四-advanced"></a> 四、advanced</h3>
+<h4 id="1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"><a class="markdownIt-Anchor" href="#1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"></a> 1. 为什么pip安装不能直接使用，而直接在Pycharm Interpreter安装就可以使用呢？</h4>
+<p>打开Pycharm Interpreter的Avaliable Packages界面，仔细查看，会发现其实会有一个钩子选项。从这里可以得到提示，可能与一个叫site packages的文件夹有关。可以从这里入手。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+<p>我们看看Project中的External Libraries都有哪些，打开一看，有了site-packes！</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207162437233.png" alt="image-20201207162437233" style="zoom:45%;" />
+<p>在里面可以找到我们刚刚导入的unittestreport，还有之前折腾失败的HTMLTestRunner。</p>
+<p>pip安装失败，难道是pip安装的路径有问题？那我们查一下通过pip安装的unittestreport是在哪里。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207163426073.png" alt="image-20201207163426073" /></p>
+<p>在上述路径中删除一个库，PyCharm的External Libraries中的site-packages中就少了被删除的库，由此可证明其实<code>pip install unittestreport</code>已经成功了，只是我们还未在项目的解释器（PyCharm的Interpreter）中添加而已。其实这就像和我们使用selenium一样，每次新建一个project，<strong>就需要在解释器中添加相应的包才能使用的。</strong></p>
+<h4 id="2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"><a class="markdownIt-Anchor" href="#2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"></a> 2. 为什么网上手动引入HTMLTestRunner.py的方法行不通呢？</h4>
+<p>我们研究了上面的问题后，其实可以发现：我们是要在/Users/换成自己的用户名/opt/anaconda3/lib/python3.7/site-packages/中，创建一个HTMLTestRunner文件夹，然后把py文件放进即可。而不是放入什么bin目录或者lib目录。</p>
+<p><strong>手动引入其他第三方库类似。</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207165459498.png" alt="image-20201207165459498" style="zoom:50%;" />
+<p><strong>或者更简单的，我们可以直接通过PyCharm的解释器在线添加packages。</strong></p>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+        <category>自动化测试</category>
+      </categories>
+      <tags>
+        <tag>自动化测试</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
     <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
@@ -1153,8 +1231,8 @@ Github中。</p>
         <category>troubleshooting</category>
       </categories>
       <tags>
-        <tag>Hexo</tag>
         <tag>troubleshooting</tag>
+        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -1227,46 +1305,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
-    <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
-<h3 id="一-背景"><a class="markdownIt-Anchor" href="#一-背景"></a> 一、背景</h3>
-<p>在《Python自动化测试实战》中，使用的是HTMLTestRunner，但教程使用的是windows系统，本人使用的macOS与其有点出入。Baidu和Google的帖子全都是在手动下载py文件，然后手动放到Python的lib文件夹中，但本macOS无效。</p>
-<a id="more"></a>
-<h3 id="二-解决过程"><a class="markdownIt-Anchor" href="#二-解决过程"></a> 二、解决过程</h3>
-<p>然后尝试换个思路，自动化测试报告中肯定不止只有老旧的HTMLTestRunner这个库呀，会不会有功能更加丰富、使用更方便、美观的第三方库呢？果然，有一个<a href="https://pypi.org/project/unittestreport/">unittestreport</a> 让人极为惊喜。</p>
-<p>安装过程显示是非常简单的，直接使用pip安装。但我install之后import还是没反应。疑惑。这时，突然想起Pycharm中的Interpreter的配置，是可以直接安装第三方库的。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207160205161.png" alt="image-20201207160205161" style="zoom:50%;" />
-<p>在Install Package后，就可以成功使用unittestreport了。</p>
-<h3 id="三-如何使用"><a class="markdownIt-Anchor" href="#三-如何使用"></a> 三、如何使用</h3>
-<p>在<a href="http://testingpai.com/article/1595507317340">此文章</a>中有提示。我自己写了个简单的demo，可直接运行，<a href="https://file.tangspoon.cn/t/qbXL4C">点此下载</a></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"><span class="keyword">from</span> unittestteport <span class="keyword">import</span> TestRunner,HTMLTestRunner</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一步：加载测试套件</span></span><br><span class="line">suite1 = unittest.defaultTestLoader.discover(<span class="string">r&quot;xxx\xxx\cases&quot;</span>)</span><br><span class="line"><span class="comment"># 第二步：创建运行对象，传入测试套件</span></span><br><span class="line">runner = HTMLTestRunner(stream=open(<span class="string">&quot;report.html&quot;</span>,<span class="string">&#x27;wb&#x27;</span>), title=<span class="string">&#x27;木森的测试报告&#x27;</span>,)</span><br><span class="line"><span class="comment"># 第三步：执行测试</span></span><br><span class="line">runner.run()</span><br></pre></td></tr></table></figure>
-<h3 id="四-advanced"><a class="markdownIt-Anchor" href="#四-advanced"></a> 四、advanced</h3>
-<h4 id="1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"><a class="markdownIt-Anchor" href="#1-为什么pip安装不能直接使用而直接在pycharm-interpreter安装就可以使用呢"></a> 1. 为什么pip安装不能直接使用，而直接在Pycharm Interpreter安装就可以使用呢？</h4>
-<p>打开Pycharm Interpreter的Avaliable Packages界面，仔细查看，会发现其实会有一个钩子选项。从这里可以得到提示，可能与一个叫site packages的文件夹有关。可以从这里入手。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-<p>我们看看Project中的External Libraries都有哪些，打开一看，有了site-packes！</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207162437233.png" alt="image-20201207162437233" style="zoom:45%;" />
-<p>在里面可以找到我们刚刚导入的unittestreport，还有之前折腾失败的HTMLTestRunner。</p>
-<p>pip安装失败，难道是pip安装的路径有问题？那我们查一下通过pip安装的unittestreport是在哪里。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207163426073.png" alt="image-20201207163426073" /></p>
-<p>在上述路径中删除一个库，PyCharm的External Libraries中的site-packages中就少了被删除的库，由此可证明其实<code>pip install unittestreport</code>已经成功了，只是我们还未在项目的解释器（PyCharm的Interpreter）中添加而已。其实这就像和我们使用selenium一样，每次新建一个project，<strong>就需要在解释器中添加相应的包才能使用的。</strong></p>
-<h4 id="2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"><a class="markdownIt-Anchor" href="#2-为什么网上手动引入htmltestrunnerpy的方法行不通呢"></a> 2. 为什么网上手动引入HTMLTestRunner.py的方法行不通呢？</h4>
-<p>我们研究了上面的问题后，其实可以发现：我们是要在/Users/换成自己的用户名/opt/anaconda3/lib/python3.7/site-packages/中，创建一个HTMLTestRunner文件夹，然后把py文件放进即可。而不是放入什么bin目录或者lib目录。</p>
-<p><strong>手动引入其他第三方库类似。</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207165459498.png" alt="image-20201207165459498" style="zoom:50%;" />
-<p><strong>或者更简单的，我们可以直接通过PyCharm的解释器在线添加packages。</strong></p>
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-        <category>自动化测试</category>
-      </categories>
-      <tags>
-        <tag>自动化测试</tag>
-        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
