@@ -1,6 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>About POM</title>
+    <url>/2020/12/04/About-POM/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
+<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
+<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
+<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
+<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
+<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
+<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
+<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
+<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
+<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
+<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
+<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
+<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
+<ol>
+<li>
+<p>使用unittest重新整合TestUnit部分</p>
+</li>
+<li>
+<p>加入流程异常捕捉断言测试。</p>
+<p>在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
+</li>
+<li>
+<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
+</li>
+</ol>
+<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
+<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
+Github中。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About unittest</title>
+    <url>/2020/12/04/About-unittest/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
+<p>该部分内容极为简单，不再赘述。</p>
+<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
+<ul>
+<li>作用：把测试用例组合到一起</li>
+<li>TestSuite()是一个类，需要实例化使用。</li>
+</ul>
+<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
+<p>格式：addTest(测试类名(‘测试用例’))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
+<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
+<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
+<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
+<p>我们来看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
+<ul>
+<li>start_dir ：要测试的模块名或测试用例目录。</li>
+<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
+<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
+</ul>
+<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
+<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
+<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Debian开启crontab日志</title>
     <url>/2021/12/18/Debian%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20211218114909331.png" alt="image-20211218114909331" style="zoom: 43%;" />
@@ -75,55 +170,6 @@
       </categories>
       <tags>
         <tag>Flask</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>About POM</title>
-    <url>/2020/12/04/About-POM/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-什么是pom"><a class="markdownIt-Anchor" href="#一-什么是pom"></a> 一、什么是POM</h2>
-<p>POM：Page Object Model——页面对象模型。是一种思想，是一种设计模式，相对应的还有关键字设计模式。</p>
-<h2 id="二-为什么要用pom"><a class="markdownIt-Anchor" href="#二-为什么要用pom"></a> 二、为什么要用POM</h2>
-<p>在自动化测试的代码编写中，采用普通模式，会产生很多代码冗余。例如元素定位模块，每一个元素都得写<code>find_element_by_xxx</code>，在大型项目中这么写效率显然非常低下。</p>
-<p>另外，在UI测试中，前端元素会经常发生改变。普通模式把元素定位、元素操作逻辑、测试脚本等模块揉杂在一个文件内，其一，这种操作看起来非常混乱；其二，如果前端页面发生变化，首先要修改页面元素定位，还要修改测试代码。</p>
-<p>而POM模型，把元素定位、业务逻辑分开编写，每个模块独立。每一个页面对应一个页面类，页面的元素写到这个页面类中。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204162211182.png" alt="image-20201204162211182" style="zoom:50%;" />
-<h2 id="三-在哪一阶段要用到pom"><a class="markdownIt-Anchor" href="#三-在哪一阶段要用到pom"></a> 三、在哪一阶段要用到POM</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201205163712845.png" alt="image-20201205163712845" style="zoom:50%;" />
-<h2 id="四-怎么用"><a class="markdownIt-Anchor" href="#四-怎么用"></a> 四、怎么用</h2>
-<h3 id="1-bagepy如下"><a class="markdownIt-Anchor" href="#1-bagepy如下"></a> 1. bage.py如下：</h3>
-<p>base.py主要写复用率高的函数，比如打开页面、元素定位、退出等等。该页面中不应该含有固定参数，应该全用变量，所有变量都应该在测试用例中定义的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">BasePage</span>(<span class="params">object</span>):</span></span><br><span class="line">    <span class="comment"># init</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, driver, url</span>):</span></span><br><span class="line">        self.driver = driver</span><br><span class="line">        self.url = url</span><br><span class="line"></span><br><span class="line">    <span class="comment"># open</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">open</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.get(self.url)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># locator</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">locator</span>(<span class="params">self, loc</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.driver.find_element(*loc)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># quit</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">quit</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.driver.quit()</span><br></pre></td></tr></table></figure>
-<h3 id="2-login_pagepy如下"><a class="markdownIt-Anchor" href="#2-login_pagepy如下"></a> 2. login_page.py如下：</h3>
-<p>对象页面其实也就只需写两个内容，获取元素，然后封装元素的每一个操作：先定位，然后再用selenium的元素操作send_keys、click等。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium.webdriver.common.by <span class="keyword">import</span> By</span><br><span class="line"><span class="keyword">from</span> base_page.base <span class="keyword">import</span> BasePage</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    在这里主要写登陆页面，思路如下：</span></span><br><span class="line"><span class="string">    1、找到元素</span></span><br><span class="line"><span class="string">    2、然后元素操作封装</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginPage</span>(<span class="params">BasePage</span>):</span></span><br><span class="line">    url = <span class="string">&#x27;http://39.98.138.157/shopxo/index.php?s=/index/user/logininfo.html&#x27;</span></span><br><span class="line"></span><br><span class="line">    username = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[1]/input&#x27;</span>)</span><br><span class="line">    password = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[2]/input&#x27;</span>)</span><br><span class="line">    login_btn = (By.XPATH, <span class="string">&#x27;/html/body/div[4]/div/div[2]/div[2]/form/div[3]/button&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_username</span>(<span class="params">self, un</span>):</span></span><br><span class="line">        self.locator(self.username).send_keys(un)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">input_password</span>(<span class="params">self, pwd</span>):</span></span><br><span class="line">        self.locator(self.password).send_keys(pwd)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">click_login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.locator(self.login_btn).click()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="3-testunitpy如下"><a class="markdownIt-Anchor" href="#3-testunitpy如下"></a> 3. TestUnit.py如下：</h3>
-<p>在测试模块中，可以用unittest进行测试。并生成相应的测试报告。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> selenium <span class="keyword">import</span> webdriver</span><br><span class="line"><span class="keyword">from</span> page_object.login_page <span class="keyword">import</span> LoginPage</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestUnit</span>(<span class="params">LoginPage</span>):</span></span><br><span class="line">    <span class="comment"># 写测试流程</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">login</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.open()</span><br><span class="line">        self.input_username(un)</span><br><span class="line">        self.input_password(pwd)</span><br><span class="line">        self.quit()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    un = <span class="string">&#x27;carslan&#x27;</span></span><br><span class="line">    pwd = <span class="string">&#x27;666666&#x27;</span></span><br><span class="line">    driver = webdriver.Chrome()</span><br><span class="line">    lp = TestUnit(driver, LoginPage.url)</span><br><span class="line">    lp.login()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h2 id="四-todo-list"><a class="markdownIt-Anchor" href="#四-todo-list"></a> 四、Todo List</h2>
-<ol>
-<li>
-<p>使用unittest重新整合TestUnit部分</p>
-</li>
-<li>
-<p>加入流程异常捕捉断言测试。</p>
-<p>在测试当中，正常流程的实现当然重要，但在编写脚本时，应该注意异常情况的捕捉反馈。</p>
-</li>
-<li>
-<p>对自己的宠物论坛的注册、登陆、发帖编写自动化测试脚本，并生成相应的测试报告。</p>
-</li>
-</ol>
-<h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
-<p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
-Github中。</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
       </tags>
   </entry>
   <entry>
@@ -470,49 +516,55 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>About unittest</title>
-    <url>/2020/12/04/About-unittest/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
+    <title>Linux基本操作</title>
+    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
+<p>这篇博文开个Linux栏目吧。</p>
 <a id="more"></a>
-<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
-<p>该部分内容极为简单，不再赘述。</p>
-<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
+<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
 <ul>
-<li>作用：把测试用例组合到一起</li>
-<li>TestSuite()是一个类，需要实例化使用。</li>
+<li>新建文件</li>
 </ul>
-<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
-<p>格式：addTest(测试类名(‘测试用例’))</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
-<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
-<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
-<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
-<p>我们来看：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
 <ul>
-<li>start_dir ：要测试的模块名或测试用例目录。</li>
-<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
-<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
+<li>新建文件夹</li>
 </ul>
-<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
-<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
-<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
-<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
-<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
-<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
+<ul>
+<li>移动/剪切/重命名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前所在路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>权限修改</li>
+</ul>
+<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取文档内容</li>
+</ul>
+<blockquote>
+<p>常用语查看Linux的log日志文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>软件测试</category>
+        <category>linux</category>
       </categories>
       <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -569,89 +621,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Linux基本操作</title>
-    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
-<p>这篇博文开个Linux栏目吧。</p>
-<a id="more"></a>
-<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
-<ul>
-<li>新建文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
-<ul>
-<li>新建文件夹</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
-<ul>
-<li>移动/剪切/重命名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看当前所在路径</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
-<ul>
-<li>权限修改</li>
-</ul>
-<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
-<ul>
-<li>删除</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
-<ul>
-<li>读取文档内容</li>
-</ul>
-<blockquote>
-<p>常用语查看Linux的log日志文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PyCharm远程连接树莓派同步编辑py文件</title>
-    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
-<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
-<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
-<a id="more"></a>
-<hr />
-<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
-<br/>
-<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
-<br/>
-<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
-<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
-<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
-<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
-<p>Done！</p>
-]]></content>
-      <categories>
-        <category>树莓派</category>
-      </categories>
-      <tags>
-        <tag>树莓派</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>N1盒子部署我的网易云闹钟折腾记</title>
     <url>/2021/12/18/N1%E7%9B%92%E5%AD%90%E9%83%A8%E7%BD%B2%E6%88%91%E7%9A%84%E7%BD%91%E6%98%93%E4%BA%91%E9%97%B9%E9%92%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</url>
     <content><![CDATA[<p>前面N1盒子刷armbian的目的之一就是为了更好的安装我的网易云闹钟，早上更好的叫醒我。</p>
@@ -697,6 +666,37 @@ Github中。</p>
       </categories>
       <tags>
         <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PyCharm远程连接树莓派同步编辑py文件</title>
+    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
+<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
+<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
+<a id="more"></a>
+<hr />
+<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
+<br/>
+<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
+<br/>
+<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
+<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
+<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
+<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
+<p>Done！</p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -899,6 +899,25 @@ Github中。</p>
       </categories>
       <tags>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>The following packages have unmet dependencies: Depends: xxx but is to be installed</title>
+    <url>/2022/01/26/The-following-packages-have-unmet-dependencies-Depends-xxx-but-is-to-be-installed/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126144850057.png" alt="image-20220126144850057" /></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> libxml2-dev : Depends: libxml2 (&#x3D; 2.9.3+dfsg1-1ubuntu0.7) but 2.9.4+dfsg1-7+deb10u2 is to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+<p>今天在安装shairplay的时候出现了以上问题</p>
+<p>原因是以来版本不一样</p>
+<p>解决方法很简单——卸载、重装即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt remove libxml2-dev</span><br><span class="line">apt install libxml2-dev</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+        <tag>shairplay</tag>
+        <tag>RPiPlay</tag>
       </tags>
   </entry>
   <entry>
@@ -1160,6 +1179,42 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
+    <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
+<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<blockquote>
+<p>完美主义不允许。</p>
+</blockquote>
+<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
+<a id="more"></a>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
+<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
+<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
+<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
+<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
+<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
+<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
+<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
+<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
+<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
+<ul>
+<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
+<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
+<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>原创 ｜ macOS 使用HTMLTestRunner与unittestreport失败解决过程</title>
     <url>/2020/12/07/%E5%8E%9F%E5%88%9B-%EF%BD%9C-macOS-%E4%BD%BF%E7%94%A8HTMLTestRunner%E4%B8%8Eunittestreport%E5%A4%B1%E8%B4%A5%E8%A7%A3%E5%86%B3%E8%BF%87%E7%A8%8B/</url>
     <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20201207170003712.png" alt="image-20201207170003712" /></p>
@@ -1197,42 +1252,6 @@ Github中。</p>
       <tags>
         <tag>自动化测试</tag>
         <tag>troubleshooting</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
-    <url>/2020/11/19/%E5%8E%9F%E5%88%9B-%20%7C%20-Hexo%E5%9C%A8generate%E5%90%8E%E5%87%BA%E7%8E%B0%E9%94%99%E8%AF%AF%E2%80%9CLaTeX-incompatible-input-and-strict-mode-is-set-to-warn-Unicode-text-character-%E5%BC%80-used-in-math-mode-unicodeTextInMathMode-%E2%80%9D/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119113956277.png" alt="image-20201119113956277" style="zoom: 33%;" />
-<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<blockquote>
-<p>完美主义不允许。</p>
-</blockquote>
-<p>这个问题困扰了很久，之前是因为tags和categories拼写错误导致的，也有忘记空格的。</p>
-<a id="more"></a>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119114327053.png" alt="image-20201119114327053" style="zoom:50%;" />
-<h1 id="正文"><a class="markdownIt-Anchor" href="#正文"></a> 正文</h1>
-<p>在逐篇blog排查过没有拼写错误后，然后逐渐采取了一个很蠢的方式：逐篇删除文章，查找问题所在的博文（还好这个新站点博文数量还不多）。</p>
-<p>在删除了《正则表达式-01》这篇文章，执行<code>sudo hexo s</code>后，报错消失。</p>
-<p>打开文章，从头开始逐段删除，终于定位到具体的段落</p>
-<p>然后在这个段落中再逐渐删除找报错点。终于定位到了！是$这个符号搞的鬼。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115329340.png" alt="image-20201119115329340" style="zoom:50%;" />
-<p><strong>基于直觉，加了一个转义字符<code>\</code>，报错消失～</strong></p>
-<h2 id="出错原因"><a class="markdownIt-Anchor" href="#出错原因"></a> 出错原因</h2>
-<p>可以看到下图，是有两个$的，而在Markdown语法中，<strong>两个$符号是数学符号和公式</strong>的使用。要想使用单个$，要加个转义字符<code>\</code>。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201119115616169.png" alt="image-20201119115616169" style="zoom:50%;" />
-<h1 id="总结体会"><a class="markdownIt-Anchor" href="#总结体会"></a> 总结体会</h1>
-<ul>
-<li>遇到问题要及早解决。如果我第一次遇到了这片文章的故障，就想办法解决，相比现在才去用蠢办法解决时间会节省太多了（起码不用特地写一篇blog～）。</li>
-<li>要努力做一个完美主义的人。完美主义我觉得是一个程序员/IT从业者必须具备的一个特质。如果没有完美主义，就很难会深究一个问题。遇到问题就想“能用就行，随便啦”，这个程序员的大忌啊。要“尽量”把每一件事情都做得完美，日后才能安安稳稳过日子嘛。</li>
-<li>问题要深究。解决了问题之后，还要知道为什么，日后才不会重复犯错误。就像这次加了转义字符解决了问题，还继续深究为什么会这样，才知道了在markdown中$的用法。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>troubleshooting</category>
-      </categories>
-      <tags>
-        <tag>troubleshooting</tag>
-        <tag>Hexo</tag>
       </tags>
   </entry>
   <entry>
@@ -2995,6 +3014,77 @@ Github中。</p>
       <tags>
         <tag>软件测试</tag>
         <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>原创｜自建房没有丰巢？自己造一个！｜打造智能快递柜</title>
+    <url>/2022/01/03/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%87%AA%E5%BB%BA%E6%88%BF%E6%B2%A1%E6%9C%89%E4%B8%B0%E5%B7%A2%EF%BC%9F%E8%87%AA%E5%B7%B1%E9%80%A0%E4%B8%80%E4%B8%AA%EF%BC%81%EF%BD%9C%E6%89%93%E9%80%A0%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126161032850.png" alt="image-20220126161032850" /></p>
+<p>前些日子家里装修，网购了好多好多东西。但城中村里没有类似丰巢那样的投递柜（对，我这条村真的没有），放在村里的代收点1块一个小件，2块一个大件，比丰巢还贵？而且感觉要跑超过500m去那个快递很麻烦。所以，我为什么不能自己造一个“丰巢”呢？</p>
+<a id="more"></a>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126161110667.png" alt="image-20220126161110667" /></p>
+<p>物料：</p>
+<p>香橙派、USB继电器、5v电磁锁、单门柜子。</p>
+<h2 id="一-思路"><a class="markdownIt-Anchor" href="#一-思路"></a> 一、思路</h2>
+<p>投递员扫描二维码进入网页，填密码，打开柜子。所以项目主要分为两部分：</p>
+<ol>
+<li>软件：验证密码和控制电磁锁的系统</li>
+<li>硬件：托管系统的硬件，电磁锁</li>
+</ol>
+<p>系统实际上就只有一个密码校验功能，很简单。用flask写超级快。</p>
+<p>硬件部分我选择了香橙派托管flask网页，内网穿透让在外网的投递员访问系统，配合USB继电器来控制电磁锁的开关。</p>
+<h2 id="二-硬件"><a class="markdownIt-Anchor" href="#二-硬件"></a> 二、硬件</h2>
+<h3 id="1-香橙派zero-512mb"><a class="markdownIt-Anchor" href="#1-香橙派zero-512mb"></a> 1. 香橙派zero 512mb</h3>
+<p>闲鱼70包邮</p>
+<h3 id="2-电磁锁"><a class="markdownIt-Anchor" href="#2-电磁锁"></a> 2. 电磁锁</h3>
+<p>购买5v的即可</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126150623931.png" alt="image-20220126150623931" /></p>
+<h3 id="3-usb继电器"><a class="markdownIt-Anchor" href="#3-usb继电器"></a> 3. USB继电器</h3>
+<p>优点：免驱、5V供电、商家提供详细说明</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126150308608.png" alt="image-20220126150308608" /></p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126150521278.png" alt="image-20220126150521278" /></p>
+<h2 id="三-软件系统"><a class="markdownIt-Anchor" href="#三-软件系统"></a> 三、软件系统</h2>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220103113637980.png" alt="image-20220103113637980" /></p>
+<h3 id="1-flask-主程序-apppy"><a class="markdownIt-Anchor" href="#1-flask-主程序-apppy"></a> 1. flask 主程序 <a href="http://app.py">app.py</a></h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask, render_template, request, redirect, url_for</span><br><span class="line"><span class="keyword">import</span> decrypt</span><br><span class="line"></span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;, methods=[&#x27;GET&#x27;, &#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method == <span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>,</span><br><span class="line">                                password=password))</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;, methods=[&#x27;GET&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&#x27;/root/express_system/password.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        encrypt_text = f.read()</span><br><span class="line">    password = request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password == decrypt.decrypt_data(encrypt_text):</span><br><span class="line">        os.system(<span class="string">&#x27;bash /root/express_system/open.sh&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&quot;correct.html&quot;</span>,</span><br><span class="line">                               password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>, port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
+<p>注意：上面 line20 要放<code>password.txt</code>的绝对路径</p>
+<h3 id="2-opensh"><a class="markdownIt-Anchor" href="#2-opensh"></a> 2. <a href="http://open.sh">open.sh</a></h3>
+<p>插入usb电磁继电器之后，香橙派会识别出USB设备。我购买的</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">echo -n -e &quot;\xA0\x01\x01\xA2&quot; &gt;&#x2F;dev&#x2F;ttyUSB0</span><br><span class="line">sleep 0.5s</span><br><span class="line">echo -n -e &quot;\xA0\x01\x00\xA1&quot; &gt;&#x2F;dev&#x2F;ttyUSB0</span><br></pre></td></tr></table></figure>
+<h3 id="3-decryptpy"><a class="markdownIt-Anchor" href="#3-decryptpy"></a> 3. <a href="http://decrypt.py">decrypt.py</a></h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 不用做任何修改</span></span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> PKCS1_v1_5 <span class="keyword">as</span> PKCS1_cipher</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_key</span>(<span class="params">key_file</span>):</span></span><br><span class="line">    <span class="keyword">with</span> open(key_file) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.read()</span><br><span class="line">        key = RSA.importKey(data)</span><br><span class="line">    <span class="keyword">return</span> key</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt_data</span>(<span class="params">encrypt_msg</span>):</span></span><br><span class="line">    private_key = get_key(<span class="string">&#x27;xxxx/xxxx/rsa_private_key.pem&#x27;</span>)</span><br><span class="line">    cipher = PKCS1_cipher.new(private_key)</span><br><span class="line">    back_text = cipher.decrypt(base64.b64decode(encrypt_msg), <span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> back_text.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>注意：line15 填写绝对路径</p>
+<h3 id="4-每周更换密码并发送到微信-randpwdweeklypy"><a class="markdownIt-Anchor" href="#4-每周更换密码并发送到微信-randpwdweeklypy"></a> 4. 每周更换密码并发送到微信 <a href="http://randPwdWeekly.py">randPwdWeekly.py</a></h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> PKCS1_v1_5 <span class="keyword">as</span> PKCS1_cipher</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 此脚本设置每周执行一次</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_key</span>(<span class="params">key_file</span>):</span></span><br><span class="line">    <span class="keyword">with</span> open(key_file) <span class="keyword">as</span> f:</span><br><span class="line">        data = f.read()</span><br><span class="line">        key = RSA.importKey(data)</span><br><span class="line">    <span class="keyword">return</span> key</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt_data</span>(<span class="params">msg</span>):</span></span><br><span class="line">    public_key = get_key(<span class="string">&#x27;rsa_public_key.pem&#x27;</span>)</span><br><span class="line">    cipher = PKCS1_cipher.new(public_key)</span><br><span class="line">    encrypt_text = base64.b64encode(cipher.encrypt(bytes(msg.encode(<span class="string">&quot;utf8&quot;</span>))))</span><br><span class="line">    <span class="keyword">return</span> encrypt_text.decode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    server_url = <span class="string">&#x27;https://sctapi.ftqq.com/xxxxxxxx.send&#x27;</span></span><br><span class="line">    randPwd = str(random.randint(<span class="number">100000</span>, <span class="number">1000000</span>))</span><br><span class="line">    print(randPwd)</span><br><span class="line">    <span class="comment"># server酱发送到wechat</span></span><br><span class="line">    data = &#123;</span><br><span class="line">        <span class="string">&#x27;title&#x27;</span>: <span class="string">&#x27;智能快递柜密码已更新!!&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;desp&#x27;</span>: <span class="string">&#x27;新密码是：&#x27;</span> + randPwd</span><br><span class="line">    &#125;</span><br><span class="line">    requests.post(server_url, params=data)</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&#x27;/root/express_system/password2.txt&#x27;</span>, <span class="string">&#x27;w+&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(randPwd)</span><br><span class="line">    encrypt_data(randPwd)</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&#x27;/root/express_system/password.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(encrypt_data(randPwd))</span><br></pre></td></tr></table></figure>
+<p>注意：<code>line24</code> 要改成自己的server酱的<code>key</code></p>
+<h3 id="5-生成rsa的两种key-creatersa_keypy"><a class="markdownIt-Anchor" href="#5-生成rsa的两种key-creatersa_keypy"></a> 5. 生成RSA的两种key  createRSA_Key.py</h3>
+<p>该脚本只执行一次即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto <span class="keyword">import</span> Random</span><br><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只用一次！！</span></span><br><span class="line"></span><br><span class="line">random_generator = Random.new().read</span><br><span class="line">rsa = RSA.generate(<span class="number">2048</span>, random_generator)</span><br><span class="line"><span class="comment"># 生成私钥</span></span><br><span class="line">private_key = rsa.exportKey()</span><br><span class="line">print(private_key.decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line"><span class="comment"># 生成公钥</span></span><br><span class="line">public_key = rsa.publickey().exportKey()</span><br><span class="line">print(public_key.decode(<span class="string">&#x27;utf-8&#x27;</span>))</span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;/root/express_system/rsa_private_key.pem&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(private_key)</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> open(<span class="string">&#x27;/root/express_system/rsa_public_key.pem&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    f.write(public_key)</span><br></pre></td></tr></table></figure>
+<h2 id="四-项目运行"><a class="markdownIt-Anchor" href="#四-项目运行"></a> 四、项目运行</h2>
+<h3 id="1-获取项目"><a class="markdownIt-Anchor" href="#1-获取项目"></a> 1. 获取项目</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;tangspoon66&#x2F;express_sys.git</span><br></pre></td></tr></table></figure>
+<h3 id="2-安装flask"><a class="markdownIt-Anchor" href="#2-安装flask"></a> 2. 安装flask</h3>
+<p>参考：<a href="https://blog.tangspoon.cn/2020/12/26/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001-Hello/">Flask 学习笔记 - Hello</a></p>
+<h3 id="3-flask后台运行"><a class="markdownIt-Anchor" href="#3-flask后台运行"></a> 3. flask后台运行</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">screen -S express_sys</span><br></pre></td></tr></table></figure>
+<p>在新弹出的screen里输入：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">python &#x2F;root&#x2F;express_sys&#x2F;app.py</span><br></pre></td></tr></table></figure>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 列出所有screen</span><br><span class="line">screen -ls</span><br><span class="line"># 返回screen</span><br><span class="line">screen -d screen</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>随后可以关闭会话窗口，flask项目还是可以访问的。</p>
+<h3 id="4-配置内网穿透frp"><a class="markdownIt-Anchor" href="#4-配置内网穿透frp"></a> 4. 配置内网穿透frp</h3>
+<p>参考：<a href="https://blog.tangspoon.cn/2021/12/24/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E6%80%8E%E4%B9%88%E7%94%A8%EF%BC%9F%EF%BD%9C%E8%AE%BF%E9%97%AE%E5%86%85%E7%BD%91web%E9%A1%B9%E7%9B%AE/">frp 内网穿透怎么用？｜访问内网 web 项目</a></p>
+<h3 id="5-flask-和-frp开机自启"><a class="markdownIt-Anchor" href="#5-flask-和-frp开机自启"></a> 5. flask 和 frp开机自启</h3>
+<p>参考：<a href="https://blog.tangspoon.cn/2022/01/04/linux%E4%BD%BF%E7%94%A8supervisor%E5%AE%9E%E7%8E%B0%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/">linux 使用 supervisor 实现开机自启</a></p>
+<h3 id="6-还需要更改一些绝对路径之类的"><a class="markdownIt-Anchor" href="#6-还需要更改一些绝对路径之类的"></a> 6. 还需要更改一些绝对路径之类的。</h3>
+]]></content>
+      <categories>
+        <category>智能快递柜</category>
+      </categories>
+      <tags>
+        <tag>OrangePi</tag>
+        <tag>flask</tag>
       </tags>
   </entry>
 </search>
