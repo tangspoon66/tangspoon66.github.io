@@ -1,52 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>About unittest</title>
-    <url>/2020/12/04/About-unittest/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
-<p>该部分内容极为简单，不再赘述。</p>
-<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
-<ul>
-<li>作用：把测试用例组合到一起</li>
-<li>TestSuite()是一个类，需要实例化使用。</li>
-</ul>
-<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
-<p>格式：addTest(测试类名(‘测试用例’))</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
-<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
-<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
-<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
-<p>我们来看：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
-<ul>
-<li>start_dir ：要测试的模块名或测试用例目录。</li>
-<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
-<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
-</ul>
-<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
-<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
-<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
-<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
-<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
-<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>About POM</title>
     <url>/2020/12/04/About-POM/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
@@ -86,6 +40,52 @@
 <h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
 <p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
 Github中。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About unittest</title>
+    <url>/2020/12/04/About-unittest/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
+<p>该部分内容极为简单，不再赘述。</p>
+<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
+<ul>
+<li>作用：把测试用例组合到一起</li>
+<li>TestSuite()是一个类，需要实例化使用。</li>
+</ul>
+<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
+<p>格式：addTest(测试类名(‘测试用例’))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
+<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
+<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
+<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
+<p>我们来看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
+<ul>
+<li>start_dir ：要测试的模块名或测试用例目录。</li>
+<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
+<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
+</ul>
+<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
+<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
+<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
 ]]></content>
       <categories>
         <category>软件测试</category>
@@ -208,6 +208,123 @@ Github中。</p>
       <tags>
         <tag>Flask</tag>
         <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS学习笔记-01</title>
+    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</url>
+    <content><![CDATA[<p>基础的语法不再赘述，只强调以前未接触过的。</p>
+<h3 id="一-数据类型和变量"><a class="markdownIt-Anchor" href="#一-数据类型和变量"></a> 一、数据类型和变量</h3>
+<h5 id="对象"><a class="markdownIt-Anchor" href="#对象"></a> 对象</h5>
+<p>键值对组成</p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">var person = &#123;</span><br><span class="line"><span class="code">    name: &#x27;Bob&#x27;,</span></span><br><span class="line"><span class="code">    age: 20,</span></span><br><span class="line"><span class="code">    tags: [&#x27;js&#x27;, &#x27;web&#x27;, &#x27;mobile&#x27;],</span></span><br><span class="line"><span class="code">    city: &#x27;Beijing&#x27;,</span></span><br><span class="line"><span class="code">    hasCar: true,</span></span><br><span class="line"><span class="code">    zipcode: null</span></span><br><span class="line"><span class="code">&#125;;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>Person为<code>对象</code>，name、age为<code>键</code>，‘Bob’、20为<code>值</code></li>
+<li>获取对象的属性（怎么用对象的数据）：<a href="http://person.name">person.name</a></li>
+</ul>
+<a id="more"></a>
+<h5 id="变量"><a class="markdownIt-Anchor" href="#变量"></a> 变量</h5>
+<p>只能用<code>var</code>申明一次。没用<code>var</code>申明的变量：全局变量</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var a &#x3D; 123; &#x2F;&#x2F; a的值是整数123</span><br><span class="line">a &#x3D; &#39;ABC&#39;; &#x2F;&#x2F; a变为字符串</span><br></pre></td></tr></table></figure>
+<h5 id="strict模式"><a class="markdownIt-Anchor" href="#strict模式"></a> strict模式</h5>
+<p><code>'use strict';</code>强制通过<code>var</code>申明</p>
+<h3 id="二-字符串"><a class="markdownIt-Anchor" href="#二-字符串"></a> 二、字符串</h3>
+<ol>
+<li>
+<h5 id="多行字符串"><a class="markdownIt-Anchor" href="#多行字符串"></a> 多行字符串</h5>
+<p>由于多行字符串用<code>\n</code>写起来费事，最新的ES6标准新增了如下方式表示：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#96;这是一个</span><br><span class="line">多行</span><br><span class="line">字符串&#96;;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h5 id="模板字符串"><a class="markdownIt-Anchor" href="#模板字符串"></a> 模板字符串</h5>
+<p>很多变量连接时</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var name &#x3D; &#39;小明&#39;;</span><br><span class="line">var age &#x3D; 20;</span><br><span class="line">var message &#x3D; &#96;你好, $&#123;name&#125;, 你今年$&#123;age&#125;岁了!&#96;;</span><br><span class="line">alert(message);</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="三-数组"><a class="markdownIt-Anchor" href="#三-数组"></a> 三、数组</h3>
+<ol>
+<li>
+<h5 id="indexof"><a class="markdownIt-Anchor" href="#indexof"></a> indexOf()</h5>
+<p>搜索指定元素的位置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [10, 20, &#39;30&#39;, &#39;xyz&#39;];</span><br><span class="line">arr.indexOf(10); &#x2F;&#x2F; 元素10的索引为0</span><br><span class="line">arr.indexOf(20); &#x2F;&#x2F; 元素20的索引为1</span><br><span class="line">arr.indexOf(30); &#x2F;&#x2F; 元素30没有找到，返回-1</span><br><span class="line">arr.indexOf(&#39;30&#39;); &#x2F;&#x2F; 元素&#39;30&#39;的索引为2</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h5 id="slice"><a class="markdownIt-Anchor" href="#slice"></a> slice()</h5>
+<p>截取Array的部分元素，返回一个新的Array</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;];</span><br><span class="line">arr.slice(0, 3); &#x2F;&#x2F; 从索引0开始，到索引3结束，但不包括索引3: [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]</span><br><span class="line">arr.slice(3); &#x2F;&#x2F; 从索引3开始到结束: [&#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>slice()</code>的起止参数包括开始索引，不包括结束索引</li>
+<li>如果不给任何参数，它就会从头到位截取所有元素。可应用于：复制数组</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;];</span><br><span class="line">var aCopy &#x3D; arr.slice();</span><br><span class="line">aCopy; &#x2F;&#x2F; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;]</span><br><span class="line">aCopy &#x3D;&#x3D;&#x3D; arr; &#x2F;&#x2F; false</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h5 id="push-和-pop"><a class="markdownIt-Anchor" href="#push-和-pop"></a> push() 和 pop()</h5>
+<ul>
+<li><code>push()</code>插入数组尾部</li>
+<li><code>pop()</code>删除～</li>
+</ul>
+</li>
+<li>
+<h5 id="unshift-和-shift"><a class="markdownIt-Anchor" href="#unshift-和-shift"></a> unshift() 和 shift()</h5>
+<ul>
+<li><code>unshift()</code>插入 头部第一</li>
+<li><code>shift()</code>删除头部第一</li>
+</ul>
+</li>
+<li>
+<h5 id="reverse"><a class="markdownIt-Anchor" href="#reverse"></a> reverse()</h5>
+<p>数组的反转</p>
+</li>
+<li>
+<h5 id="splice"><a class="markdownIt-Anchor" href="#splice"></a> splice()</h5>
+<p><em><strong>修改数组的万能方法</strong></em>，格式为：从哪里开始，删除多少个，添加什么</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Yahoo&#39;, &#39;AOL&#39;, &#39;Excite&#39;, &#39;Oracle&#39;];</span><br><span class="line">&#x2F;&#x2F; 从索引2开始删除3个元素,然后再添加两个元素:</span><br><span class="line">arr.splice(2, 3, &#39;Google&#39;, &#39;Facebook&#39;); &#x2F;&#x2F; 返回删除的元素 [&#39;Yahoo&#39;, &#39;AOL&#39;, &#39;Excite&#39;]</span><br><span class="line">arr; &#x2F;&#x2F; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Google&#39;, &#39;Facebook&#39;, &#39;Oracle&#39;]</span><br><span class="line">&#x2F;&#x2F; 只删除,不添加:</span><br><span class="line">arr.splice(2, 2); &#x2F;&#x2F; [&#39;Google&#39;, &#39;Facebook&#39;]</span><br><span class="line">arr; &#x2F;&#x2F; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Oracle&#39;]</span><br><span class="line">&#x2F;&#x2F; 只添加,不删除:</span><br><span class="line">arr.splice(2, 0, &#39;Google&#39;, &#39;Facebook&#39;); &#x2F;&#x2F; 返回[],因为没有删除任何元素</span><br><span class="line">arr; &#x2F;&#x2F; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Google&#39;, &#39;Facebook&#39;, &#39;Oracle&#39;]</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<h5 id="concat"><a class="markdownIt-Anchor" href="#concat"></a> concat()</h5>
+<p>连接两个数组。没有修改原数组，只是生成新数组</p>
+</li>
+<li>
+<h5 id="join"><a class="markdownIt-Anchor" href="#join"></a> join()</h5>
+<p>把<code>array</code>里面的元素，用指定的字符连起来</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr&#x3D;[&#39;a&#39;,&#39;b&#39;];</span><br><span class="line">arr.join(&#39;-&#39;);</span><br><span class="line">arr;返回的就是&#39;a-b&#39;</span><br></pre></td></tr></table></figure>
+<p>ps：如果Array的元素不是字符串，则自动转化再拼接</p>
+</li>
+</ol>
+<h3 id="三-对象"><a class="markdownIt-Anchor" href="#三-对象"></a> 三、对象</h3>
+<ol>
+<li>
+<p>用[‘x’]访问（少用）</p>
+<p>属性名（键）如果不是有效的变量名，包含了特殊字符时，不能用<code>.</code>访问</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xiaohong &#x3D; &#123;</span><br><span class="line">    name: &#39;小红&#39;,</span><br><span class="line">    &#39;middle-school&#39;: &#39;No.1 Middle School&#39;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xiaohong[&#39;middle-school&#39;]; &#x2F;&#x2F; &#39;No.1 Middle School&#39;</span><br><span class="line">xiaohong[&#39;name&#39;]; &#x2F;&#x2F; &#39;小红&#39;</span><br><span class="line">xiaohong.name; &#x2F;&#x2F; &#39;小红&#39;</span><br></pre></td></tr></table></figure>
+<p><strong>ps：写代码尽量规范，尽量用<code>.</code>访问</strong></p>
+<ol start="2">
+<li>
+<p>由于对象是动态类型，因此可以随便给对象添加或修改属性</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xiaoming&#x3D;&#123;</span><br><span class="line">		name: &#39;小明&#39;</span><br><span class="line">&#125;;</span><br><span class="line">xiaoming.age; &#x2F;&#x2F;undefined</span><br><span class="line">xiaoming.age&#x3D;18;  &#x2F;&#x2F;添加了age属性</span><br><span class="line">delete xiaoming.age;  &#x2F;&#x2F;删除name属性</span><br><span class="line">xiaoming.age;  &#x2F;&#x2F;因为line6又把line5添加的删除了，所以还是undefined</span><br><span class="line"></span><br><span class="line">delete xiaoming.name; &#x2F;&#x2F;删除name</span><br><span class="line">xiaoming.name; &#x2F;&#x2F;undefined</span><br><span class="line"></span><br><span class="line">delete xiaoming.school; &#x2F;&#x2F;删除不存在的属性，还是undefined</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>检测属性存在性</p>
+<ul>
+<li>用<code>in</code>操作符，返回布尔值</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xiaoming = &#123;</span><br><span class="line">    name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">    birth: <span class="number">1990</span>,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="string">&#x27;name&#x27;</span> <span class="keyword">in</span> xiaoming; <span class="comment">// true</span></span><br><span class="line"><span class="string">&#x27;grade&#x27;</span> <span class="keyword">in</span> xiaoming; <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>注意，in检测的结果可以使从上继承的属性，例如toString，要想检测是否自身拥有，使用<code>hasOwnProperty()</code></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xiaoming=&#123;</span><br><span class="line">  	name=<span class="string">&quot;小明&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;name&#x27;</span>); <span class="comment">//true</span></span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;toString&#x27;</span>); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>JavaScript</category>
+      </categories>
+      <tags>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -450,123 +567,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JS学习笔记-01</title>
-    <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-01/</url>
-    <content><![CDATA[<p>基础的语法不再赘述，只强调以前未接触过的。</p>
-<h3 id="一-数据类型和变量"><a class="markdownIt-Anchor" href="#一-数据类型和变量"></a> 一、数据类型和变量</h3>
-<h5 id="对象"><a class="markdownIt-Anchor" href="#对象"></a> 对象</h5>
-<p>键值对组成</p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">var person = &#123;</span><br><span class="line"><span class="code">    name: &#x27;Bob&#x27;,</span></span><br><span class="line"><span class="code">    age: 20,</span></span><br><span class="line"><span class="code">    tags: [&#x27;js&#x27;, &#x27;web&#x27;, &#x27;mobile&#x27;],</span></span><br><span class="line"><span class="code">    city: &#x27;Beijing&#x27;,</span></span><br><span class="line"><span class="code">    hasCar: true,</span></span><br><span class="line"><span class="code">    zipcode: null</span></span><br><span class="line"><span class="code">&#125;;</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>Person为<code>对象</code>，name、age为<code>键</code>，‘Bob’、20为<code>值</code></li>
-<li>获取对象的属性（怎么用对象的数据）：<a href="http://person.name">person.name</a></li>
-</ul>
-<a id="more"></a>
-<h5 id="变量"><a class="markdownIt-Anchor" href="#变量"></a> 变量</h5>
-<p>只能用<code>var</code>申明一次。没用<code>var</code>申明的变量：全局变量</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var a &#x3D; 123; &#x2F;&#x2F; a的值是整数123</span><br><span class="line">a &#x3D; &#39;ABC&#39;; &#x2F;&#x2F; a变为字符串</span><br></pre></td></tr></table></figure>
-<h5 id="strict模式"><a class="markdownIt-Anchor" href="#strict模式"></a> strict模式</h5>
-<p><code>'use strict';</code>强制通过<code>var</code>申明</p>
-<h3 id="二-字符串"><a class="markdownIt-Anchor" href="#二-字符串"></a> 二、字符串</h3>
-<ol>
-<li>
-<h5 id="多行字符串"><a class="markdownIt-Anchor" href="#多行字符串"></a> 多行字符串</h5>
-<p>由于多行字符串用<code>\n</code>写起来费事，最新的ES6标准新增了如下方式表示：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#96;这是一个</span><br><span class="line">多行</span><br><span class="line">字符串&#96;;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h5 id="模板字符串"><a class="markdownIt-Anchor" href="#模板字符串"></a> 模板字符串</h5>
-<p>很多变量连接时</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var name &#x3D; &#39;小明&#39;;</span><br><span class="line">var age &#x3D; 20;</span><br><span class="line">var message &#x3D; &#96;你好, $&#123;name&#125;, 你今年$&#123;age&#125;岁了!&#96;;</span><br><span class="line">alert(message);</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="三-数组"><a class="markdownIt-Anchor" href="#三-数组"></a> 三、数组</h3>
-<ol>
-<li>
-<h5 id="indexof"><a class="markdownIt-Anchor" href="#indexof"></a> indexOf()</h5>
-<p>搜索指定元素的位置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [10, 20, &#39;30&#39;, &#39;xyz&#39;];</span><br><span class="line">arr.indexOf(10); &#x2F;&#x2F; 元素10的索引为0</span><br><span class="line">arr.indexOf(20); &#x2F;&#x2F; 元素20的索引为1</span><br><span class="line">arr.indexOf(30); &#x2F;&#x2F; 元素30没有找到，返回-1</span><br><span class="line">arr.indexOf(&#39;30&#39;); &#x2F;&#x2F; 元素&#39;30&#39;的索引为2</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h5 id="slice"><a class="markdownIt-Anchor" href="#slice"></a> slice()</h5>
-<p>截取Array的部分元素，返回一个新的Array</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;];</span><br><span class="line">arr.slice(0, 3); &#x2F;&#x2F; 从索引0开始，到索引3结束，但不包括索引3: [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]</span><br><span class="line">arr.slice(3); &#x2F;&#x2F; 从索引3开始到结束: [&#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;]</span><br></pre></td></tr></table></figure>
-<ul>
-<li><code>slice()</code>的起止参数包括开始索引，不包括结束索引</li>
-<li>如果不给任何参数，它就会从头到位截取所有元素。可应用于：复制数组</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;];</span><br><span class="line">var aCopy &#x3D; arr.slice();</span><br><span class="line">aCopy; &#x2F;&#x2F; [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;]</span><br><span class="line">aCopy &#x3D;&#x3D;&#x3D; arr; &#x2F;&#x2F; false</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h5 id="push-和-pop"><a class="markdownIt-Anchor" href="#push-和-pop"></a> push() 和 pop()</h5>
-<ul>
-<li><code>push()</code>插入数组尾部</li>
-<li><code>pop()</code>删除～</li>
-</ul>
-</li>
-<li>
-<h5 id="unshift-和-shift"><a class="markdownIt-Anchor" href="#unshift-和-shift"></a> unshift() 和 shift()</h5>
-<ul>
-<li><code>unshift()</code>插入 头部第一</li>
-<li><code>shift()</code>删除头部第一</li>
-</ul>
-</li>
-<li>
-<h5 id="reverse"><a class="markdownIt-Anchor" href="#reverse"></a> reverse()</h5>
-<p>数组的反转</p>
-</li>
-<li>
-<h5 id="splice"><a class="markdownIt-Anchor" href="#splice"></a> splice()</h5>
-<p><em><strong>修改数组的万能方法</strong></em>，格式为：从哪里开始，删除多少个，添加什么</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr &#x3D; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Yahoo&#39;, &#39;AOL&#39;, &#39;Excite&#39;, &#39;Oracle&#39;];</span><br><span class="line">&#x2F;&#x2F; 从索引2开始删除3个元素,然后再添加两个元素:</span><br><span class="line">arr.splice(2, 3, &#39;Google&#39;, &#39;Facebook&#39;); &#x2F;&#x2F; 返回删除的元素 [&#39;Yahoo&#39;, &#39;AOL&#39;, &#39;Excite&#39;]</span><br><span class="line">arr; &#x2F;&#x2F; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Google&#39;, &#39;Facebook&#39;, &#39;Oracle&#39;]</span><br><span class="line">&#x2F;&#x2F; 只删除,不添加:</span><br><span class="line">arr.splice(2, 2); &#x2F;&#x2F; [&#39;Google&#39;, &#39;Facebook&#39;]</span><br><span class="line">arr; &#x2F;&#x2F; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Oracle&#39;]</span><br><span class="line">&#x2F;&#x2F; 只添加,不删除:</span><br><span class="line">arr.splice(2, 0, &#39;Google&#39;, &#39;Facebook&#39;); &#x2F;&#x2F; 返回[],因为没有删除任何元素</span><br><span class="line">arr; &#x2F;&#x2F; [&#39;Microsoft&#39;, &#39;Apple&#39;, &#39;Google&#39;, &#39;Facebook&#39;, &#39;Oracle&#39;]</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<h5 id="concat"><a class="markdownIt-Anchor" href="#concat"></a> concat()</h5>
-<p>连接两个数组。没有修改原数组，只是生成新数组</p>
-</li>
-<li>
-<h5 id="join"><a class="markdownIt-Anchor" href="#join"></a> join()</h5>
-<p>把<code>array</code>里面的元素，用指定的字符连起来</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var arr&#x3D;[&#39;a&#39;,&#39;b&#39;];</span><br><span class="line">arr.join(&#39;-&#39;);</span><br><span class="line">arr;返回的就是&#39;a-b&#39;</span><br></pre></td></tr></table></figure>
-<p>ps：如果Array的元素不是字符串，则自动转化再拼接</p>
-</li>
-</ol>
-<h3 id="三-对象"><a class="markdownIt-Anchor" href="#三-对象"></a> 三、对象</h3>
-<ol>
-<li>
-<p>用[‘x’]访问（少用）</p>
-<p>属性名（键）如果不是有效的变量名，包含了特殊字符时，不能用<code>.</code>访问</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xiaohong &#x3D; &#123;</span><br><span class="line">    name: &#39;小红&#39;,</span><br><span class="line">    &#39;middle-school&#39;: &#39;No.1 Middle School&#39;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">xiaohong[&#39;middle-school&#39;]; &#x2F;&#x2F; &#39;No.1 Middle School&#39;</span><br><span class="line">xiaohong[&#39;name&#39;]; &#x2F;&#x2F; &#39;小红&#39;</span><br><span class="line">xiaohong.name; &#x2F;&#x2F; &#39;小红&#39;</span><br></pre></td></tr></table></figure>
-<p><strong>ps：写代码尽量规范，尽量用<code>.</code>访问</strong></p>
-<ol start="2">
-<li>
-<p>由于对象是动态类型，因此可以随便给对象添加或修改属性</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">var xiaoming&#x3D;&#123;</span><br><span class="line">		name: &#39;小明&#39;</span><br><span class="line">&#125;;</span><br><span class="line">xiaoming.age; &#x2F;&#x2F;undefined</span><br><span class="line">xiaoming.age&#x3D;18;  &#x2F;&#x2F;添加了age属性</span><br><span class="line">delete xiaoming.age;  &#x2F;&#x2F;删除name属性</span><br><span class="line">xiaoming.age;  &#x2F;&#x2F;因为line6又把line5添加的删除了，所以还是undefined</span><br><span class="line"></span><br><span class="line">delete xiaoming.name; &#x2F;&#x2F;删除name</span><br><span class="line">xiaoming.name; &#x2F;&#x2F;undefined</span><br><span class="line"></span><br><span class="line">delete xiaoming.school; &#x2F;&#x2F;删除不存在的属性，还是undefined</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>检测属性存在性</p>
-<ul>
-<li>用<code>in</code>操作符，返回布尔值</li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xiaoming = &#123;</span><br><span class="line">    name: <span class="string">&#x27;小明&#x27;</span>,</span><br><span class="line">    birth: <span class="number">1990</span>,</span><br><span class="line">&#125;;</span><br><span class="line"><span class="string">&#x27;name&#x27;</span> <span class="keyword">in</span> xiaoming; <span class="comment">// true</span></span><br><span class="line"><span class="string">&#x27;grade&#x27;</span> <span class="keyword">in</span> xiaoming; <span class="comment">// false</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>注意，in检测的结果可以使从上继承的属性，例如toString，要想检测是否自身拥有，使用<code>hasOwnProperty()</code></li>
-</ul>
-<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> xiaoming=&#123;</span><br><span class="line">  	name=<span class="string">&quot;小明&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;name&#x27;</span>); <span class="comment">//true</span></span><br><span class="line">xiaoming.hasOwnProperty(<span class="string">&#x27;toString&#x27;</span>); <span class="comment">//false</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-]]></content>
-      <categories>
-        <category>JavaScript</category>
-      </categories>
-      <tags>
-        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -910,6 +910,251 @@ Github中。</p>
 <p>另外注意：在用函数生成的生成器中，执行过程是——遇到<code>yield</code>就中断，返回值。所以在一个函数中有多个<code>yield</code>时，无论多少次调用这个函数，每调用一次<code>yield</code>，这个<code>yield</code>就被抛弃掉。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">test</span>():</span></span><br><span class="line">	print(<span class="string">&#x27;step 1&#x27;</span>)</span><br><span class="line">	<span class="keyword">yield</span>(<span class="number">1</span>)</span><br><span class="line">	print(<span class="string">&#x27;step 2&#x27;</span>)</span><br><span class="line">	<span class="keyword">yield</span>(<span class="number">2</span>)</span><br><span class="line">	print(<span class="string">&#x27;step 3&#x27;</span>)</span><br><span class="line">	<span class="keyword">yield</span>(<span class="number">3</span>)</span><br><span class="line">t=test()</span><br><span class="line">print(next(t))</span><br><span class="line">print(next(t))</span><br><span class="line">print(next(t))</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">step 1</span><br><span class="line">1</span><br><span class="line">step 2</span><br><span class="line">2</span><br><span class="line">step 3</span><br><span class="line">3</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python学习日志-04｜复习</title>
+    <url>/2022/02/09/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-04%EF%BD%9C%E5%A4%8D%E4%B9%A0/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323.png" alt="image-20211208153223437" /></p>
+<p>标准库：os、random、time、datetime</p>
+<a id="more"></a>
+<h2 id="一-os模块"><a class="markdownIt-Anchor" href="#一-os模块"></a> 一、os模块</h2>
+<p>os模块是提供的接口可以实现跨平台访问。但有些例外。</p>
+<h3 id="1-系统相关"><a class="markdownIt-Anchor" href="#1-系统相关"></a> 1. 系统相关</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.name <span class="comment"># 查看当前操作系统的命令，win--&gt;nt linux--&gt;posix</span></span><br><span class="line">os.environ <span class="comment"># 获取环境变量</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-文件和目录操作"><a class="markdownIt-Anchor" href="#2-文件和目录操作"></a> 2. 文件和目录操作</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.getcwd() <span class="comment">## 来获取当前工作目录</span></span><br><span class="line">os.chdir(<span class="string">&#x27;dirname&#x27;</span>) <span class="comment">## 相当于shell下的cd，改变当前脚本的目录</span></span><br><span class="line">os.remove(<span class="string">&#x27;filename&#x27;</span>)</span><br><span class="line">os.rename(<span class="string">&#x27;oldname&#x27;</span>,<span class="string">&#x27;new&#x27;</span>)</span><br><span class="line">os.listdir(<span class="string">&#x27;dirname&#x27;</span>)</span><br><span class="line">os.path.abspath(<span class="string">&#x27;dirname&#x27;</span>) <span class="comment">## 返回绝对路</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-执行命令"><a class="markdownIt-Anchor" href="#3-执行命令"></a> 3. 执行命令</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.system(<span class="string">&#x27;command&#x27;</span>)</span><br><span class="line">os.popen(<span class="string">&#x27;command&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>两者区别是，前者指返回一个状态码，没有任何其他输出内容。后者会返回command的结果。比如我要执行<code>ls</code>这样的shell命令，就需要时候后者。</p>
+<h2 id="二-random"><a class="markdownIt-Anchor" href="#二-random"></a> 二、random</h2>
+<p>生成随机函数。该模块有在智能快递柜项目中应用：生成六位随机密码。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#1 0～1浮点数</span></span><br><span class="line">random.random()</span><br><span class="line"><span class="comment">#2 指定范围浮点数</span></span><br><span class="line">random.uniform(<span class="number">10</span>,<span class="number">20</span>)</span><br><span class="line"><span class="comment">#3 指定范围整数</span></span><br><span class="line">random.randint(<span class="number">10</span>,<span class="number">1000</span>)</span><br><span class="line"><span class="comment">#4 固定间隔的随机数</span></span><br><span class="line">random.randrange(<span class="number">10</span>,<span class="number">20</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment">#5 在固定的sequence中随机生成</span></span><br><span class="line">random.choice([<span class="string">&#x27;aaa&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;cdd&#x27;</span>])</span><br><span class="line"><span class="comment">#6 打乱列表元素</span></span><br><span class="line">ll=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">random.shuffle(ll)</span><br><span class="line">print(ll)</span><br><span class="line"><span class="comment">#5 切片返回随机固定长度</span></span><br><span class="line">random.sample(<span class="string">&#x27;list&#x27;</span>,num)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>注意：#6中不能直接<code>print('random.shuffle(list)')</code>，该库的作用是打乱列表元素，是直接作用于改变列表的，并不会有任何返回值。</p>
+<h3 id="三-time时间模块"><a class="markdownIt-Anchor" href="#三-time时间模块"></a> 三、time时间模块</h3>
+<p>只支持到2038年，需要更换到datetime。</p>
+<p>在python中有三种方式来表示时间：时间戳、格式化时间字符串、结构化时间。</p>
+<h3 id="1-时间戳"><a class="markdownIt-Anchor" href="#1-时间戳"></a> 1. 时间戳</h3>
+<p>时间戳在<a href="https://blog.tangspoon.cn/2021/12/06/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%BD%AC%E5%8F%91B%E7%AB%99UP%E4%B8%BB%E5%8A%A8%E6%80%81%E5%88%B0%E5%BE%AE%E4%BF%A1python%E8%84%9A%E6%9C%AC/">《原创｜转发B站UP主动态到微信python脚本》</a>有相关应用，可以通过<code>time.time()</code>获得。获得时间戳后可有用<code>time.localtime(time.time())</code>来转化为结构化时间。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20220209155458114.png" alt="image-20220209155458114" style="zoom:50%;" />
+<p>时间戳可做算术运算：计算程序运行时间。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>():</span></span><br><span class="line">	time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">t1=time.time()</span><br><span class="line">func()</span><br><span class="line">t2=time.time()</span><br><span class="line">print(t2-t1)</span><br></pre></td></tr></table></figure>
+<h3 id="2-结构化时间struct_time"><a class="markdownIt-Anchor" href="#2-结构化时间struct_time"></a> 2. 结构化时间(struct_time)</h3>
+<p>一个包含了年月日时分秒的多元元组，例如<code>time.struct_time(tm_year=2017, tm_mon=9, tm_mday=26, tm_hour=9, tm_min=14, tm_sec=50, tm_wday=1, tm_yday=269, tm_isdst=0)</code></p>
+<p>注意：<code>time.localtime()</code>的作用是格式化时间戳为本地时间。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lt = time.localtime()</span><br><span class="line">print(lt[:<span class="number">3</span>])</span><br><span class="line"><span class="comment"># (2022, 2, 9)</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-格式化时间字符串"><a class="markdownIt-Anchor" href="#3-格式化时间字符串"></a> 3. 格式化时间字符串</h3>
+<p>利用<code>time.strftime('%Y-%m-%d %H:%M:%S')</code>类似的方式即可获得格式化时间的字符串。</p>
+<p>比如我用<code>time.localtime(time.time())</code>获得了具有结构化时间，现在我要格式化成我想要的时间格式：20220101，我可以这样做：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">struct_time&#x3D;time.localtime(time.time())</span><br><span class="line">time.strftime(&#39;%Y%m%d&#39;,struct_time)</span><br></pre></td></tr></table></figure>
+<h3 id="4-反向格式化"><a class="markdownIt-Anchor" href="#4-反向格式化"></a> 4. 反向格式化</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t=<span class="string">&#x27;20220901&#x27;</span></span><br><span class="line">st=time.strptime(t,<span class="string">&#x27;%Y%m%d&#x27;</span>)</span><br><span class="line"><span class="comment">#输出time.struct_time(tm_year=2022, tm_mon=9, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=244, tm_isdst=-1)</span></span><br></pre></td></tr></table></figure>
+<p>注意：<code>t</code>和<code>st</code>里面的格式必须相同。比如<code>t</code>的年月日使用<code>-</code>隔开，那么<code>%Y-%m</code></p>
+<h3 id="四-datetime"><a class="markdownIt-Anchor" href="#四-datetime"></a> 四、datetime</h3>
+<p>time和datetime的区别：前者到1970～2038年，后者比前者高级了不少，可以理解为是对前者进行了封装，提供了更多的实用函数。</p>
+<p>主要包含有几个类别：</p>
+<ul>
+<li>
+<ol>
+<li>time：只关注时间</li>
+</ol>
+</li>
+<li>
+<ol start="2">
+<li>date：只关注日期</li>
+</ol>
+</li>
+<li>
+<ol start="3">
+<li>datetime：以上两者都有</li>
+</ol>
+</li>
+<li>
+<ol start="4">
+<li>timedelta：计算时间跨度</li>
+</ol>
+</li>
+<li>
+<ol start="5">
+<li>tzinfo：时区</li>
+</ol>
+</li>
+</ul>
+<p>注意：几个类别都是属于datetime模块的函数，都需要导入使用。</p>
+<p>实际使用中，用的比较多的是<code>3</code>和<code>4</code>，<code>1、2</code>和<code>3</code>并没有太大区别，也就是说基本可以取代。</p>
+<p>所以，我上面图片中的代码其实可以更好的优化为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过time.time()获得当前时间戳,通过fromtimestamp转换成date</span></span><br><span class="line">dt=date.fromtimestamp(time.time())</span><br><span class="line">print(dt.strftime(<span class="string">&#x27;%Y%m%d&#x27;</span>))</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python学习日志-05｜查漏补缺</title>
+    <url>/2022/02/09/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-05%EF%BD%9C%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323-20220209184953475.png" alt="image-20211208153223437" /></p>
+<p>数据类型和变量、递归、切片、range</p>
+<a id="more"></a>
+<h2 id="一-基础"><a class="markdownIt-Anchor" href="#一-基础"></a> 一、基础</h2>
+<h3 id="1-数据类型和变量"><a class="markdownIt-Anchor" href="#1-数据类型和变量"></a> 1. 数据类型和变量</h3>
+<h4 id="整数"><a class="markdownIt-Anchor" href="#整数"></a> 整数</h4>
+<p>对于很大的数，可以用100_000_000表示</p>
+<h4 id="浮点数"><a class="markdownIt-Anchor" href="#浮点数"></a> 浮点数</h4>
+<p>会出现四舍五入的情况</p>
+<h4 id="字符串"><a class="markdownIt-Anchor" href="#字符串"></a> 字符串</h4>
+<ul>
+<li>
+<p>转义字符：\ +需要转的字符。例如我要在’ '里输出&quot;&quot;，\&quot;即可</p>
+</li>
+<li>
+<p><strong>r’ '内部的不会被转义</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;111&#x27;</span><span class="string">r&#x27;\t&#x27;</span><span class="string">&#x27;1111&#x27;</span>)</span><br><span class="line"><span class="comment"># 111\t1111</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>多行输出：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;&#x27;&#x27;第一行</span></span><br><span class="line"><span class="string">第二行</span></span><br><span class="line"><span class="string">第三行&#x27;&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一行</span></span><br><span class="line">第二行</span><br><span class="line">第三行</span><br></pre></td></tr></table></figure>
+<h4 id="变量"><a class="markdownIt-Anchor" href="#变量"></a> 变量</h4>
+<p>变量在内存中的表示</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141522481.png" alt="image-20220208141522481" /></p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141533655.png" alt="image-20220208141533655" /></p>
+</li>
+</ul>
+<h3 id="2-编码"><a class="markdownIt-Anchor" href="#2-编码"></a> 2. 编码</h3>
+<p>ASCII是美国一开始设计计算机制定的，用不了其他语言。Unicode可以解决所有语言的编码问题，但是长度是固定的。UTF-8是可变的，可以节省许多空间。</p>
+<p>在计算机内存中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，就要转化为UTF-8编码。所以在当你打开一个txt文件时，计算机会把UTF-8的文件转换为Unicode的，然后交给内存处理，当编辑完成后，再转换为UTF-8保存到硬盘。</p>
+<h4 id="格式化"><a class="markdownIt-Anchor" href="#格式化"></a> 格式化</h4>
+<h5 id="s"><a class="markdownIt-Anchor" href="#s"></a> %s</h5>
+<p>最方便的格式化方式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;name:%s,age:%s&#x27;</span> %(<span class="string">&#x27;tang&#x27;</span>,<span class="number">25</span>))</span><br></pre></td></tr></table></figure>
+<p>在python中，当<code>%</code>是个普通字符时，需要加多一个%来显示。例如我需要输出<code>7%</code>时</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;%s%%&#x27;</span> %<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="f-string"><a class="markdownIt-Anchor" href="#f-string"></a> f-string</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># f&#x27;&#123;变量&#125;&#x27;</span></span><br><span class="line">r=<span class="number">3</span></span><br><span class="line">s=<span class="number">22</span>*r</span><br><span class="line">print(<span class="string">f&#x27;r is:<span class="subst">&#123;r&#125;</span>,s is:<span class="subst">&#123;s&#125;</span>)</span></span><br></pre></td></tr></table></figure>
+<p>#####保留小数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.1f 一位</span><br><span class="line">.2f 两位</span><br></pre></td></tr></table></figure>
+<h3 id="3-list和tuple"><a class="markdownIt-Anchor" href="#3-list和tuple"></a> 3. list和tuple</h3>
+<h4 id="list的增删改"><a class="markdownIt-Anchor" href="#list的增删改"></a> list的增删改</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 增加</span></span><br><span class="line">list.append()</span><br><span class="line">list.insert(i,string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">list.pop() <span class="comment">#删除最后一个</span></span><br><span class="line">list.pop(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改</span></span><br><span class="line">list[i]=string</span><br></pre></td></tr></table></figure>
+<h4 id="tuple的特性"><a class="markdownIt-Anchor" href="#tuple的特性"></a> tuple的特性</h4>
+<ul>
+<li>不能更改</li>
+<li>优点：安全。能用tuple即用tuple</li>
+</ul>
+<p>不过注意</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t=(<span class="number">1</span>) <span class="comment">#代表的是整数1，不是tuple只有1这个元素</span></span><br><span class="line"><span class="comment">#正确表示应该是在后面加个逗号</span></span><br><span class="line">t=(<span class="number">1</span>,)</span><br></pre></td></tr></table></figure>
+<p>可变的tuple</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">t&#x3D;(1,2,[&#39;a&#39;,&#39;b&#39;])</span><br><span class="line">t[2][0]&#x3D;&#39;A&#39;</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
+<h4 id="dict和set"><a class="markdownIt-Anchor" href="#dict和set"></a> dict和set</h4>
+<p>具体在《草根学python》复习中查看。</p>
+<h3 id="4运算符"><a class="markdownIt-Anchor" href="#4运算符"></a> 4.运算符</h3>
+<h4 id="身份运算符-is-is-not"><a class="markdownIt-Anchor" href="#身份运算符-is-is-not"></a> 身份运算符 is 、is not</h4>
+<p>判断两个表示符是不是引用自同一个对象，就像<code>id(x)==id(y)</code>一个道理。</p>
+<p>而<code>==</code>则是判断两个<code>值</code>是否相等。</p>
+<h2 id="二-函数-递归"><a class="markdownIt-Anchor" href="#二-函数-递归"></a> 二、函数-递归</h2>
+<p>递归知识重复执行操作的方法。只需要理解到最小规模的逻辑，设计出等价关系式即可。</p>
+<p>递归的特征：自己调用自己，有一定的结束条件，效率不高</p>
+<p>斐波函数</p>
+<blockquote>
+<p>1,1,2,3,5,8,13</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 非递归方法（普通循环）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib1</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span> <span class="keyword">or</span> n == <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">2</span>):</span><br><span class="line">        temp = a + b</span><br><span class="line">        a = b</span><br><span class="line">        b = temp</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line"><span class="comment"># 核心思想就是把a,b从第一位开始，整体向后移一位。a=b，b=temp就可以实现整体向后移的目的。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib2</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n&lt;=<span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="comment">## 结束条件</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fib2(n<span class="number">-2</span>)+fib2(n<span class="number">-1</span>) <span class="comment">## 等价关系式</span></span><br><span class="line">     </span><br></pre></td></tr></table></figure>
+<p>可以看到两种算法的思想是不一样的。非递归方法需要抽象出一定的规律，根据这个规律来设计算法。比如上面的a,b整体向后移，根据这个规律来设计出用一个temp来储存后面b需要的数据。而递归的思想是指设计出口和缩小规模的逻辑，具体后面怎么实现不管。比如上面我们只需要想清楚是前一个数+后一个数即可，那么我们就可以直接设计出<code>fib(n-1)+fib(n-2)</code>这种超级简约的算法。</p>
+<p>关于递归的最好理解是来自知乎的一篇文章：<a href="https://www.zhihu.com/question/31412436">对于递归有没有什么好的理解方法？</a></p>
+<blockquote>
+<h3 id="递归的三大要素"><a class="markdownIt-Anchor" href="#递归的三大要素"></a> 递归的三大要素</h3>
+<p><strong>第一要素：明确你这个函数想要干什么</strong></p>
+<p><strong>第二要素：寻找递归结束条件</strong></p>
+<p>当n=1或者n=2时的一些特殊情况</p>
+<p><strong>第三要素：找出函数的等价关系式</strong>(最难)</p>
+<p>求递归结束的条件，你直接把 n 压缩到很小很小就行了，因为 n 越小，我们就越容易直观着算出 f(n) 的多少</p>
+</blockquote>
+<h2 id="三-高级特性"><a class="markdownIt-Anchor" href="#三-高级特性"></a> 三、高级特性</h2>
+<h3 id="切片"><a class="markdownIt-Anchor" href="#切片"></a> 切片</h3>
+<p>应用于<code>list</code>和<code>tuple</code>取部分元素。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list&#x3D;[1,2,3,4,5]</span><br></pre></td></tr></table></figure>
+<p>取前面三个数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[0,3]</span><br></pre></td></tr></table></figure>
+<p>取倒数第一个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-1]</span><br></pre></td></tr></table></figure>
+<p>取倒数两个（就是从<code>-2</code>一直到最后）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-2:]</span><br></pre></td></tr></table></figure>
+<p>前十个，每两个取一个</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list[:<span class="number">10</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>所有数，每5个取一个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">print(l[::5])</span><br></pre></td></tr></table></figure>
+<h2 id="四-range"><a class="markdownIt-Anchor" href="#四-range"></a> 四、range()</h2>
+<p>range(start,stop,step)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">range(100,0,-1) # 从100倒数回0，每次步进1</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Python学习日志-06｜算法-排序</title>
+    <url>/2022/02/12/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-06%EF%BD%9C%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220212144332679.png" alt="image-20220212144332679" style="zoom:85%;" />
+<p>冒泡、选择、插入、快速排序</p>
+<a id="more"></a>
+<blockquote>
+<h3 id="排序算法的稳定性"><a class="markdownIt-Anchor" href="#排序算法的稳定性"></a> 排序算法的稳定性</h3>
+<p>排序算法的稳定性是指，在排序过程中，值相同的元素间的相对位置跟排序前的相对位置是一样的。举个例子，排序前一个数组为{3, 2, 1, 2’, 4}，我们用2’来区分第二个2和第一个2，假如是稳定的排序算法，它的结果一定是这样{1, 2, 2’, 3, 4}，而如果不稳定的算法，它的结果有可能是这样{1, 2’, 2, 3, 4}。</p>
+<p>为什么我们要强调稳定性呢？举个例子，假如我们需要排序一个订单，需要按照时间和价格进行升序排序，首先会先将所有订单按时间升序排序，然后再进行价格的升序排序，假如价格排序不是一个稳定的排序，那么订单的时间就有可能不会按升序排列，所以在特定情况下，排序算法的稳定性是一个比较重要的考虑因素。</p>
+<p>作者：特雷西多士<br />
+链接：<a href="https://juejin.cn/post/6844903966514348040">https://juejin.cn/post/6844903966514348040</a><br />
+来源：稀土掘金<br />
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+<h3 id="一-冒泡排序"><a class="markdownIt-Anchor" href="#一-冒泡排序"></a> 一、冒泡排序</h3>
+<blockquote>
+<p>参考：<a href="https://github.com/facert/python-data-structure-cn/tree/master/5.%E6%8E%92%E5%BA%8F%E5%92%8C%E6%90%9C%E7%B4%A2">https://github.com/facert/python-data-structure-cn/tree/master/5.排序和搜索</a></p>
+</blockquote>
+<p>「冒泡」这个命名十分形象：越小的元素会逐渐冒泡到数列的前端。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220211111950717.png" alt="image-20220211111950717" /></p>
+<p>缺点：低效</p>
+<ul>
+<li>每个数据都得经过若干次交换才能找到自己的位置。特别是对于大号靠前的数据。</li>
+<li>假如数组在冒泡排序的途中已经排好了正确的顺序，算法还是会迭代到最后一个元素，浪费性能和时间。</li>
+</ul>
+<p>优点：稳定性好</p>
+<p>因为只有当两个数不相等时才会交换，所以例如像5和5`这样的（前后不一样，值一样）是不会交换的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubbleSort</span>(<span class="params">data</span>):</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(data)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">            <span class="keyword">if</span> data[i]&gt;data[i+<span class="number">1</span>]:</span><br><span class="line">                data[i],data[i+<span class="number">1</span>]=data[i+<span class="number">1</span>],data[i]</span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">bubbleSrot(data)</span><br><span class="line">print(<span class="string">&#x27;冒泡排序：&#x27;</span>, data)</span><br></pre></td></tr></table></figure>
+<h3 id="二-选择排序"><a class="markdownIt-Anchor" href="#二-选择排序"></a> 二、选择排序</h3>
+<blockquote>
+<p>参考：<a href="https://github.com/facert/python-data-structure-cn/tree/master/5.%E6%8E%92%E5%BA%8F%E5%92%8C%E6%90%9C%E7%B4%A2">https://github.com/facert/python-data-structure-cn/tree/master/5.排序和搜索</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectSort</span>(<span class="params">data</span>):</span></span><br><span class="line">	<span class="keyword">for</span> now_len <span class="keyword">in</span> range(len(data)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">    temp_location=<span class="number">0</span></span><br><span class="line">    	<span class="keyword">for</span> now_location <span class="keyword">in</span> range(<span class="number">1</span>,now_len+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> data[now_location]&gt;data[temp_location]:</span><br><span class="line">                temp_location=now_location</span><br><span class="line">                </span><br><span class="line">data[temp_location],data[now_location]=data[now_location],data[temp_location]</span><br><span class="line">     </span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">bubbleSrot(data)</span><br><span class="line">print(<span class="string">&#x27;选择排序：&#x27;</span>, data)  </span><br></pre></td></tr></table></figure>
+<h3 id="三-插入排序"><a class="markdownIt-Anchor" href="#三-插入排序"></a> 三、插入排序</h3>
+<p>目前个人觉得最好理解的教程是Derrick Sherril这位YouTuber</p>
+<blockquote>
+<p><a href="https://www.youtube.com/watch?v=byHi41L9vTM">https://www.youtube.com/watch?v=byHi41L9vTM</a></p>
+</blockquote>
+<p>直接上代码，狗都能看懂。其实就是当数列前一个大于后一个的时候，两个数字交换。但为了持续比较，需要在一个<code>while</code>里面不断判断，每次<code>i-1</code>就可以遍历前面的<code>unsorted</code>的值。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertSort</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(data)):</span><br><span class="line">        <span class="keyword">while</span> data[i<span class="number">-1</span>]&gt;data[i] <span class="keyword">and</span> i &gt; <span class="number">0</span>:</span><br><span class="line">            data[i<span class="number">-1</span>],data[i] = data[i], data[i<span class="number">-1</span>]</span><br><span class="line">            i-=<span class="number">1</span></span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">insertSrot(data)</span><br><span class="line">print(<span class="string">&#x27;插入排序：&#x27;</span>, data) </span><br></pre></td></tr></table></figure>
+<h3 id="四-快速排序递归排序"><a class="markdownIt-Anchor" href="#四-快速排序递归排序"></a> 四、快速排序（递归排序）</h3>
+<p>快速排序的最简单解释同样来自Derrick Sherril</p>
+<blockquote>
+<p><a href="https://www.youtube.com/watch?v=kFeXwkgnQ9U">https://www.youtube.com/watch?v=kFeXwkgnQ9U</a></p>
+</blockquote>
+<p>以随便一个数为标准，Derrick用了最后一个。提取出标准数，遍历数组剩下的值，比标准数小的放在左边，大的在右。然后一直递归下去就可以。结束条件是不用比较的最小规模：当数组只剩下1个或0个的时候。这时我们直接返回长度只有1个或0个的数组即可。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quickSort</span>(<span class="params">data</span>):</span></span><br><span class="line">    length = len(data)</span><br><span class="line">    <span class="keyword">if</span> length &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pivot = data.pop()</span><br><span class="line"></span><br><span class="line">    items_bigger = []</span><br><span class="line">    items_smaller = []</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> data:</span><br><span class="line">        <span class="keyword">if</span> item &lt; pivot:</span><br><span class="line">            items_smaller.append(item)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            items_bigger.append(item)</span><br><span class="line">    <span class="keyword">return</span> quickSort(items_smaller) + [pivot] + quickSort(items_bigger)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;快速排序：&#x27;</span>, quickSort(data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="五-其他"><a class="markdownIt-Anchor" href="#五-其他"></a> 五、其他</h3>
+<p>其他还有归并排序和希尔排序。日后在Coursera的Data Structrues课程中再深入学习。</p>
+<blockquote>
+<p><a href="https://www.coursera.org/learn/python-data?action=enroll">https://www.coursera.org/learn/python-data?action=enroll</a></p>
+</blockquote>
 ]]></content>
       <categories>
         <category>Python</category>
@@ -1945,71 +2190,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气播报</title>
-    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
-<a id="more"></a>
-<br/>
-<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
-<hr />
-<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
-<p>首先我们得明白需求：</p>
-<ol>
-<li>
-<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
-<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
-<br/>
-</li>
-<li>
-<p>每天最低、最高温度：参考整体温度</p>
-</li>
-<li>
-<p>日落时间：希望每天都可以看到好看的晚霞</p>
-<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
-<p>需要获得的数据如下：</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
-</li>
-</ol>
-<blockquote>
-<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
-</blockquote>
-<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
-<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
-<h3 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h3>
-<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
-<h2 id="三-语音合成播报天气"><a class="markdownIt-Anchor" href="#三-语音合成播报天气"></a> 三、语音合成播报天气</h2>
-<p><a href="https://ai.baidu.com/tech/speech/tts">点击这里</a>，先注册百度TTS。然后创建一个应用，获得三条信息</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201224110716260.png" alt="image-20201224110716260" style="zoom:50%;" />
-<br/>
-<p>结合上面的天气模块，直接合成：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> aip <span class="keyword">import</span> AipSpeech</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> getWeather <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 百度TTS信息</span></span><br><span class="line">APP_ID = <span class="string">&#x27;xxxx&#x27;</span></span><br><span class="line">API_KEY = <span class="string">&#x27;xxxxxxxxxx&#x27;</span></span><br><span class="line">SECRET_KEY = <span class="string">&#x27;xxxxxxxxxxxxxxxxxx&#x27;</span></span><br><span class="line"></span><br><span class="line">client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取天气模块的信息</span></span><br><span class="line">now_temp, now_text = getNowWeather()</span><br><span class="line">tempMax, tempMin, sunsetTime = get3d()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正常天气</span></span><br><span class="line">text_normal = <span class="string">&#x27;xxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">              + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;，祝您傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 最高温度小于14度时</span></span><br><span class="line">text_lowtemp = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度！&#x27;</span> + <span class="string">&#x27;最高温度也才：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">               + <span class="string">&#x27;，也是好冷的呢！要多穿衣服哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 下雨</span></span><br><span class="line">text_rain = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;外边正在下雨呢，记得带伞～&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">            + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span> + <span class="string">&#x27;对了，记得带伞哦！再见&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># per: 3是性感大叔 4是妹妹；spd: 是语速，vol是: 音量</span></span><br><span class="line"><span class="keyword">if</span> int(tempMax) &lt; <span class="number">14</span>:</span><br><span class="line">    result = client.synthesis(text_lowtemp, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"><span class="keyword">elif</span> now_text <span class="keyword">is</span> <span class="string">&#x27;雨&#x27;</span>:</span><br><span class="line">    result = client.synthesis(text_rain, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    result = client.synthesis(text_normal, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 播放模块</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> isinstance(result, dict):</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(result)</span><br><span class="line">os.system(<span class="string">&#x27;mplayer &quot;%s&quot; &gt; /dev/null 2&gt;&amp;1&#x27;</span> % <span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
-<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
-<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
-<br/>
-<h2 id="四-相关文章"><a class="markdownIt-Anchor" href="#四-相关文章"></a> 四、相关文章</h2>
-<ol>
-<li><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（一）｜macOS 入门使用树莓派 3B+</a></li>
-<li><a href="http://localhost:4000/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/#more">智能闹钟（三）| 使用「网易云音乐 NodeJS 版 API 接口」播放每日推荐歌曲</a></li>
-<li><a href="https://blog.tangspoon.cn/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/#more">智能闹钟（四）-整合搭建</a></li>
-<li><a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/#more">智能闹钟（五）｜如何优雅地关闭闹钟？</a></li>
-</ol>
-]]></content>
-      <categories>
-        <category>树莓派</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-        <tag>树莓派</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>智能闹钟（三）| 使用「网易云音乐NodeJS版API接口」播放每日推荐歌曲</title>
     <url>/2020/12/22/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%89%EF%BC%89%7C%20%E4%BD%BF%E7%94%A8%E3%80%8C%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90NodeJS%E7%89%88API%E6%8E%A5%E5%8F%A3%E3%80%8D%E8%8E%B7%E5%8F%96%E6%AF%8F%E6%97%A5%E6%8E%A8%E8%8D%90%E6%AD%8C%E6%9B%B2/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201222151927493.png" alt="image-20201222151927493" style="zoom:50%;" />
@@ -2154,6 +2334,71 @@ Github中。</p>
 <ol>
 <li><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（一）｜macOS 入门使用树莓派 3B+</a></li>
 <li><a href="http://localhost:4000/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/#more">智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气的播报</a></li>
+<li><a href="https://blog.tangspoon.cn/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/#more">智能闹钟（四）-整合搭建</a></li>
+<li><a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/#more">智能闹钟（五）｜如何优雅地关闭闹钟？</a></li>
+</ol>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气播报</title>
+    <url>/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201221175630831.png" alt="image-20201221175630831" style="zoom:30%;" />
+<a id="more"></a>
+<br/>
+<p><strong>每日天气提醒</strong>在我的生活中时非常有必要的，对我<strong>每日的出行</strong>会有巨大帮助。因此，智能闹钟项目要考虑加入天气播报功能。该功能可以使用免费的「和风天气」提供的api来实现。</p>
+<hr />
+<h2 id="一-需求分析"><a class="markdownIt-Anchor" href="#一-需求分析"></a> 一、需求分析</h2>
+<p>首先我们得明白需求：</p>
+<ol>
+<li>
+<p>实况天气：参考出门穿什么衣服、是否需要带伞</p>
+<p>对应「实况天气」开发版接口：<a href="https://devapi.qweather.com/v7/weather/now">https://devapi.qweather.com/v7/weather/now</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165538314.png" alt="image-20201221165538314" style="zoom:30%;" />
+<br/>
+</li>
+<li>
+<p>每天最低、最高温度：参考整体温度</p>
+</li>
+<li>
+<p>日落时间：希望每天都可以看到好看的晚霞</p>
+<p>2、3需求对应「3天预报」开发版接口：<a href="https://devapi.qweather.com/v7/weather/3d">https://devapi.qweather.com/v7/weather/3d</a>?</p>
+<p>需要获得的数据如下：</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221165738406.png" alt="image-20201221165738406" style="zoom:33%;" />
+</li>
+</ol>
+<blockquote>
+<p>⚠️注意：日落时间可以用「天气预报」、「太阳和月亮」两个接口获得，但使用前者非常简单。</p>
+</blockquote>
+<h2 id="二-功能实现"><a class="markdownIt-Anchor" href="#二-功能实现"></a> 二、功能实现</h2>
+<h3 id="1-获取实况温度与实况状态"><a class="markdownIt-Anchor" href="#1-获取实况温度与实况状态"></a> 1. 获取实况温度与实况状态</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getNowWeather</span>():</span></span><br><span class="line">    <span class="comment"># 开发版接口地址</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/now?&#x27;</span></span><br><span class="line">    <span class="comment"># 接口参数</span></span><br><span class="line">    params = &#123;</span><br><span class="line">        <span class="comment"># 你的城市id</span></span><br><span class="line">        <span class="string">&#x27;location&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 和风天气key</span></span><br><span class="line">        <span class="string">&#x27;key&#x27;</span>: <span class="string">&#x27;xxx&#x27;</span>,</span><br><span class="line">        <span class="comment"># 使用gzip可较少延迟</span></span><br><span class="line">        <span class="string">&#x27;gzip&#x27;</span>: <span class="string">&#x27;y&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    content = html.json()</span><br><span class="line">    now_temp = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;temp&#x27;</span>]</span><br><span class="line">    now_text = content[<span class="string">&#x27;now&#x27;</span>][<span class="string">&#x27;text&#x27;</span>]</span><br><span class="line">    <span class="keyword">return</span> now_temp, now_text</span><br></pre></td></tr></table></figure>
+<h3 id="2-最低-最高温度-日落时间"><a class="markdownIt-Anchor" href="#2-最低-最高温度-日落时间"></a> 2. 最低、最高温度、日落时间</h3>
+<p>我们使用postman对调用接口，对response分析，可以获得第一天的数据</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221171749567.png" alt="image-20201221171749567" style="zoom:40%;" />
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get3d</span>():</span></span><br><span class="line">    url = <span class="string">&#x27;https://devapi.qweather.com/v7/weather/3d?&#x27;</span></span><br><span class="line">    <span class="comment"># params与getNowWeather()的一样</span></span><br><span class="line">    html = requests.get(url, params)</span><br><span class="line">    html_content = html.json()</span><br><span class="line">    tempMax = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMax&#x27;</span>]</span><br><span class="line">    tempMin = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;tempMin&#x27;</span>]</span><br><span class="line">    sunsetTime = html_content[<span class="string">&#x27;daily&#x27;</span>][<span class="number">0</span>][<span class="string">&#x27;sunset&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> tempMax, tempMin, sunsetTime</span><br></pre></td></tr></table></figure>
+<h2 id="三-语音合成播报天气"><a class="markdownIt-Anchor" href="#三-语音合成播报天气"></a> 三、语音合成播报天气</h2>
+<p><a href="https://ai.baidu.com/tech/speech/tts">点击这里</a>，先注册百度TTS。然后创建一个应用，获得三条信息</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201224110716260.png" alt="image-20201224110716260" style="zoom:50%;" />
+<br/>
+<p>结合上面的天气模块，直接合成：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> aip <span class="keyword">import</span> AipSpeech</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">from</span> getWeather <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 百度TTS信息</span></span><br><span class="line">APP_ID = <span class="string">&#x27;xxxx&#x27;</span></span><br><span class="line">API_KEY = <span class="string">&#x27;xxxxxxxxxx&#x27;</span></span><br><span class="line">SECRET_KEY = <span class="string">&#x27;xxxxxxxxxxxxxxxxxx&#x27;</span></span><br><span class="line"></span><br><span class="line">client = AipSpeech(APP_ID, API_KEY, SECRET_KEY)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取天气模块的信息</span></span><br><span class="line">now_temp, now_text = getNowWeather()</span><br><span class="line">tempMax, tempMin, sunsetTime = get3d()</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正常天气</span></span><br><span class="line">text_normal = <span class="string">&#x27;xxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">              + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;，祝您傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 最高温度小于14度时</span></span><br><span class="line">text_lowtemp = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度！&#x27;</span> + <span class="string">&#x27;最高温度也才：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">               + <span class="string">&#x27;，也是好冷的呢！要多穿衣服哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span></span><br><span class="line"><span class="comment"># 下雨</span></span><br><span class="line">text_rain = <span class="string">&#x27;xxxx早上好呀！现在外面&#x27;</span> + now_temp + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;外边正在下雨呢，记得带伞～&#x27;</span> + <span class="string">&#x27;今天最低温度为：&#x27;</span> + tempMin + <span class="string">&#x27;度，&#x27;</span> + <span class="string">&#x27;最高温度为：&#x27;</span> + tempMax + <span class="string">&#x27;度，&#x27;</span> \</span><br><span class="line">            + <span class="string">&#x27;看好温度穿衣哦！&#x27;</span> + <span class="string">&#x27;再提醒一下，今天的日落时间是，&#x27;</span> + sunsetTime + <span class="string">&#x27;祝xxxx傍晚能看到美丽的日落！拜拜～&#x27;</span> + <span class="string">&#x27;对了，记得带伞哦！再见&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># per: 3是性感大叔 4是妹妹；spd: 是语速，vol是: 音量</span></span><br><span class="line"><span class="keyword">if</span> int(tempMax) &lt; <span class="number">14</span>:</span><br><span class="line">    result = client.synthesis(text_lowtemp, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"><span class="keyword">elif</span> now_text <span class="keyword">is</span> <span class="string">&#x27;雨&#x27;</span>:</span><br><span class="line">    result = client.synthesis(text_rain, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>&#125;)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    result = client.synthesis(text_normal, <span class="string">&#x27;zh&#x27;</span>, <span class="number">1</span>, &#123;<span class="string">&#x27;vol&#x27;</span>: <span class="number">10</span>, <span class="string">&#x27;per&#x27;</span>: <span class="number">4</span>, <span class="string">&#x27;spd&#x27;</span>: <span class="number">5</span>&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 播放模块</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> isinstance(result, dict):</span><br><span class="line">    <span class="keyword">with</span> open(<span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        f.write(result)</span><br><span class="line">os.system(<span class="string">&#x27;mplayer &quot;%s&quot; &gt; /dev/null 2&gt;&amp;1&#x27;</span> % <span class="string">&#x27;/home/clock/weather.mp3&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h2>
+<p>在开始做一个项目模块前，一定要做好需求分析，认真阅读开发者文档，了解清楚需求都要用到哪些接口/工具，不然用错接口就会浪费很多很多时间。就像API文档里面的「天气预报」和「太阳和月亮」接口都可以获得日落时间，但是用前者可以简单上十倍！</p>
+<p>一开始的我直冲太阳和月亮，还写了一大堆格式化时间的函数，多此一举。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201221180450233.png" alt="image-20201221180450233" style="zoom:30%;" />
+<br/>
+<h2 id="四-相关文章"><a class="markdownIt-Anchor" href="#四-相关文章"></a> 四、相关文章</h2>
+<ol>
+<li><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（一）｜macOS 入门使用树莓派 3B+</a></li>
+<li><a href="http://localhost:4000/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/#more">智能闹钟（三）| 使用「网易云音乐 NodeJS 版 API 接口」播放每日推荐歌曲</a></li>
 <li><a href="https://blog.tangspoon.cn/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/#more">智能闹钟（四）-整合搭建</a></li>
 <li><a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/#more">智能闹钟（五）｜如何优雅地关闭闹钟？</a></li>
 </ol>
@@ -3163,183 +3408,6 @@ Github中。</p>
       <tags>
         <tag>软件测试</tag>
         <tag>面试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python学习日志-04｜复习</title>
-    <url>/2022/02/09/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-04%EF%BD%9C%E5%A4%8D%E4%B9%A0/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323.png" alt="image-20211208153223437" /></p>
-<p>标准库：os、random、time、datetime</p>
-<a id="more"></a>
-<h2 id="一-os模块"><a class="markdownIt-Anchor" href="#一-os模块"></a> 一、os模块</h2>
-<p>os模块是提供的接口可以实现跨平台访问。但有些例外。</p>
-<h3 id="1-系统相关"><a class="markdownIt-Anchor" href="#1-系统相关"></a> 1. 系统相关</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.name <span class="comment"># 查看当前操作系统的命令，win--&gt;nt linux--&gt;posix</span></span><br><span class="line">os.environ <span class="comment"># 获取环境变量</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-文件和目录操作"><a class="markdownIt-Anchor" href="#2-文件和目录操作"></a> 2. 文件和目录操作</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.getcwd() <span class="comment">## 来获取当前工作目录</span></span><br><span class="line">os.chdir(<span class="string">&#x27;dirname&#x27;</span>) <span class="comment">## 相当于shell下的cd，改变当前脚本的目录</span></span><br><span class="line">os.remove(<span class="string">&#x27;filename&#x27;</span>)</span><br><span class="line">os.rename(<span class="string">&#x27;oldname&#x27;</span>,<span class="string">&#x27;new&#x27;</span>)</span><br><span class="line">os.listdir(<span class="string">&#x27;dirname&#x27;</span>)</span><br><span class="line">os.path.abspath(<span class="string">&#x27;dirname&#x27;</span>) <span class="comment">## 返回绝对路</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-执行命令"><a class="markdownIt-Anchor" href="#3-执行命令"></a> 3. 执行命令</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.system(<span class="string">&#x27;command&#x27;</span>)</span><br><span class="line">os.popen(<span class="string">&#x27;command&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>两者区别是，前者指返回一个状态码，没有任何其他输出内容。后者会返回command的结果。比如我要执行<code>ls</code>这样的shell命令，就需要时候后者。</p>
-<h2 id="二-random"><a class="markdownIt-Anchor" href="#二-random"></a> 二、random</h2>
-<p>生成随机函数。该模块有在智能快递柜项目中应用：生成六位随机密码。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#1 0～1浮点数</span></span><br><span class="line">random.random()</span><br><span class="line"><span class="comment">#2 指定范围浮点数</span></span><br><span class="line">random.uniform(<span class="number">10</span>,<span class="number">20</span>)</span><br><span class="line"><span class="comment">#3 指定范围整数</span></span><br><span class="line">random.randint(<span class="number">10</span>,<span class="number">1000</span>)</span><br><span class="line"><span class="comment">#4 固定间隔的随机数</span></span><br><span class="line">random.randrange(<span class="number">10</span>,<span class="number">20</span>,<span class="number">2</span>)</span><br><span class="line"><span class="comment">#5 在固定的sequence中随机生成</span></span><br><span class="line">random.choice([<span class="string">&#x27;aaa&#x27;</span>,<span class="string">&#x27;b&#x27;</span>,<span class="string">&#x27;cdd&#x27;</span>])</span><br><span class="line"><span class="comment">#6 打乱列表元素</span></span><br><span class="line">ll=[<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>]</span><br><span class="line">random.shuffle(ll)</span><br><span class="line">print(ll)</span><br><span class="line"><span class="comment">#5 切片返回随机固定长度</span></span><br><span class="line">random.sample(<span class="string">&#x27;list&#x27;</span>,num)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>注意：#6中不能直接<code>print('random.shuffle(list)')</code>，该库的作用是打乱列表元素，是直接作用于改变列表的，并不会有任何返回值。</p>
-<h3 id="三-time时间模块"><a class="markdownIt-Anchor" href="#三-time时间模块"></a> 三、time时间模块</h3>
-<p>只支持到2038年，需要更换到datetime。</p>
-<p>在python中有三种方式来表示时间：时间戳、格式化时间字符串、结构化时间。</p>
-<h3 id="1-时间戳"><a class="markdownIt-Anchor" href="#1-时间戳"></a> 1. 时间戳</h3>
-<p>时间戳在<a href="https://blog.tangspoon.cn/2021/12/06/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%BD%AC%E5%8F%91B%E7%AB%99UP%E4%B8%BB%E5%8A%A8%E6%80%81%E5%88%B0%E5%BE%AE%E4%BF%A1python%E8%84%9A%E6%9C%AC/">《原创｜转发B站UP主动态到微信python脚本》</a>有相关应用，可以通过<code>time.time()</code>获得。获得时间戳后可有用<code>time.localtime(time.time())</code>来转化为结构化时间。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20220209155458114.png" alt="image-20220209155458114" style="zoom:50%;" />
-<p>时间戳可做算术运算：计算程序运行时间。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>():</span></span><br><span class="line">	time.sleep(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line">t1=time.time()</span><br><span class="line">func()</span><br><span class="line">t2=time.time()</span><br><span class="line">print(t2-t1)</span><br></pre></td></tr></table></figure>
-<h3 id="2-结构化时间struct_time"><a class="markdownIt-Anchor" href="#2-结构化时间struct_time"></a> 2. 结构化时间(struct_time)</h3>
-<p>一个包含了年月日时分秒的多元元组，例如<code>time.struct_time(tm_year=2017, tm_mon=9, tm_mday=26, tm_hour=9, tm_min=14, tm_sec=50, tm_wday=1, tm_yday=269, tm_isdst=0)</code></p>
-<p>注意：<code>time.localtime()</code>的作用是格式化时间戳为本地时间。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">lt = time.localtime()</span><br><span class="line">print(lt[:<span class="number">3</span>])</span><br><span class="line"><span class="comment"># (2022, 2, 9)</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-格式化时间字符串"><a class="markdownIt-Anchor" href="#3-格式化时间字符串"></a> 3. 格式化时间字符串</h3>
-<p>利用<code>time.strftime('%Y-%m-%d %H:%M:%S')</code>类似的方式即可获得格式化时间的字符串。</p>
-<p>比如我用<code>time.localtime(time.time())</code>获得了具有结构化时间，现在我要格式化成我想要的时间格式：20220101，我可以这样做：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">struct_time&#x3D;time.localtime(time.time())</span><br><span class="line">time.strftime(&#39;%Y%m%d&#39;,struct_time)</span><br></pre></td></tr></table></figure>
-<h3 id="4-反向格式化"><a class="markdownIt-Anchor" href="#4-反向格式化"></a> 4. 反向格式化</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t=<span class="string">&#x27;20220901&#x27;</span></span><br><span class="line">st=time.strptime(t,<span class="string">&#x27;%Y%m%d&#x27;</span>)</span><br><span class="line"><span class="comment">#输出time.struct_time(tm_year=2022, tm_mon=9, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=244, tm_isdst=-1)</span></span><br></pre></td></tr></table></figure>
-<p>注意：<code>t</code>和<code>st</code>里面的格式必须相同。比如<code>t</code>的年月日使用<code>-</code>隔开，那么<code>%Y-%m</code></p>
-<h3 id="四-datetime"><a class="markdownIt-Anchor" href="#四-datetime"></a> 四、datetime</h3>
-<p>time和datetime的区别：前者到1970～2038年，后者比前者高级了不少，可以理解为是对前者进行了封装，提供了更多的实用函数。</p>
-<p>主要包含有几个类别：</p>
-<ul>
-<li>
-<ol>
-<li>time：只关注时间</li>
-</ol>
-</li>
-<li>
-<ol start="2">
-<li>date：只关注日期</li>
-</ol>
-</li>
-<li>
-<ol start="3">
-<li>datetime：以上两者都有</li>
-</ol>
-</li>
-<li>
-<ol start="4">
-<li>timedelta：计算时间跨度</li>
-</ol>
-</li>
-<li>
-<ol start="5">
-<li>tzinfo：时区</li>
-</ol>
-</li>
-</ul>
-<p>注意：几个类别都是属于datetime模块的函数，都需要导入使用。</p>
-<p>实际使用中，用的比较多的是<code>3</code>和<code>4</code>，<code>1、2</code>和<code>3</code>并没有太大区别，也就是说基本可以取代。</p>
-<p>所以，我上面图片中的代码其实可以更好的优化为：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 通过time.time()获得当前时间戳,通过fromtimestamp转换成date</span></span><br><span class="line">dt=date.fromtimestamp(time.time())</span><br><span class="line">print(dt.strftime(<span class="string">&#x27;%Y%m%d&#x27;</span>))</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python学习日志-05｜查漏补缺</title>
-    <url>/2022/02/09/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-05%EF%BD%9C%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323-20220209184953475.png" alt="image-20211208153223437" /></p>
-<p>基础、递归、切片</p>
-<a id="more"></a>
-<h2 id="一-基础"><a class="markdownIt-Anchor" href="#一-基础"></a> 一、基础</h2>
-<h3 id="1-数据类型和变量"><a class="markdownIt-Anchor" href="#1-数据类型和变量"></a> 1. 数据类型和变量</h3>
-<h4 id="整数"><a class="markdownIt-Anchor" href="#整数"></a> 整数</h4>
-<p>对于很大的数，可以用100_000_000表示</p>
-<h4 id="浮点数"><a class="markdownIt-Anchor" href="#浮点数"></a> 浮点数</h4>
-<p>会出现四舍五入的情况</p>
-<h4 id="字符串"><a class="markdownIt-Anchor" href="#字符串"></a> 字符串</h4>
-<ul>
-<li>
-<p>转义字符：\ +需要转的字符。例如我要在’ '里输出&quot;&quot;，\&quot;即可</p>
-</li>
-<li>
-<p><strong>r’ '内部的不会被转义</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;111&#x27;</span><span class="string">r&#x27;\t&#x27;</span><span class="string">&#x27;1111&#x27;</span>)</span><br><span class="line"><span class="comment"># 111\t1111</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>多行输出：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;&#x27;&#x27;第一行</span></span><br><span class="line"><span class="string">第二行</span></span><br><span class="line"><span class="string">第三行&#x27;&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一行</span></span><br><span class="line">第二行</span><br><span class="line">第三行</span><br></pre></td></tr></table></figure>
-<h4 id="变量"><a class="markdownIt-Anchor" href="#变量"></a> 变量</h4>
-<p>变量在内存中的表示</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141522481.png" alt="image-20220208141522481" /></p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141533655.png" alt="image-20220208141533655" /></p>
-</li>
-</ul>
-<h3 id="2-编码"><a class="markdownIt-Anchor" href="#2-编码"></a> 2. 编码</h3>
-<p>ASCII是美国一开始设计计算机制定的，用不了其他语言。Unicode可以解决所有语言的编码问题，但是长度是固定的。UTF-8是可变的，可以节省许多空间。</p>
-<p>在计算机内存中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，就要转化为UTF-8编码。所以在当你打开一个txt文件时，计算机会把UTF-8的文件转换为Unicode的，然后交给内存处理，当编辑完成后，再转换为UTF-8保存到硬盘。</p>
-<h4 id="格式化"><a class="markdownIt-Anchor" href="#格式化"></a> 格式化</h4>
-<h5 id="s"><a class="markdownIt-Anchor" href="#s"></a> %s</h5>
-<p>最方便的格式化方式</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;name:%s,age:%s&#x27;</span> %(<span class="string">&#x27;tang&#x27;</span>,<span class="number">25</span>))</span><br></pre></td></tr></table></figure>
-<p>在python中，当<code>%</code>是个普通字符时，需要加多一个%来显示。例如我需要输出<code>7%</code>时</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;%s%%&#x27;</span> %<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
-<h5 id="f-string"><a class="markdownIt-Anchor" href="#f-string"></a> f-string</h5>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># f&#x27;&#123;变量&#125;&#x27;</span></span><br><span class="line">r=<span class="number">3</span></span><br><span class="line">s=<span class="number">22</span>*r</span><br><span class="line">print(<span class="string">f&#x27;r is:<span class="subst">&#123;r&#125;</span>,s is:<span class="subst">&#123;s&#125;</span>)</span></span><br></pre></td></tr></table></figure>
-<p>#####保留小数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.1f 一位</span><br><span class="line">.2f 两位</span><br></pre></td></tr></table></figure>
-<h3 id="3-list和tuple"><a class="markdownIt-Anchor" href="#3-list和tuple"></a> 3. list和tuple</h3>
-<h4 id="list的增删改"><a class="markdownIt-Anchor" href="#list的增删改"></a> list的增删改</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 增加</span></span><br><span class="line">list.append()</span><br><span class="line">list.insert(i,string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">list.pop() <span class="comment">#删除最后一个</span></span><br><span class="line">list.pop(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改</span></span><br><span class="line">list[i]=string</span><br></pre></td></tr></table></figure>
-<h4 id="tuple的特性"><a class="markdownIt-Anchor" href="#tuple的特性"></a> tuple的特性</h4>
-<ul>
-<li>不能更改</li>
-<li>优点：安全。能用tuple即用tuple</li>
-</ul>
-<p>不过注意</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t=(<span class="number">1</span>) <span class="comment">#代表的是整数1，不是tuple只有1这个元素</span></span><br><span class="line"><span class="comment">#正确表示应该是在后面加个逗号</span></span><br><span class="line">t=(<span class="number">1</span>,)</span><br></pre></td></tr></table></figure>
-<p>可变的tuple</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">t&#x3D;(1,2,[&#39;a&#39;,&#39;b&#39;])</span><br><span class="line">t[2][0]&#x3D;&#39;A&#39;</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
-<h4 id="dict和set"><a class="markdownIt-Anchor" href="#dict和set"></a> dict和set</h4>
-<p>具体在《草根学python》复习中查看。</p>
-<h2 id="二-函数-递归"><a class="markdownIt-Anchor" href="#二-函数-递归"></a> 二、函数-递归</h2>
-<p>递归知识重复执行操作的方法。只需要理解到最小规模的逻辑，设计出等价关系式即可。</p>
-<p>递归的特征：自己调用自己，有一定的结束条件，效率不高</p>
-<p>斐波函数</p>
-<blockquote>
-<p>1,1,2,3,5,8,13</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 非递归方法（普通循环）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib1</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span> <span class="keyword">or</span> n == <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">2</span>):</span><br><span class="line">        temp = a + b</span><br><span class="line">        a = b</span><br><span class="line">        b = temp</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line"><span class="comment"># 核心思想就是把a,b从第一位开始，整体向后移一位。a=b，b=temp就可以实现整体向后移的目的。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib2</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n&lt;=<span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="comment">## 结束条件</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fib2(n<span class="number">-2</span>)+fib2(n<span class="number">-1</span>) <span class="comment">## 等价关系式</span></span><br><span class="line">     </span><br></pre></td></tr></table></figure>
-<p>可以看到两种算法的思想是不一样的。非递归方法需要抽象出一定的规律，根据这个规律来设计算法。比如上面的a,b整体向后移，根据这个规律来设计出用一个temp来储存后面b需要的数据。而递归的思想是指设计出口和缩小规模的逻辑，具体后面怎么实现不管。比如上面我们只需要想清楚是前一个数+后一个数即可，那么我们就可以直接设计出<code>fib(n-1)+fib(n-2)</code>这种超级简约的算法。</p>
-<p>关于递归的最好理解是来自知乎的一篇文章：<a href="https://www.zhihu.com/question/31412436">对于递归有没有什么好的理解方法？</a></p>
-<blockquote>
-<h3 id="递归的三大要素"><a class="markdownIt-Anchor" href="#递归的三大要素"></a> 递归的三大要素</h3>
-<p><strong>第一要素：明确你这个函数想要干什么</strong></p>
-<p><strong>第二要素：寻找递归结束条件</strong></p>
-<p>当n=1或者n=2时的一些特殊情况</p>
-<p><strong>第三要素：找出函数的等价关系式</strong>(最难)</p>
-<p>求递归结束的条件，你直接把 n 压缩到很小很小就行了，因为 n 越小，我们就越容易直观着算出 f(n) 的多少</p>
-</blockquote>
-<h2 id="三-高级特性"><a class="markdownIt-Anchor" href="#三-高级特性"></a> 三、高级特性</h2>
-<h3 id="切片"><a class="markdownIt-Anchor" href="#切片"></a> 切片</h3>
-<p>应用于<code>list</code>和<code>tuple</code>取部分元素。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list&#x3D;[1,2,3,4,5]</span><br></pre></td></tr></table></figure>
-<p>取前面三个数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[0,3]</span><br></pre></td></tr></table></figure>
-<p>取倒数第一个</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-1]</span><br></pre></td></tr></table></figure>
-<p>取倒数两个（就是从<code>-2</code>一直到最后）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-2:]</span><br></pre></td></tr></table></figure>
-<p>前十个，每两个取一个</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list[:<span class="number">10</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-<p>所有数，每5个取一个</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">print(l[::5])</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
       </tags>
   </entry>
 </search>
