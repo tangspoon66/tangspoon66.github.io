@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.tangspoon.cn/2022/02/12/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-07%EF%BD%9C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</loc>
+    
+    <lastmod>2022-02-12</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.tangspoon.cn/2022/02/12/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-06%EF%BD%9C%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/</loc>
     
     <lastmod>2022-02-12</lastmod>
@@ -373,14 +380,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/about/index.html</loc>
+    <loc>https://blog.tangspoon.cn/404.html</loc>
     
     <lastmod>2020-10-13</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/404.html</loc>
+    <loc>https://blog.tangspoon.cn/about/index.html</loc>
     
     <lastmod>2020-10-13</lastmod>
     
@@ -559,14 +566,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</loc>
+    <loc>https://blog.tangspoon.cn/categories/JavaScript/</loc>
     <lastmod>2022-02-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/JavaScript/</loc>
+    <loc>https://blog.tangspoon.cn/categories/%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</loc>
     <lastmod>2022-02-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
