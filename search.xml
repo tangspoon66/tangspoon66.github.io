@@ -1,52 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>About unittest</title>
-    <url>/2020/12/04/About-unittest/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
-<p>该部分内容极为简单，不再赘述。</p>
-<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
-<ul>
-<li>作用：把测试用例组合到一起</li>
-<li>TestSuite()是一个类，需要实例化使用。</li>
-</ul>
-<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
-<p>格式：addTest(测试类名(‘测试用例’))</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
-<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
-<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
-<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
-<p>我们来看：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
-<ul>
-<li>start_dir ：要测试的模块名或测试用例目录。</li>
-<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
-<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
-</ul>
-<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
-<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
-<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
-<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
-<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
-<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>About POM</title>
     <url>/2020/12/04/About-POM/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
@@ -86,6 +40,52 @@
 <h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
 <p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
 Github中。</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>About unittest</title>
+    <url>/2020/12/04/About-unittest/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
+<p>该部分内容极为简单，不再赘述。</p>
+<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
+<ul>
+<li>作用：把测试用例组合到一起</li>
+<li>TestSuite()是一个类，需要实例化使用。</li>
+</ul>
+<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
+<p>格式：addTest(测试类名(‘测试用例’))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
+<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
+<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
+<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
+<p>我们来看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
+<ul>
+<li>start_dir ：要测试的模块名或测试用例目录。</li>
+<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
+<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
+</ul>
+<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
+<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
+<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
 ]]></content>
       <categories>
         <category>软件测试</category>
@@ -174,6 +174,43 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>Flask-学习笔记02-模版与表单</title>
+    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
+<p>应用于智能快递柜的密码校验web</p>
+<a id="more"></a>
+<p>最简单的flask项目</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
+<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
+<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
+<p>在视图函数<code>return</code>就行，如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>关注body内部：</p>
+<p><code>action</code>：post请求重定向到<code>result路由</code></p>
+<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
+<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
+]]></content>
+      <categories>
+        <category>智能快递柜</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JS学习笔记-02</title>
     <url>/2020/10/25/JS%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-02/</url>
     <content><![CDATA[<h3 id="循环"><a class="markdownIt-Anchor" href="#循环"></a> 循环</h3>
@@ -237,43 +274,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Flask-学习笔记02-模版与表单</title>
-    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
-<p>应用于智能快递柜的密码校验web</p>
-<a id="more"></a>
-<p>最简单的flask项目</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
-<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
-<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
-<p>在视图函数<code>return</code>就行，如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>关注body内部：</p>
-<p><code>action</code>：post请求重定向到<code>result路由</code></p>
-<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
-<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
-]]></content>
-      <categories>
-        <category>智能快递柜</category>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Flask</tag>
-        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -391,58 +391,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Linux基本操作</title>
-    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
-    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
-<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
-<p>这篇博文开个Linux栏目吧。</p>
-<a id="more"></a>
-<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
-<ul>
-<li>新建文件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
-<ul>
-<li>新建文件夹</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
-<ul>
-<li>移动/剪切/重命名</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看当前所在路径</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
-<ul>
-<li>权限修改</li>
-</ul>
-<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
-<ul>
-<li>删除</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
-<ul>
-<li>读取文档内容</li>
-</ul>
-<blockquote>
-<p>常用语查看Linux的log日志文件</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -567,6 +515,58 @@ Github中。</p>
       </categories>
       <tags>
         <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux基本操作</title>
+    <url>/2020/10/29/Linux%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/</url>
+    <content><![CDATA[<h1 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h1>
+<p>虽然之前在Linux环境下搭建过许多个Web服务，但如果你问我Linux常用的操作命令有哪些啊？还真不一定答得上来，好像也只有增删查改那几个常规操作吧。</p>
+<p>这篇博文开个Linux栏目吧。</p>
+<a id="more"></a>
+<h2 id="基本操作"><a class="markdownIt-Anchor" href="#基本操作"></a> 基本操作</h2>
+<ul>
+<li>新建文件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">touch test1.txt</span><br></pre></td></tr></table></figure>
+<ul>
+<li>新建文件夹</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">mkdir test_dir</span><br></pre></td></tr></table></figure>
+<ul>
+<li>复制</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cp 源路径 （空格）目标路径 </span><br></pre></td></tr></table></figure>
+<ul>
+<li>移动/剪切/重命名</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 移动&#x2F;剪切</span><br><span class="line">mv test.txt 文件夹路径</span><br><span class="line"></span><br><span class="line"># 移动+重命名</span><br><span class="line">mv test.txt test_dir&#x2F;test2.txt #test_dir为文件夹</span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看当前所在路径</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pwd</span><br></pre></td></tr></table></figure>
+<ul>
+<li>权限修改</li>
+</ul>
+<p>这个参数较多，比较复杂，详细的后面再出一篇博文专门讲这一点。这里只讲常用的几点。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">chmod 777 file  # 所有人可读写</span><br><span class="line">chmod 600 file  # 拥有者可读写</span><br></pre></td></tr></table></figure>
+<ul>
+<li>删除</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">rm  # 删除文件</span><br><span class="line">rm -f  # 强制删除文件</span><br><span class="line">rm -r  # 删除文件夹</span><br><span class="line">rm -rf  # 强制删除文件夹</span><br><span class="line">注意尽量少用 rm -rf！很危险！</span><br></pre></td></tr></table></figure>
+<ul>
+<li>读取文档内容</li>
+</ul>
+<blockquote>
+<p>常用语查看Linux的log日志文件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">cat  # 一次全部读取</span><br><span class="line">more  # 逐步读取</span><br><span class="line">tail -f  # 一直读取最新内容</span><br><span class="line">tail -n 行数 文件名  # 从第几行开始读</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -999,177 +999,8 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Python学习日志-05｜查漏补缺</title>
-    <url>/2022/02/09/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-05%EF%BD%9C%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323-20220209184953475.png" alt="image-20211208153223437" /></p>
-<p>数据类型和变量、递归、切片、range</p>
-<a id="more"></a>
-<h2 id="一-基础"><a class="markdownIt-Anchor" href="#一-基础"></a> 一、基础</h2>
-<h3 id="1-数据类型和变量"><a class="markdownIt-Anchor" href="#1-数据类型和变量"></a> 1. 数据类型和变量</h3>
-<h4 id="整数"><a class="markdownIt-Anchor" href="#整数"></a> 整数</h4>
-<p>对于很大的数，可以用100_000_000表示</p>
-<h4 id="浮点数"><a class="markdownIt-Anchor" href="#浮点数"></a> 浮点数</h4>
-<p>会出现四舍五入的情况</p>
-<h4 id="字符串"><a class="markdownIt-Anchor" href="#字符串"></a> 字符串</h4>
-<ul>
-<li>
-<p>转义字符：\ +需要转的字符。例如我要在’ '里输出&quot;&quot;，\&quot;即可</p>
-</li>
-<li>
-<p><strong>r’ '内部的不会被转义</strong></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;111&#x27;</span><span class="string">r&#x27;\t&#x27;</span><span class="string">&#x27;1111&#x27;</span>)</span><br><span class="line"><span class="comment"># 111\t1111</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>多行输出：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;&#x27;&#x27;第一行</span></span><br><span class="line"><span class="string">第二行</span></span><br><span class="line"><span class="string">第三行&#x27;&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一行</span></span><br><span class="line">第二行</span><br><span class="line">第三行</span><br></pre></td></tr></table></figure>
-<h4 id="变量"><a class="markdownIt-Anchor" href="#变量"></a> 变量</h4>
-<p>变量在内存中的表示</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141522481.png" alt="image-20220208141522481" /></p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141533655.png" alt="image-20220208141533655" /></p>
-</li>
-</ul>
-<h3 id="2-编码"><a class="markdownIt-Anchor" href="#2-编码"></a> 2. 编码</h3>
-<p>ASCII是美国一开始设计计算机制定的，用不了其他语言。Unicode可以解决所有语言的编码问题，但是长度是固定的。UTF-8是可变的，可以节省许多空间。</p>
-<p>在计算机内存中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，就要转化为UTF-8编码。所以在当你打开一个txt文件时，计算机会把UTF-8的文件转换为Unicode的，然后交给内存处理，当编辑完成后，再转换为UTF-8保存到硬盘。</p>
-<h4 id="格式化"><a class="markdownIt-Anchor" href="#格式化"></a> 格式化</h4>
-<h5 id="s"><a class="markdownIt-Anchor" href="#s"></a> %s</h5>
-<p>最方便的格式化方式</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;name:%s,age:%s&#x27;</span> %(<span class="string">&#x27;tang&#x27;</span>,<span class="number">25</span>))</span><br></pre></td></tr></table></figure>
-<p>在python中，当<code>%</code>是个普通字符时，需要加多一个%来显示。例如我需要输出<code>7%</code>时</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;%s%%&#x27;</span> %<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
-<h5 id="f-string"><a class="markdownIt-Anchor" href="#f-string"></a> f-string</h5>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># f&#x27;&#123;变量&#125;&#x27;</span></span><br><span class="line">r=<span class="number">3</span></span><br><span class="line">s=<span class="number">22</span>*r</span><br><span class="line">print(<span class="string">f&#x27;r is:<span class="subst">&#123;r&#125;</span>,s is:<span class="subst">&#123;s&#125;</span>)</span></span><br></pre></td></tr></table></figure>
-<p>#####保留小数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.1f 一位</span><br><span class="line">.2f 两位</span><br></pre></td></tr></table></figure>
-<h3 id="3-list和tuple"><a class="markdownIt-Anchor" href="#3-list和tuple"></a> 3. list和tuple</h3>
-<h4 id="list的增删改"><a class="markdownIt-Anchor" href="#list的增删改"></a> list的增删改</h4>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 增加</span></span><br><span class="line">list.append()</span><br><span class="line">list.insert(i,string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">list.pop() <span class="comment">#删除最后一个</span></span><br><span class="line">list.pop(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改</span></span><br><span class="line">list[i]=string</span><br></pre></td></tr></table></figure>
-<h4 id="tuple的特性"><a class="markdownIt-Anchor" href="#tuple的特性"></a> tuple的特性</h4>
-<ul>
-<li>不能更改</li>
-<li>优点：安全。能用tuple即用tuple</li>
-</ul>
-<p>不过注意</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t=(<span class="number">1</span>) <span class="comment">#代表的是整数1，不是tuple只有1这个元素</span></span><br><span class="line"><span class="comment">#正确表示应该是在后面加个逗号</span></span><br><span class="line">t=(<span class="number">1</span>,)</span><br></pre></td></tr></table></figure>
-<p>可变的tuple</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">t&#x3D;(1,2,[&#39;a&#39;,&#39;b&#39;])</span><br><span class="line">t[2][0]&#x3D;&#39;A&#39;</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
-<h4 id="dict和set"><a class="markdownIt-Anchor" href="#dict和set"></a> dict和set</h4>
-<p>具体在《草根学python》复习中查看。</p>
-<h3 id="4运算符"><a class="markdownIt-Anchor" href="#4运算符"></a> 4.运算符</h3>
-<h4 id="身份运算符-is-is-not"><a class="markdownIt-Anchor" href="#身份运算符-is-is-not"></a> 身份运算符 is 、is not</h4>
-<p>判断两个表示符是不是引用自同一个对象，就像<code>id(x)==id(y)</code>一个道理。</p>
-<p>而<code>==</code>则是判断两个<code>值</code>是否相等。</p>
-<h2 id="二-函数-递归"><a class="markdownIt-Anchor" href="#二-函数-递归"></a> 二、函数-递归</h2>
-<p>递归知识重复执行操作的方法。只需要理解到最小规模的逻辑，设计出等价关系式即可。</p>
-<p>递归的特征：自己调用自己，有一定的结束条件，效率不高</p>
-<p>斐波函数</p>
-<blockquote>
-<p>1,1,2,3,5,8,13</p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 非递归方法（普通循环）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib1</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span> <span class="keyword">or</span> n == <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">2</span>):</span><br><span class="line">        temp = a + b</span><br><span class="line">        a = b</span><br><span class="line">        b = temp</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line"><span class="comment"># 核心思想就是把a,b从第一位开始，整体向后移一位。a=b，b=temp就可以实现整体向后移的目的。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib2</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n&lt;=<span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="comment">## 结束条件</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fib2(n<span class="number">-2</span>)+fib2(n<span class="number">-1</span>) <span class="comment">## 等价关系式</span></span><br><span class="line">     </span><br></pre></td></tr></table></figure>
-<p>可以看到两种算法的思想是不一样的。非递归方法需要抽象出一定的规律，根据这个规律来设计算法。比如上面的a,b整体向后移，根据这个规律来设计出用一个temp来储存后面b需要的数据。而递归的思想是指设计出口和缩小规模的逻辑，具体后面怎么实现不管。比如上面我们只需要想清楚是前一个数+后一个数即可，那么我们就可以直接设计出<code>fib(n-1)+fib(n-2)</code>这种超级简约的算法。</p>
-<p>关于递归的最好理解是来自知乎的一篇文章：<a href="https://www.zhihu.com/question/31412436">对于递归有没有什么好的理解方法？</a></p>
-<blockquote>
-<h3 id="递归的三大要素"><a class="markdownIt-Anchor" href="#递归的三大要素"></a> 递归的三大要素</h3>
-<p><strong>第一要素：明确你这个函数想要干什么</strong></p>
-<p><strong>第二要素：寻找递归结束条件</strong></p>
-<p>当n=1或者n=2时的一些特殊情况</p>
-<p><strong>第三要素：找出函数的等价关系式</strong>(最难)</p>
-<p>求递归结束的条件，你直接把 n 压缩到很小很小就行了，因为 n 越小，我们就越容易直观着算出 f(n) 的多少</p>
-</blockquote>
-<h2 id="三-高级特性"><a class="markdownIt-Anchor" href="#三-高级特性"></a> 三、高级特性</h2>
-<h3 id="切片"><a class="markdownIt-Anchor" href="#切片"></a> 切片</h3>
-<p>应用于<code>list</code>和<code>tuple</code>取部分元素。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list&#x3D;[1,2,3,4,5]</span><br></pre></td></tr></table></figure>
-<p>取前面三个数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[0,3]</span><br></pre></td></tr></table></figure>
-<p>取倒数第一个</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-1]</span><br></pre></td></tr></table></figure>
-<p>取倒数两个（就是从<code>-2</code>一直到最后）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-2:]</span><br></pre></td></tr></table></figure>
-<p>前十个，每两个取一个</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list[:<span class="number">10</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
-<p>所有数，每5个取一个</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">print(l[::5])</span><br></pre></td></tr></table></figure>
-<h2 id="四-range"><a class="markdownIt-Anchor" href="#四-range"></a> 四、range()</h2>
-<p>range(start,stop,step)</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">range(100,0,-1) # 从100倒数回0，每次步进1</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python学习日志-06｜算法-排序</title>
-    <url>/2022/02/12/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-06%EF%BD%9C%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220212144332679.png" alt="image-20220212144332679" style="zoom:85%;" />
-<p>冒泡、选择、插入、快速排序</p>
-<a id="more"></a>
-<blockquote>
-<h3 id="排序算法的稳定性"><a class="markdownIt-Anchor" href="#排序算法的稳定性"></a> 排序算法的稳定性</h3>
-<p>排序算法的稳定性是指，在排序过程中，值相同的元素间的相对位置跟排序前的相对位置是一样的。举个例子，排序前一个数组为{3, 2, 1, 2’, 4}，我们用2’来区分第二个2和第一个2，假如是稳定的排序算法，它的结果一定是这样{1, 2, 2’, 3, 4}，而如果不稳定的算法，它的结果有可能是这样{1, 2’, 2, 3, 4}。</p>
-<p>为什么我们要强调稳定性呢？举个例子，假如我们需要排序一个订单，需要按照时间和价格进行升序排序，首先会先将所有订单按时间升序排序，然后再进行价格的升序排序，假如价格排序不是一个稳定的排序，那么订单的时间就有可能不会按升序排列，所以在特定情况下，排序算法的稳定性是一个比较重要的考虑因素。</p>
-<p>作者：特雷西多士<br />
-链接：<a href="https://juejin.cn/post/6844903966514348040">https://juejin.cn/post/6844903966514348040</a><br />
-来源：稀土掘金<br />
-著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-</blockquote>
-<h3 id="一-冒泡排序"><a class="markdownIt-Anchor" href="#一-冒泡排序"></a> 一、冒泡排序</h3>
-<blockquote>
-<p>参考：<a href="https://github.com/facert/python-data-structure-cn/tree/master/5.%E6%8E%92%E5%BA%8F%E5%92%8C%E6%90%9C%E7%B4%A2">https://github.com/facert/python-data-structure-cn/tree/master/5.排序和搜索</a></p>
-</blockquote>
-<p>「冒泡」这个命名十分形象：越小的元素会逐渐冒泡到数列的前端。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220211111950717.png" alt="image-20220211111950717" /></p>
-<p>缺点：低效</p>
-<ul>
-<li>每个数据都得经过若干次交换才能找到自己的位置。特别是对于大号靠前的数据。</li>
-<li>假如数组在冒泡排序的途中已经排好了正确的顺序，算法还是会迭代到最后一个元素，浪费性能和时间。</li>
-</ul>
-<p>优点：稳定性好</p>
-<p>因为只有当两个数不相等时才会交换，所以例如像5和5`这样的（前后不一样，值一样）是不会交换的。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubbleSort</span>(<span class="params">data</span>):</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(data)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">            <span class="keyword">if</span> data[i]&gt;data[i+<span class="number">1</span>]:</span><br><span class="line">                data[i],data[i+<span class="number">1</span>]=data[i+<span class="number">1</span>],data[i]</span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">bubbleSrot(data)</span><br><span class="line">print(<span class="string">&#x27;冒泡排序：&#x27;</span>, data)</span><br></pre></td></tr></table></figure>
-<h3 id="二-选择排序"><a class="markdownIt-Anchor" href="#二-选择排序"></a> 二、选择排序</h3>
-<blockquote>
-<p>参考：<a href="https://github.com/facert/python-data-structure-cn/tree/master/5.%E6%8E%92%E5%BA%8F%E5%92%8C%E6%90%9C%E7%B4%A2">https://github.com/facert/python-data-structure-cn/tree/master/5.排序和搜索</a></p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectSort</span>(<span class="params">data</span>):</span></span><br><span class="line">	<span class="keyword">for</span> now_len <span class="keyword">in</span> range(len(data)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">    temp_location=<span class="number">0</span></span><br><span class="line">    	<span class="keyword">for</span> now_location <span class="keyword">in</span> range(<span class="number">1</span>,now_len+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> data[now_location]&gt;data[temp_location]:</span><br><span class="line">                temp_location=now_location</span><br><span class="line">                </span><br><span class="line">data[temp_location],data[now_location]=data[now_location],data[temp_location]</span><br><span class="line">     </span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">bubbleSrot(data)</span><br><span class="line">print(<span class="string">&#x27;选择排序：&#x27;</span>, data)  </span><br></pre></td></tr></table></figure>
-<h3 id="三-插入排序"><a class="markdownIt-Anchor" href="#三-插入排序"></a> 三、插入排序</h3>
-<p>目前个人觉得最好理解的教程是Derrick Sherril这位YouTuber</p>
-<blockquote>
-<p><a href="https://www.youtube.com/watch?v=byHi41L9vTM">https://www.youtube.com/watch?v=byHi41L9vTM</a></p>
-</blockquote>
-<p>直接上代码，狗都能看懂。其实就是当数列前一个大于后一个的时候，两个数字交换。但为了持续比较，需要在一个<code>while</code>里面不断判断，每次<code>i-1</code>就可以遍历前面的<code>unsorted</code>的值。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertSort</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(data)):</span><br><span class="line">        <span class="keyword">while</span> data[i<span class="number">-1</span>]&gt;data[i] <span class="keyword">and</span> i &gt; <span class="number">0</span>:</span><br><span class="line">            data[i<span class="number">-1</span>],data[i] = data[i], data[i<span class="number">-1</span>]</span><br><span class="line">            i-=<span class="number">1</span></span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">insertSrot(data)</span><br><span class="line">print(<span class="string">&#x27;插入排序：&#x27;</span>, data) </span><br></pre></td></tr></table></figure>
-<h3 id="四-快速排序递归排序"><a class="markdownIt-Anchor" href="#四-快速排序递归排序"></a> 四、快速排序（递归排序）</h3>
-<p>快速排序的最简单解释同样来自Derrick Sherril</p>
-<blockquote>
-<p>解学武之快速排序：<a href="https://www.youtube.com/watch?v=kFeXwkgnQ9U">https://www.youtube.com/watch?v=kFeXwkgnQ9U</a></p>
-</blockquote>
-<p>以随便一个数为标准，Derrick用了最后一个。提取出标准数，遍历数组剩下的值，比标准数小的放在左边，大的在右。然后一直递归下去就可以。结束条件是不用比较的最小规模：当数组只剩下1个或0个的时候。这时我们直接返回长度只有1个或0个的数组即可。</p>
-<p>另外有个讲算法很详细的网站：</p>
-<blockquote>
-<p><a href="http://data.biancheng.net/view/117.html">http://data.biancheng.net/view/117.html</a></p>
-</blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quickSort</span>(<span class="params">data</span>):</span></span><br><span class="line">    length = len(data)</span><br><span class="line">    <span class="keyword">if</span> length &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pivot = data.pop()</span><br><span class="line"></span><br><span class="line">    items_bigger = []</span><br><span class="line">    items_smaller = []</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> data:</span><br><span class="line">        <span class="keyword">if</span> item &lt; pivot:</span><br><span class="line">            items_smaller.append(item)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            items_bigger.append(item)</span><br><span class="line">    <span class="keyword">return</span> quickSort(items_smaller) + [pivot] + quickSort(items_bigger)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;快速排序：&#x27;</span>, quickSort(data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="五-其他"><a class="markdownIt-Anchor" href="#五-其他"></a> 五、其他</h3>
-<p>其他还有归并排序和希尔排序。日后在Coursera的Data Structrues课程中再深入学习。</p>
-<blockquote>
-<p><a href="https://www.coursera.org/learn/python-data?action=enroll">https://www.coursera.org/learn/python-data?action=enroll</a></p>
-</blockquote>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Python学习日志-07｜数据结构</title>
-    <url>/2022/02/12/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-07%EF%BD%9C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <url>/2022/02/05/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-07%EF%BD%9C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220212213658145.png" alt="image-20220212213658145" style="zoom:50%;" />
 <p>栈、单链表。</p>
 <p>会进修 Coursera 的 Data Structures 课程，日后完善丰富。</p>
@@ -1254,26 +1085,8 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>The following packages have unmet dependencies: Depends: xxx but is to be installed</title>
-    <url>/2022/01/26/The-following-packages-have-unmet-dependencies-Depends-xxx-but-is-to-be-installed/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126144850057.png" alt="image-20220126144850057" /></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> libxml2-dev : Depends: libxml2 (&#x3D; 2.9.3+dfsg1-1ubuntu0.7) but 2.9.4+dfsg1-7+deb10u2 is to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
-<p>今天在安装shairplay的时候出现了以上问题</p>
-<p>原因是以来版本不一样</p>
-<p>解决方法很简单——卸载、重装即可</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt remove libxml2-dev</span><br><span class="line">apt install libxml2-dev</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
-        <tag>troubleshooting</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>frp内网穿透怎么用？｜访问内网web项目</title>
-    <url>/2021/12/24/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E6%80%8E%E4%B9%88%E7%94%A8%EF%BC%9F%EF%BD%9C%E8%AE%BF%E9%97%AE%E5%86%85%E7%BD%91web%E9%A1%B9%E7%9B%AE/</url>
+    <url>/2022/02/11/frp%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E6%80%8E%E4%B9%88%E7%94%A8%EF%BC%9F%EF%BD%9C%E8%AE%BF%E9%97%AE%E5%86%85%E7%BD%91web%E9%A1%B9%E7%9B%AE/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20211224213850815.png" alt="image-20211224213850815" style="zoom:35%;" />
 <p>想做一个智能快递柜，想法是快递员扫码进入网页，输入信息验证成功后，香橙派就控制打开电磁锁。因为对esp和MQTT协议不熟悉，所以只能选择香橙派+内网穿透曲线救国的方式实现效果。当然，成本也会高很多。（esp几块钱，香橙派二手70+）</p>
 <a id="more"></a>
@@ -1343,24 +1156,69 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2020/10/13/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
-<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+    <title>Python学习日志-06｜算法-排序</title>
+    <url>/2022/02/12/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-06%EF%BD%9C%E7%AE%97%E6%B3%95-%E6%8E%92%E5%BA%8F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220212144332679.png" alt="image-20220212144332679" style="zoom:85%;" />
+<p>冒泡、选择、插入、快速排序</p>
 <a id="more"></a>
-<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+<blockquote>
+<h3 id="排序算法的稳定性"><a class="markdownIt-Anchor" href="#排序算法的稳定性"></a> 排序算法的稳定性</h3>
+<p>排序算法的稳定性是指，在排序过程中，值相同的元素间的相对位置跟排序前的相对位置是一样的。举个例子，排序前一个数组为{3, 2, 1, 2’, 4}，我们用2’来区分第二个2和第一个2，假如是稳定的排序算法，它的结果一定是这样{1, 2, 2’, 3, 4}，而如果不稳定的算法，它的结果有可能是这样{1, 2’, 2, 3, 4}。</p>
+<p>为什么我们要强调稳定性呢？举个例子，假如我们需要排序一个订单，需要按照时间和价格进行升序排序，首先会先将所有订单按时间升序排序，然后再进行价格的升序排序，假如价格排序不是一个稳定的排序，那么订单的时间就有可能不会按升序排列，所以在特定情况下，排序算法的稳定性是一个比较重要的考虑因素。</p>
+<p>作者：特雷西多士<br />
+链接：<a href="https://juejin.cn/post/6844903966514348040">https://juejin.cn/post/6844903966514348040</a><br />
+来源：稀土掘金<br />
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+</blockquote>
+<h3 id="一-冒泡排序"><a class="markdownIt-Anchor" href="#一-冒泡排序"></a> 一、冒泡排序</h3>
+<blockquote>
+<p>参考：<a href="https://github.com/facert/python-data-structure-cn/tree/master/5.%E6%8E%92%E5%BA%8F%E5%92%8C%E6%90%9C%E7%B4%A2">https://github.com/facert/python-data-structure-cn/tree/master/5.排序和搜索</a></p>
+</blockquote>
+<p>「冒泡」这个命名十分形象：越小的元素会逐渐冒泡到数列的前端。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220211111950717.png" alt="image-20220211111950717" /></p>
+<p>缺点：低效</p>
+<ul>
+<li>每个数据都得经过若干次交换才能找到自己的位置。特别是对于大号靠前的数据。</li>
+<li>假如数组在冒泡排序的途中已经排好了正确的顺序，算法还是会迭代到最后一个元素，浪费性能和时间。</li>
+</ul>
+<p>优点：稳定性好</p>
+<p>因为只有当两个数不相等时才会交换，所以例如像5和5`这样的（前后不一样，值一样）是不会交换的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bubbleSort</span>(<span class="params">data</span>):</span></span><br><span class="line">	<span class="keyword">for</span> i <span class="keyword">in</span> range(len(data)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(i):</span><br><span class="line">            <span class="keyword">if</span> data[i]&gt;data[i+<span class="number">1</span>]:</span><br><span class="line">                data[i],data[i+<span class="number">1</span>]=data[i+<span class="number">1</span>],data[i]</span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">bubbleSrot(data)</span><br><span class="line">print(<span class="string">&#x27;冒泡排序：&#x27;</span>, data)</span><br></pre></td></tr></table></figure>
+<h3 id="二-选择排序"><a class="markdownIt-Anchor" href="#二-选择排序"></a> 二、选择排序</h3>
+<blockquote>
+<p>参考：<a href="https://github.com/facert/python-data-structure-cn/tree/master/5.%E6%8E%92%E5%BA%8F%E5%92%8C%E6%90%9C%E7%B4%A2">https://github.com/facert/python-data-structure-cn/tree/master/5.排序和搜索</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">selectSort</span>(<span class="params">data</span>):</span></span><br><span class="line">	<span class="keyword">for</span> now_len <span class="keyword">in</span> range(len(data)<span class="number">-1</span>,<span class="number">0</span>,<span class="number">-1</span>):</span><br><span class="line">    temp_location=<span class="number">0</span></span><br><span class="line">    	<span class="keyword">for</span> now_location <span class="keyword">in</span> range(<span class="number">1</span>,now_len+<span class="number">1</span>):</span><br><span class="line">            <span class="keyword">if</span> data[now_location]&gt;data[temp_location]:</span><br><span class="line">                temp_location=now_location</span><br><span class="line">                </span><br><span class="line">data[temp_location],data[now_location]=data[now_location],data[temp_location]</span><br><span class="line">     </span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">bubbleSrot(data)</span><br><span class="line">print(<span class="string">&#x27;选择排序：&#x27;</span>, data)  </span><br></pre></td></tr></table></figure>
+<h3 id="三-插入排序"><a class="markdownIt-Anchor" href="#三-插入排序"></a> 三、插入排序</h3>
+<p>目前个人觉得最好理解的教程是Derrick Sherril这位YouTuber</p>
+<blockquote>
+<p><a href="https://www.youtube.com/watch?v=byHi41L9vTM">https://www.youtube.com/watch?v=byHi41L9vTM</a></p>
+</blockquote>
+<p>直接上代码，狗都能看懂。其实就是当数列前一个大于后一个的时候，两个数字交换。但为了持续比较，需要在一个<code>while</code>里面不断判断，每次<code>i-1</code>就可以遍历前面的<code>unsorted</code>的值。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">insertSort</span>(<span class="params">data</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>,len(data)):</span><br><span class="line">        <span class="keyword">while</span> data[i<span class="number">-1</span>]&gt;data[i] <span class="keyword">and</span> i &gt; <span class="number">0</span>:</span><br><span class="line">            data[i<span class="number">-1</span>],data[i] = data[i], data[i<span class="number">-1</span>]</span><br><span class="line">            i-=<span class="number">1</span></span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line">insertSrot(data)</span><br><span class="line">print(<span class="string">&#x27;插入排序：&#x27;</span>, data) </span><br></pre></td></tr></table></figure>
+<h3 id="四-快速排序递归排序"><a class="markdownIt-Anchor" href="#四-快速排序递归排序"></a> 四、快速排序（递归排序）</h3>
+<p>快速排序的最简单解释同样来自Derrick Sherril</p>
+<blockquote>
+<p>解学武之快速排序：<a href="https://www.youtube.com/watch?v=kFeXwkgnQ9U">https://www.youtube.com/watch?v=kFeXwkgnQ9U</a></p>
+</blockquote>
+<p>以随便一个数为标准，Derrick用了最后一个。提取出标准数，遍历数组剩下的值，比标准数小的放在左边，大的在右。然后一直递归下去就可以。结束条件是不用比较的最小规模：当数组只剩下1个或0个的时候。这时我们直接返回长度只有1个或0个的数组即可。</p>
+<p>另外有个讲算法很详细的网站：</p>
+<blockquote>
+<p><a href="http://data.biancheng.net/view/117.html">http://data.biancheng.net/view/117.html</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">quickSort</span>(<span class="params">data</span>):</span></span><br><span class="line">    length = len(data)</span><br><span class="line">    <span class="keyword">if</span> length &lt;= <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> data</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        pivot = data.pop()</span><br><span class="line"></span><br><span class="line">    items_bigger = []</span><br><span class="line">    items_smaller = []</span><br><span class="line">    <span class="keyword">for</span> item <span class="keyword">in</span> data:</span><br><span class="line">        <span class="keyword">if</span> item &lt; pivot:</span><br><span class="line">            items_smaller.append(item)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            items_bigger.append(item)</span><br><span class="line">    <span class="keyword">return</span> quickSort(items_smaller) + [pivot] + quickSort(items_bigger)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">data = [<span class="number">3</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">99</span>, <span class="number">2</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">44</span>]</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;快速排序：&#x27;</span>, quickSort(data))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="五-其他"><a class="markdownIt-Anchor" href="#五-其他"></a> 五、其他</h3>
+<p>其他还有归并排序和希尔排序。日后在Coursera的Data Structrues课程中再深入学习。</p>
+<blockquote>
+<p><a href="https://www.coursera.org/learn/python-data?action=enroll">https://www.coursera.org/learn/python-data?action=enroll</a></p>
+</blockquote>
 ]]></content>
+      <categories>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+      </tags>
   </entry>
   <entry>
     <title>linux使用supervisor实现开机自启</title>
@@ -1400,8 +1258,8 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>macOS安装aira2导致Homebrew受损｜修复</title>
-    <url>/2022/02/05/macOS%E5%AE%89%E8%A3%85aira2%E5%AF%BC%E8%87%B4Homebrew%E5%8F%97%E6%8D%9F%EF%BD%9C%E4%BF%AE%E5%A4%8D/</url>
+    <title>macOS重装Homebrew</title>
+    <url>/2022/02/12/macOS%E5%AE%89%E8%A3%85aira2%E5%AF%BC%E8%87%B4Homebrew%E5%8F%97%E6%8D%9F%EF%BD%9C%E4%BF%AE%E5%A4%8D/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220205152726453.png" alt="image-20220205152726453" style="zoom:50%;" />
 <p>Homebrew可谓是macOS的大杀器，aira2是下载届的大杀器。前两天安装aria2的时候，出现了openssl版本错误的问题，我就使用<code>brew install openssl</code>的命令升级到<code>openssl3</code>，结果越搞越乱，到最后直接brew命令都是用不了。刚好能不能通过重新安装brew来解决问题？可是一系列问题随之出现。</p>
 <a id="more"></a>
@@ -1428,26 +1286,21 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>macOS让终端走代理，解决curl失败问题</title>
-    <url>/2022/02/05/macOS%E8%AE%A9%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%EF%BC%8C%E8%A7%A3%E5%86%B3curl%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205160123197.png" alt="image-20220205160123197" /></p>
-<a id="more"></a>
-<p>前提是你得有代理</p>
-<p>我使用的是<code>ClashX.app</code>软件，可以看到HTTP端口是7892</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155421631.png" alt="image-20220205155421631" /></p>
-<p>那么我们要让终端走HTTP代理，在终端执行下面的代码即可。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export http_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892;export https_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892</span><br></pre></td></tr></table></figure>
-<p>注意：只是在当前页面终端页面有效。</p>
-<p>测试是否生效</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl ip.gs</span><br></pre></td></tr></table></figure>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155734830.png" alt="image-20220205155734830" /></p>
-<p>现在就应该可以<code>curl</code>github的内容了。</p>
+    <title>The following packages have unmet dependencies: Depends: xxx but is to be installed</title>
+    <url>/2022/01/26/The-following-packages-have-unmet-dependencies-Depends-xxx-but-is-to-be-installed/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126144850057.png" alt="image-20220126144850057" /></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">The following packages have unmet dependencies:</span><br><span class="line"> libxml2-dev : Depends: libxml2 (&#x3D; 2.9.3+dfsg1-1ubuntu0.7) but 2.9.4+dfsg1-7+deb10u2 is to be installed</span><br><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+<p>今天在安装shairplay的时候出现了以上问题</p>
+<p>原因是以来版本不一样</p>
+<p>解决方法很简单——卸载、重装即可</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt remove libxml2-dev</span><br><span class="line">apt install libxml2-dev</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>macOS</category>
+        <category>linux</category>
       </categories>
       <tags>
-        <tag>macOS</tag>
+        <tag>linux</tag>
+        <tag>troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -1508,78 +1361,24 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>中国移动电视盒子刷机｜当贝市场</title>
-    <url>/2021/12/05/%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8%E7%94%B5%E8%A7%86%E7%9B%92%E5%AD%90%E5%88%B7%E6%9C%BA%EF%BD%9C%E5%BD%93%E8%B4%9D%E5%B8%82%E5%9C%BA%E9%9A%8F%E4%BE%BF%E8%A3%85APP/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205120819625.png" alt="image-20211205120819625" /></p>
+    <title>Hello World</title>
+    <url>/2020/10/13/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2>
+<h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
 <a id="more"></a>
-<h2 id="一-下载固件"><a class="markdownIt-Anchor" href="#一-下载固件"></a> 一、下载固件</h2>
-<blockquote>
-<p>这一步非常重要，搞不好会变砖。</p>
-</blockquote>
-<h3 id="1-确定机型"><a class="markdownIt-Anchor" href="#1-确定机型"></a> 1. 确定机型</h3>
-<p>我的是：魔百盒CM201-2</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/IMG_3714.JPG" alt="IMG_3714" /></p>
-<h3 id="2-确定芯片型号可跳过但有风险"><a class="markdownIt-Anchor" href="#2-确定芯片型号可跳过但有风险"></a> 2. 确定芯片型号（可跳过，但有风险）</h3>
-<blockquote>
-<p>为什么可跳过呢？因为会有一些型号通刷包，就像我这个CM201-2就有，但可能会有变砖风险。</p>
-</blockquote>
-<p>这一步需要拆开外壳，拧开两个隐藏在脚垫的螺丝就行。我的板子型号：M8273。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205121237365.png" alt="image-20211205121237365" /></p>
-<h3 id="3-寻找-下载固件"><a class="markdownIt-Anchor" href="#3-寻找-下载固件"></a> 3. 寻找、下载固件</h3>
-<p>带着机型、板子型号到搜索引擎搜索固件。在这里给两个比较靠谱的论坛：</p>
-<p>小白刷机网「免费」：<a href="http://xiaobaishuaji.com/">http://xiaobaishuaji.com/</a></p>
-<p>智能电视网「大多付费，但信息多」：<a href="https://www.znds.com/">https://www.znds.com/</a></p>
-<p>麒麟刷机网「内容非常详尽」：<a href="https://www.szjytx.com/">https://www.szjytx.com/</a></p>
-<h3 id="4-后路"><a class="markdownIt-Anchor" href="#4-后路"></a> 4. 后路</h3>
-<p>是在找不到固件的话，可以加入上面三个论坛的交流群，会有很多大佬直接甩个链接给你下载。</p>
-<p>我进了一个「魔百盒（IPTV盒子）技」，群号：517426928，氛围很好。（无广告哈）</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20211205113956266.png" alt="image-20211205113956266" style="zoom:50%;" />
-<blockquote>
-<p>CM201-2 ZG M8273版本的固件</p>
-<p>百度云下载链接：<a href="https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY">https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY</a> 提取码：5nir</p>
-<p>115：<a href="https://115.com/s/sw3vijh3z1i#">https://115.com/s/sw3vijh3z1i#</a>    访问码：ra18</p>
-<p>腾讯微云：<a href="https://share.weiyun.com/yXW7Czpr">https://share.weiyun.com/yXW7Czpr</a> 密码：o9tkro</p>
-</blockquote>
-<h2 id="二-备份原版固件可跳过"><a class="markdownIt-Anchor" href="#二-备份原版固件可跳过"></a> 二、备份原版固件（可跳过）</h2>
-<p>这一步我是跳过了的，因为需要ttl备份，花的时间太多，而且看了一下闲鱼这种破解好的机顶盒才几十一个。变砖了也不心疼。</p>
-<p>相关备份有很多教程，每个型号都不一样，请自行搜索。</p>
-<h2 id="三-开始刷机"><a class="markdownIt-Anchor" href="#三-开始刷机"></a> 三、开始刷机</h2>
-<blockquote>
-<ol>
-<li>准备一个8G或以下的U盘</li>
-<li>不要看刷机包里面的教程！！有问题！！</li>
-</ol>
-</blockquote>
-<h3 id="1-文件处理"><a class="markdownIt-Anchor" href="#1-文件处理"></a> 1. 文件处理</h3>
-<p>解压文件包后，如下。（第一个文件夹只有两个文件）</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205114147760.png" alt="image-20211205114147760" /></p>
-<blockquote>
-<p>这里一定要按照我的步骤操作，<strong>不要</strong>看压缩包里面的“免拆刷机步骤.txt”</p>
-</blockquote>
-<p>在U盘中新建一个LOST.DIR的文件夹，然后把上图中第一个文件夹里面的“full-CM201-2-002.460.006-20180324120441.zip”复制到U盘里刚刚新建的LOST.DIR里面，然后把update.zip直接复制在U盘根目录。（如下）</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-04-20211205110830145.jpg" alt="Xnip2021-12-03_23-07-04" /></p>
-<p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-14.jpg" alt="Xnip2021-12-03_23-07-14" /></p>
-<h3 id="2-机顶盒操作刷机"><a class="markdownIt-Anchor" href="#2-机顶盒操作刷机"></a> 2. 机顶盒操作刷机</h3>
-<p>盒子开机，连续顺序点按遥控菜单键和音量减键，进入Recovery刷机模式。</p>
-<p>选择从u盘刷入full-CM201-2-002.460.006-20180324120441.zip。</p>
-<p>刷完机后重新启动机器，按遥控器的<strong>设置按钮</strong>。</p>
-<p>无线/有线连接网络，查看网络信息，记下盒子的IP地址。（这一步可以直接路由器中查看盒子的ip）</p>
-<p>运行免拆目录里的-双击执行-文件，按要求输入盒子IP地址。（这一步尽量用Windows系统电脑，因为macOS电脑好像会有问题）</p>
-<p>批处理执行完毕后，盒子重启自动刷机直至完毕。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/IMG_3715.JPG" alt="IMG_3715" /></p>
-<h2 id="四-唠叨几句"><a class="markdownIt-Anchor" href="#四-唠叨几句"></a> 四、唠叨几句</h2>
-<p>刷机有风险，看自己承受能力折腾。</p>
-<p>魔百盒有很多代工厂，每个配件可能都会不一样，都会导致刷机的失败。所以，尽量找那种和所有硬件信息（cpu、wifi模块、闪存类型……）都匹配的固件。</p>
-<p>刷机过程可能不会和教程一模一样，就自己理解整个流程，灵活变通一下吧。而且反正几十块一个而已，变砖了大不了重新买一个，大胆搞，学多点东西。</p>
-<p>（我要看人生一串去了）</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/IMG_3716.JPG" alt="IMG_3716" /></p>
+<h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
-      <categories>
-        <category>硬件</category>
-      </categories>
-      <tags>
-        <tag>硬件</tag>
-      </tags>
   </entry>
   <entry>
     <title>原创 ｜ Hexo在generate后出现错误“LaTeX-incompatible input and strict mode is set to &#39;warn&#39;: Unicode text character 开 used in math mode [unicodeTextInMathMode]”</title>
@@ -1659,7 +1458,7 @@ Github中。</p>
   </entry>
   <entry>
     <title>原创｜自建房没有丰巢？自己造一个！｜打造智能快递柜</title>
-    <url>/2022/01/03/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%87%AA%E5%BB%BA%E6%88%BF%E6%B2%A1%E6%9C%89%E4%B8%B0%E5%B7%A2%EF%BC%9F%E8%87%AA%E5%B7%B1%E9%80%A0%E4%B8%80%E4%B8%AA%EF%BC%81%EF%BD%9C%E6%89%93%E9%80%A0%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</url>
+    <url>/2022/02/14/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%87%AA%E5%BB%BA%E6%88%BF%E6%B2%A1%E6%9C%89%E4%B8%B0%E5%B7%A2%EF%BC%9F%E8%87%AA%E5%B7%B1%E9%80%A0%E4%B8%80%E4%B8%AA%EF%BC%81%EF%BD%9C%E6%89%93%E9%80%A0%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</url>
     <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126161032850.png" alt="image-20220126161032850" /></p>
 <p>前些日子家里装修，网购了好多好多东西。但城中村里没有类似丰巢那样的投递柜（对，我这条村真的没有），放在村里的代收点1块一个小件，2块一个大件，比丰巢还贵？而且感觉要跑超过500m去那个快递很麻烦。所以，我为什么不能自己造一个“丰巢”呢？</p>
 <a id="more"></a>
@@ -1973,26 +1772,6 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>常用linux脚本记录</title>
-    <url>/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205110525139.png" alt="image-20211205110525139" /></p>
-<p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p>
-<a id="more"></a>
-<h2 id="1-添加swap"><a class="markdownIt-Anchor" href="#1-添加swap"></a> 1. 添加swap</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure>
-<h2 id="2-lnmp一键可选择安装"><a class="markdownIt-Anchor" href="#2-lnmp一键可选择安装"></a> 2. lnmp一键可选择安装</h2>
-<p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>
-<h2 id="3-改成上海时间"><a class="markdownIt-Anchor" href="#3-改成上海时间"></a> 3. 改成上海时间</h2>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1.删除自带的localtime</span><br><span class="line">rm -rf &#x2F;etc&#x2F;localtime</span><br><span class="line"># 2.创建软链接到localtime</span><br><span class="line">ln -s &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime</span><br></pre></td></tr></table></figure>
-<h2 id="4-卸载python3"><a class="markdownIt-Anchor" href="#4-卸载python3"></a> 4. 卸载python3</h2>
-<p>用于把python3.7换成python3.5</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 卸载</span><br><span class="line">rpm -qa|grep python3|xargs rpm -ev --allmatches --nodeps</span><br><span class="line"># 删除所有残余文件</span><br><span class="line">whereis python3 |xargs rm -frv </span><br><span class="line"># 查看现有安装的python</span><br><span class="line">whereis python </span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>吐血原创整理｜怎么把java web项目部署到centos7中？</title>
     <url>/2020/12/12/%E5%90%90%E8%A1%80%E5%8E%9F%E5%88%9B%E6%95%B4%E7%90%86%EF%BD%9C%E6%80%8E%E4%B9%88%E6%8A%8Ajava-web%E9%A1%B9%E7%9B%AE%E9%83%A8%E7%BD%B2%E5%88%B0centos7%E4%B8%AD%EF%BC%9F/</url>
     <content><![CDATA[<p>今天打开FinalShell，在vps列表最底下发现了一个叫“pr”的备注，瞬间想起6美元上的一个灵车pacificrack。双击后，震惊，链接居然绿了！连接速度居然还变快了……想不到近一年过去了还没翻车。既然这样，那就用来干点“正事”吧，把失败了的宠物论坛重新搭建起来，折腾一下。</p>
@@ -2159,6 +1938,26 @@ Github中。</p>
       <tags>
         <tag>linux</tag>
         <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用linux脚本记录</title>
+    <url>/2021/12/05/%E5%B8%B8%E7%94%A8%E4%B8%80%E9%94%AE%E8%84%9A%E6%9C%AC%E8%AE%B0%E5%BD%95/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205110525139.png" alt="image-20211205110525139" /></p>
+<p>linux有非常多好用的一键脚本加快效率，在此做个记录。</p>
+<a id="more"></a>
+<h2 id="1-添加swap"><a class="markdownIt-Anchor" href="#1-添加swap"></a> 1. 添加swap</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wget https:&#x2F;&#x2F;files.ioiox.com&#x2F;projects&#x2F;swap&#x2F;swap.sh &amp;&amp; chmod +x swap.sh &amp;&amp; .&#x2F;swap.sh</span><br></pre></td></tr></table></figure>
+<h2 id="2-lnmp一键可选择安装"><a class="markdownIt-Anchor" href="#2-lnmp一键可选择安装"></a> 2. lnmp一键可选择安装</h2>
+<p>oneinstack：<a href="https://oneinstack.com/auto/">https://oneinstack.com/auto/</a></p>
+<h2 id="3-改成上海时间"><a class="markdownIt-Anchor" href="#3-改成上海时间"></a> 3. 改成上海时间</h2>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 1.删除自带的localtime</span><br><span class="line">rm -rf &#x2F;etc&#x2F;localtime</span><br><span class="line"># 2.创建软链接到localtime</span><br><span class="line">ln -s &#x2F;usr&#x2F;share&#x2F;zoneinfo&#x2F;Asia&#x2F;Shanghai &#x2F;etc&#x2F;localtime</span><br></pre></td></tr></table></figure>
+<h2 id="4-卸载python3"><a class="markdownIt-Anchor" href="#4-卸载python3"></a> 4. 卸载python3</h2>
+<p>用于把python3.7换成python3.5</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 卸载</span><br><span class="line">rpm -qa|grep python3|xargs rpm -ev --allmatches --nodeps</span><br><span class="line"># 删除所有残余文件</span><br><span class="line">whereis python3 |xargs rm -frv </span><br><span class="line"># 查看现有安装的python</span><br><span class="line">whereis python </span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
@@ -2556,81 +2355,107 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>智能闹钟（四）| 整合搭建</title>
-    <url>/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>这是一个可以播放「网易云每日推荐歌曲」的闹钟，还可以给女朋友播报天气🌞☁️☔️</p>
-<img src="https://picbed.tangspoon.cn/uPic/WechatIMG1204.jpeg" alt="WechatIMG1204" style="zoom:50%;" />
+    <title>Python学习日志-05｜查漏补缺</title>
+    <url>/2022/02/05/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-05%EF%BD%9C%E6%9F%A5%E6%BC%8F%E8%A1%A5%E7%BC%BA/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211208153223437-20211208154222323-20220209184953475.png" alt="image-20211208153223437" /></p>
+<p>数据类型和变量、递归、切片、range</p>
 <a id="more"></a>
-<hr />
-<p>Linux部署项目肯定会有大大小小的问题出现，不会与我下面提供的步骤完全一致。遇到问题多网络搜索，大部分问题都会有解决方案。搜索结果没有的，就耐下心来多看原始文档，多尝试，多尝试，多尝试！</p>
-<h2 id="一-目录结构"><a class="markdownIt-Anchor" href="#一-目录结构"></a> 一、目录结构</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201223184351927.png" alt="image-20201223184351927" style="zoom: 50%;" />
-<h2 id="二-材料准备"><a class="markdownIt-Anchor" href="#二-材料准备"></a> 二、材料准备</h2>
-<ol>
-<li>树莓派 / 其他可以运行python脚本的开发板</li>
-<li>音响：pdd 8.8包邮</li>
-</ol>
-<h2 id="三-环境准备"><a class="markdownIt-Anchor" href="#三-环境准备"></a> 三、环境准备</h2>
-<h3 id="1-系统版本"><a class="markdownIt-Anchor" href="#1-系统版本"></a> 1. 系统版本</h3>
-<p>树莓派我用的是Linux raspberrypi 5.4.79-v7+ ，其他版本大同小异。</p>
-<h3 id="2-mplayer"><a class="markdownIt-Anchor" href="#2-mplayer"></a> 2. mplayer</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get install mplayer</span><br></pre></td></tr></table></figure>
-<h3 id="3-baidu-api"><a class="markdownIt-Anchor" href="#3-baidu-api"></a> 3. baidu-api</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install baidu-aip</span><br></pre></td></tr></table></figure>
-<h2 id="四-账号准备"><a class="markdownIt-Anchor" href="#四-账号准备"></a> 四、账号准备</h2>
-<ol>
-<li><a href="https://ai.baidu.com/tech/speech/tts">百度TTS</a>：获取<code>APP_ID</code>， <code>API_KEY</code>， <code>SECRET_KEY</code></li>
-<li><a href="https://www.qweather.com/">和风天气</a>：获取城市<code>id</code>，<code>key</code></li>
-</ol>
-<h2 id="五-开始搭建"><a class="markdownIt-Anchor" href="#五-开始搭建"></a> 五、开始搭建</h2>
-<h3 id="1-下载脚本"><a class="markdownIt-Anchor" href="#1-下载脚本"></a> 1. 下载脚本</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -i</span><br><span class="line">mkdir &#x2F;home&#x2F;clock &amp;&amp; cd &#x2F;home&#x2F;clock</span><br><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;tangspoon66&#x2F;NeteaseCloud-Clock.git</span><br></pre></td></tr></table></figure>
-<h3 id="2-修改参数"><a class="markdownIt-Anchor" href="#2-修改参数"></a> 2. 修改参数</h3>
-<p>脚本内有详细的参数说明，下面只列出需要需要修改的参数，如何修改请参考注释。</p>
-<h4 id="neteasepy"><a class="markdownIt-Anchor" href="#neteasepy"></a> <a href="http://Netease.py">Netease.py</a></h4>
+<h2 id="一-基础"><a class="markdownIt-Anchor" href="#一-基础"></a> 一、基础</h2>
+<h3 id="1-数据类型和变量"><a class="markdownIt-Anchor" href="#1-数据类型和变量"></a> 1. 数据类型和变量</h3>
+<h4 id="整数"><a class="markdownIt-Anchor" href="#整数"></a> 整数</h4>
+<p>对于很大的数，可以用100_000_000表示</p>
+<h4 id="浮点数"><a class="markdownIt-Anchor" href="#浮点数"></a> 浮点数</h4>
+<p>会出现四舍五入的情况</p>
+<h4 id="字符串"><a class="markdownIt-Anchor" href="#字符串"></a> 字符串</h4>
 <ul>
-<li>url</li>
-<li>phone</li>
-<li>pwd</li>
+<li>
+<p>转义字符：\ +需要转的字符。例如我要在’ '里输出&quot;&quot;，\&quot;即可</p>
+</li>
+<li>
+<p><strong>r’ '内部的不会被转义</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;111&#x27;</span><span class="string">r&#x27;\t&#x27;</span><span class="string">&#x27;1111&#x27;</span>)</span><br><span class="line"><span class="comment"># 111\t1111</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>多行输出：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;&#x27;&#x27;第一行</span></span><br><span class="line"><span class="string">第二行</span></span><br><span class="line"><span class="string">第三行&#x27;&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 第一行</span></span><br><span class="line">第二行</span><br><span class="line">第三行</span><br></pre></td></tr></table></figure>
+<h4 id="变量"><a class="markdownIt-Anchor" href="#变量"></a> 变量</h4>
+<p>变量在内存中的表示</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141522481.png" alt="image-20220208141522481" /></p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220208141533655.png" alt="image-20220208141533655" /></p>
+</li>
 </ul>
-<h4 id="getweatherpy"><a class="markdownIt-Anchor" href="#getweatherpy"></a> <a href="http://getWeather.py">getWeather.py</a></h4>
+<h3 id="2-编码"><a class="markdownIt-Anchor" href="#2-编码"></a> 2. 编码</h3>
+<p>ASCII是美国一开始设计计算机制定的，用不了其他语言。Unicode可以解决所有语言的编码问题，但是长度是固定的。UTF-8是可变的，可以节省许多空间。</p>
+<p>在计算机内存中，统一使用Unicode编码，当需要保存到硬盘或者需要传输的时候，就要转化为UTF-8编码。所以在当你打开一个txt文件时，计算机会把UTF-8的文件转换为Unicode的，然后交给内存处理，当编辑完成后，再转换为UTF-8保存到硬盘。</p>
+<h4 id="格式化"><a class="markdownIt-Anchor" href="#格式化"></a> 格式化</h4>
+<h5 id="s"><a class="markdownIt-Anchor" href="#s"></a> %s</h5>
+<p>最方便的格式化方式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;name:%s,age:%s&#x27;</span> %(<span class="string">&#x27;tang&#x27;</span>,<span class="number">25</span>))</span><br></pre></td></tr></table></figure>
+<p>在python中，当<code>%</code>是个普通字符时，需要加多一个%来显示。例如我需要输出<code>7%</code>时</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">print(<span class="string">&#x27;%s%%&#x27;</span> %<span class="number">7</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="f-string"><a class="markdownIt-Anchor" href="#f-string"></a> f-string</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># f&#x27;&#123;变量&#125;&#x27;</span></span><br><span class="line">r=<span class="number">3</span></span><br><span class="line">s=<span class="number">22</span>*r</span><br><span class="line">print(<span class="string">f&#x27;r is:<span class="subst">&#123;r&#125;</span>,s is:<span class="subst">&#123;s&#125;</span>)</span></span><br></pre></td></tr></table></figure>
+<p>#####保留小数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.1f 一位</span><br><span class="line">.2f 两位</span><br></pre></td></tr></table></figure>
+<h3 id="3-list和tuple"><a class="markdownIt-Anchor" href="#3-list和tuple"></a> 3. list和tuple</h3>
+<h4 id="list的增删改"><a class="markdownIt-Anchor" href="#list的增删改"></a> list的增删改</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 增加</span></span><br><span class="line">list.append()</span><br><span class="line">list.insert(i,string)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除</span></span><br><span class="line">list.pop() <span class="comment">#删除最后一个</span></span><br><span class="line">list.pop(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 改</span></span><br><span class="line">list[i]=string</span><br></pre></td></tr></table></figure>
+<h4 id="tuple的特性"><a class="markdownIt-Anchor" href="#tuple的特性"></a> tuple的特性</h4>
 <ul>
-<li>location</li>
-<li>key</li>
+<li>不能更改</li>
+<li>优点：安全。能用tuple即用tuple</li>
 </ul>
-<h4 id="texttovoicepy"><a class="markdownIt-Anchor" href="#texttovoicepy"></a> <a href="http://TextToVoice.py">TextToVoice.py</a></h4>
-<ul>
-<li>APP_ID</li>
-<li>APP_KEY</li>
-<li>SECRET_KEY</li>
-<li>text_normal、text_lowtemp、text_rain</li>
-</ul>
-<h3 id="3-定时执行"><a class="markdownIt-Anchor" href="#3-定时执行"></a> 3. 定时执行</h3>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
-<p>定时每天<code>7:00</code>的闹钟：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一定要填写绝对路径！</span><br><span class="line">00 7 * * * python &#x2F;home&#x2F;clock&#x2F;Netease.py &amp;&gt;&gt; &#x2F;home&#x2F;clock&#x2F;log.log</span><br><span class="line">00 7 * * * python &#x2F;home&#x2F;clock&#x2F;VolControl.py</span><br></pre></td></tr></table></figure>
-<h2 id="六-相关文章"><a class="markdownIt-Anchor" href="#六-相关文章"></a> 六、相关文章</h2>
-<ol>
-<li>
-<p><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（一）｜macOS 入门使用树莓派 3B+</a></p>
-</li>
-<li>
-<p><a href="http://localhost:4000/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/#more">智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气的播报</a></p>
-</li>
-<li>
-<p><a href="https://blog.tangspoon.cn/2020/12/22/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%89%EF%BC%89%7C%20%E4%BD%BF%E7%94%A8%E3%80%8C%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90NodeJS%E7%89%88API%E6%8E%A5%E5%8F%A3%E3%80%8D%E8%8E%B7%E5%8F%96%E6%AF%8F%E6%97%A5%E6%8E%A8%E8%8D%90%E6%AD%8C%E6%9B%B2/#more">智能闹钟（三）| 使用「网易云音乐 NodeJS 版 API 接口」播放每日推荐歌曲</a></p>
-</li>
-<li>
-<p><a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/#more">智能闹钟（五）｜如何优雅地关闭闹钟？</a></p>
-</li>
-</ol>
+<p>不过注意</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t=(<span class="number">1</span>) <span class="comment">#代表的是整数1，不是tuple只有1这个元素</span></span><br><span class="line"><span class="comment">#正确表示应该是在后面加个逗号</span></span><br><span class="line">t=(<span class="number">1</span>,)</span><br></pre></td></tr></table></figure>
+<p>可变的tuple</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">t&#x3D;(1,2,[&#39;a&#39;,&#39;b&#39;])</span><br><span class="line">t[2][0]&#x3D;&#39;A&#39;</span><br><span class="line">print(t)</span><br></pre></td></tr></table></figure>
+<h4 id="dict和set"><a class="markdownIt-Anchor" href="#dict和set"></a> dict和set</h4>
+<p>具体在《草根学python》复习中查看。</p>
+<h3 id="4运算符"><a class="markdownIt-Anchor" href="#4运算符"></a> 4.运算符</h3>
+<h4 id="身份运算符-is-is-not"><a class="markdownIt-Anchor" href="#身份运算符-is-is-not"></a> 身份运算符 is 、is not</h4>
+<p>判断两个表示符是不是引用自同一个对象，就像<code>id(x)==id(y)</code>一个道理。</p>
+<p>而<code>==</code>则是判断两个<code>值</code>是否相等。</p>
+<h2 id="二-函数-递归"><a class="markdownIt-Anchor" href="#二-函数-递归"></a> 二、函数-递归</h2>
+<p>递归知识重复执行操作的方法。只需要理解到最小规模的逻辑，设计出等价关系式即可。</p>
+<p>递归的特征：自己调用自己，有一定的结束条件，效率不高</p>
+<p>斐波函数</p>
+<blockquote>
+<p>1,1,2,3,5,8,13</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 非递归方法（普通循环）</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib1</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n == <span class="number">1</span> <span class="keyword">or</span> n == <span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n - <span class="number">2</span>):</span><br><span class="line">        temp = a + b</span><br><span class="line">        a = b</span><br><span class="line">        b = temp</span><br><span class="line">    <span class="keyword">return</span> b</span><br><span class="line"><span class="comment"># 核心思想就是把a,b从第一位开始，整体向后移一位。a=b，b=temp就可以实现整体向后移的目的。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># 递归方法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib2</span>(<span class="params">n</span>):</span></span><br><span class="line">    <span class="keyword">if</span> n&lt;=<span class="number">2</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="comment">## 结束条件</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fib2(n<span class="number">-2</span>)+fib2(n<span class="number">-1</span>) <span class="comment">## 等价关系式</span></span><br><span class="line">     </span><br></pre></td></tr></table></figure>
+<p>可以看到两种算法的思想是不一样的。非递归方法需要抽象出一定的规律，根据这个规律来设计算法。比如上面的a,b整体向后移，根据这个规律来设计出用一个temp来储存后面b需要的数据。而递归的思想是指设计出口和缩小规模的逻辑，具体后面怎么实现不管。比如上面我们只需要想清楚是前一个数+后一个数即可，那么我们就可以直接设计出<code>fib(n-1)+fib(n-2)</code>这种超级简约的算法。</p>
+<p>关于递归的最好理解是来自知乎的一篇文章：<a href="https://www.zhihu.com/question/31412436">对于递归有没有什么好的理解方法？</a></p>
+<blockquote>
+<h3 id="递归的三大要素"><a class="markdownIt-Anchor" href="#递归的三大要素"></a> 递归的三大要素</h3>
+<p><strong>第一要素：明确你这个函数想要干什么</strong></p>
+<p><strong>第二要素：寻找递归结束条件</strong></p>
+<p>当n=1或者n=2时的一些特殊情况</p>
+<p><strong>第三要素：找出函数的等价关系式</strong>(最难)</p>
+<p>求递归结束的条件，你直接把 n 压缩到很小很小就行了，因为 n 越小，我们就越容易直观着算出 f(n) 的多少</p>
+</blockquote>
+<h2 id="三-高级特性"><a class="markdownIt-Anchor" href="#三-高级特性"></a> 三、高级特性</h2>
+<h3 id="切片"><a class="markdownIt-Anchor" href="#切片"></a> 切片</h3>
+<p>应用于<code>list</code>和<code>tuple</code>取部分元素。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list&#x3D;[1,2,3,4,5]</span><br></pre></td></tr></table></figure>
+<p>取前面三个数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[0,3]</span><br></pre></td></tr></table></figure>
+<p>取倒数第一个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-1]</span><br></pre></td></tr></table></figure>
+<p>取倒数两个（就是从<code>-2</code>一直到最后）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">list[-2:]</span><br></pre></td></tr></table></figure>
+<p>前十个，每两个取一个</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">list[:<span class="number">10</span>:<span class="number">2</span>]</span><br></pre></td></tr></table></figure>
+<p>所有数，每5个取一个</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">print(l[::5])</span><br></pre></td></tr></table></figure>
+<h2 id="四-range"><a class="markdownIt-Anchor" href="#四-range"></a> 四、range()</h2>
+<p>range(start,stop,step)</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">range(100,0,-1) # 从100倒数回0，每次步进1</span><br></pre></td></tr></table></figure>
 ]]></content>
       <categories>
-        <category>树莓派</category>
+        <category>Python</category>
       </categories>
       <tags>
         <tag>Python</tag>
-        <tag>树莓派</tag>
       </tags>
   </entry>
   <entry>
@@ -3077,6 +2902,25 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>解决badboy出现“页面的脚本发生素错误”</title>
+    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
+    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
+<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
+<a id="more"></a>
+<hr />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
+<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
+<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
+]]></content>
+      <categories>
+        <category>troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>解决｜UnicodeDecodeError: &#39;ascii&#39; codec can&#39;t decode byte 0xe8 in position 0: ordinal not in range(128)</title>
     <url>/2021/12/18/%E8%A7%A3%E5%86%B3%EF%BD%9CUnicodeDecodeError-ascii-codec-can-t-decode-byte-0xe8-in-position-0-ordinal-not-in-range-128/</url>
     <content><![CDATA[<p>换成python3即可</p>
@@ -3088,6 +2932,263 @@ Github中。</p>
       <tags>
         <tag>linux</tag>
         <tag>troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>智能闹钟（四）| 整合搭建</title>
+    <url>/2020/12/24/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E5%9B%9B%EF%BC%89-%E6%95%B4%E5%90%88%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>这是一个可以播放「网易云每日推荐歌曲」的闹钟，还可以给女朋友播报天气🌞☁️☔️</p>
+<img src="https://picbed.tangspoon.cn/uPic/WechatIMG1204.jpeg" alt="WechatIMG1204" style="zoom:50%;" />
+<a id="more"></a>
+<hr />
+<p>Linux部署项目肯定会有大大小小的问题出现，不会与我下面提供的步骤完全一致。遇到问题多网络搜索，大部分问题都会有解决方案。搜索结果没有的，就耐下心来多看原始文档，多尝试，多尝试，多尝试！</p>
+<h2 id="一-目录结构"><a class="markdownIt-Anchor" href="#一-目录结构"></a> 一、目录结构</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201223184351927.png" alt="image-20201223184351927" style="zoom: 50%;" />
+<h2 id="二-材料准备"><a class="markdownIt-Anchor" href="#二-材料准备"></a> 二、材料准备</h2>
+<ol>
+<li>树莓派 / 其他可以运行python脚本的开发板</li>
+<li>音响：pdd 8.8包邮</li>
+</ol>
+<h2 id="三-环境准备"><a class="markdownIt-Anchor" href="#三-环境准备"></a> 三、环境准备</h2>
+<h3 id="1-系统版本"><a class="markdownIt-Anchor" href="#1-系统版本"></a> 1. 系统版本</h3>
+<p>树莓派我用的是Linux raspberrypi 5.4.79-v7+ ，其他版本大同小异。</p>
+<h3 id="2-mplayer"><a class="markdownIt-Anchor" href="#2-mplayer"></a> 2. mplayer</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">apt-get install mplayer</span><br></pre></td></tr></table></figure>
+<h3 id="3-baidu-api"><a class="markdownIt-Anchor" href="#3-baidu-api"></a> 3. baidu-api</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">pip install baidu-aip</span><br></pre></td></tr></table></figure>
+<h2 id="四-账号准备"><a class="markdownIt-Anchor" href="#四-账号准备"></a> 四、账号准备</h2>
+<ol>
+<li><a href="https://ai.baidu.com/tech/speech/tts">百度TTS</a>：获取<code>APP_ID</code>， <code>API_KEY</code>， <code>SECRET_KEY</code></li>
+<li><a href="https://www.qweather.com/">和风天气</a>：获取城市<code>id</code>，<code>key</code></li>
+</ol>
+<h2 id="五-开始搭建"><a class="markdownIt-Anchor" href="#五-开始搭建"></a> 五、开始搭建</h2>
+<h3 id="1-下载脚本"><a class="markdownIt-Anchor" href="#1-下载脚本"></a> 1. 下载脚本</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo -i</span><br><span class="line">mkdir &#x2F;home&#x2F;clock &amp;&amp; cd &#x2F;home&#x2F;clock</span><br><span class="line">git clone https:&#x2F;&#x2F;github.com&#x2F;tangspoon66&#x2F;NeteaseCloud-Clock.git</span><br></pre></td></tr></table></figure>
+<h3 id="2-修改参数"><a class="markdownIt-Anchor" href="#2-修改参数"></a> 2. 修改参数</h3>
+<p>脚本内有详细的参数说明，下面只列出需要需要修改的参数，如何修改请参考注释。</p>
+<h4 id="neteasepy"><a class="markdownIt-Anchor" href="#neteasepy"></a> <a href="http://Netease.py">Netease.py</a></h4>
+<ul>
+<li>url</li>
+<li>phone</li>
+<li>pwd</li>
+</ul>
+<h4 id="getweatherpy"><a class="markdownIt-Anchor" href="#getweatherpy"></a> <a href="http://getWeather.py">getWeather.py</a></h4>
+<ul>
+<li>location</li>
+<li>key</li>
+</ul>
+<h4 id="texttovoicepy"><a class="markdownIt-Anchor" href="#texttovoicepy"></a> <a href="http://TextToVoice.py">TextToVoice.py</a></h4>
+<ul>
+<li>APP_ID</li>
+<li>APP_KEY</li>
+<li>SECRET_KEY</li>
+<li>text_normal、text_lowtemp、text_rain</li>
+</ul>
+<h3 id="3-定时执行"><a class="markdownIt-Anchor" href="#3-定时执行"></a> 3. 定时执行</h3>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">crontab -e</span><br></pre></td></tr></table></figure>
+<p>定时每天<code>7:00</code>的闹钟：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"># 一定要填写绝对路径！</span><br><span class="line">00 7 * * * python &#x2F;home&#x2F;clock&#x2F;Netease.py &amp;&gt;&gt; &#x2F;home&#x2F;clock&#x2F;log.log</span><br><span class="line">00 7 * * * python &#x2F;home&#x2F;clock&#x2F;VolControl.py</span><br></pre></td></tr></table></figure>
+<h2 id="六-相关文章"><a class="markdownIt-Anchor" href="#六-相关文章"></a> 六、相关文章</h2>
+<ol>
+<li>
+<p><a href="https://blog.tangspoon.cn/2020/12/19/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%80%EF%BC%89%EF%BD%9CmacOS%E5%85%A5%E9%97%A8%E4%BD%BF%E7%94%A8%E6%A0%91%E8%8E%93%E6%B4%BE3B/#more">智能闹钟（一）｜macOS 入门使用树莓派 3B+</a></p>
+</li>
+<li>
+<p><a href="http://localhost:4000/2020/12/21/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%8C%EF%BC%89%EF%BD%9C%E4%BD%BF%E7%94%A8%E3%80%8C%E5%92%8C%E9%A3%8E%E5%A4%A9%E6%B0%94%E3%80%81%E7%99%BE%E5%BA%A6%E8%AF%AD%E9%9F%B3%E5%90%88%E6%88%90%E3%80%8DAPI%E8%BF%9B%E8%A1%8C%E5%A4%A9%E6%B0%94%E7%9A%84%E6%92%AD%E6%8A%A5/#more">智能闹钟（二）｜使用「和风天气、百度语音合成」API进行天气的播报</a></p>
+</li>
+<li>
+<p><a href="https://blog.tangspoon.cn/2020/12/22/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%B8%89%EF%BC%89%7C%20%E4%BD%BF%E7%94%A8%E3%80%8C%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90NodeJS%E7%89%88API%E6%8E%A5%E5%8F%A3%E3%80%8D%E8%8E%B7%E5%8F%96%E6%AF%8F%E6%97%A5%E6%8E%A8%E8%8D%90%E6%AD%8C%E6%9B%B2/#more">智能闹钟（三）| 使用「网易云音乐 NodeJS 版 API 接口」播放每日推荐歌曲</a></p>
+</li>
+<li>
+<p><a href="https://blog.tangspoon.cn/2020/12/31/%E6%99%BA%E8%83%BD%E9%97%B9%E9%92%9F%EF%BC%88%E4%BA%94%EF%BC%89%EF%BD%9C%E5%A6%82%E4%BD%95%E4%BC%98%E9%9B%85%E5%9C%B0%E5%85%B3%E9%97%AD%E9%97%B9%E9%92%9F%EF%BC%9F/#more">智能闹钟（五）｜如何优雅地关闭闹钟？</a></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>Python</tag>
+        <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>面试宝典-01</title>
+    <url>/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</url>
+    <content><![CDATA[<h2 id="一-软件工程"><a class="markdownIt-Anchor" href="#一-软件工程"></a> 一、软件工程</h2>
+<h4 id="1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"><a class="markdownIt-Anchor" href="#1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"></a> 1. 软件生命周期有哪些阶段？常见的软件生命周期模型有哪些？</h4>
+<p>软件生命周期有：初始构思、需求分析、功能设计、内部设计、文档计划、测试计划、文档准备、集成、测试、维护、升级、再测试、逐步淘汰等。</p>
+<p>常见模型有：瀑布模型、迭代模型、快速原型模型、螺旋模型。（1）瀑布是最常见的模型；（2）迭代约等于小型的瀑布流项目，每一次迭代都可以产生一个产品，这个产品是最终产品的一个子集；（3）快速原型模型是迅速构建一个可以运行的软件模型，以便理解和澄清问题；（4）而螺旋模型则大多用在大型管理软件系统中，具有前面三者没有的风险分析。</p>
+<a id="more"></a>
+<h4 id="2-什么是版本控制常用的系统有哪些"><a class="markdownIt-Anchor" href="#2-什么是版本控制常用的系统有哪些"></a> 2. 什么是版本控制，常用的系统有哪些？</h4>
+<p>是一种软体工程技巧，确保不同的人编辑的统一文档都能得到更新。</p>
+<p>1）Git：分布式的版本控制系统。</p>
+<p>2）SVN：subversion，分支管理系统。</p>
+<h2 id="二-测试模型"><a class="markdownIt-Anchor" href="#二-测试模型"></a> 二、测试模型</h2>
+<h4 id="1-常见的测试模型"><a class="markdownIt-Anchor" href="#1-常见的测试模型"></a> 1. 常见的测试模型</h4>
+<p>1）V字型：这是一种古老的瀑布模型，反映了实际和测试之间的关系。局限:仅仅把测试过程作为编码之后的一个阶段，忽视了测试对需求分析,系统设计的验证，如果前面设计错误， 得一直到后期的验收测试才被发现，耗时耗力。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123616102.png" alt="image-20201108123616102" style="zoom:50%;" />
+<p>2）W型：测试与开发同时进行，在 V 模型的基础上，增加了在开发阶段的同步测试。局限：仍然不支持迭代，减少了一定错误发生率，但是需按照流水线进行设计、编码和测试</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123631829.png" alt="image-20201108123631829" style="zoom:50%;" />
+<h4 id="2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"><a class="markdownIt-Anchor" href="#2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"></a> 2. 请根据”V”模型分别概述测试人员在软件的需求定义阶段、设计阶段、编码阶段、系统集成阶段的「工作任务」及其相应「生成的文档」?</h4>
+<p>1）需求定义阶段：根据项目需求提取测试需求，形成「测试需求文档」；根据测试需求和项目计划生成「测试计划」。</p>
+<p>2）设计阶段：根据测试需求拟定测试方案并形成「测试方案文档」；根据测试方案文档指定测试用例，并形成「测试用例文档」</p>
+<p>3）编码阶段：执行测试并完善测试用例文档</p>
+<p>4）系统集成阶段：测试总结报告，阶段问题统计报告，测试问题报告</p>
+<h2 id="三-测试计划"><a class="markdownIt-Anchor" href="#三-测试计划"></a> 三、测试计划</h2>
+<h4 id="1-编写测试计划的目的是"><a class="markdownIt-Anchor" href="#1-编写测试计划的目的是"></a> 1. 编写测试计划的目的是？</h4>
+<p>使测试工作顺利进行；使项目参与人员沟通更顺畅；使测试工作更系统（人与系统）</p>
+<h4 id="2-测试计划编写六要素"><a class="markdownIt-Anchor" href="#2-测试计划编写六要素"></a> 2. 测试计划编写六要素</h4>
+<p>5W1H（谁、时间、地点、做了什么事、为什么、怎么做的H）</p>
+<h4 id="3-测试人员在软件开发过程中的任务是什么"><a class="markdownIt-Anchor" href="#3-测试人员在软件开发过程中的任务是什么"></a> 3. 测试人员在软件开发过程中的任务是什么？</h4>
+<p>寻找bug，衡量软件的品质，避免软件开发过程中的缺陷，关注用户体验。总的来说就是：确保软件质量。</p>
+<h2 id="四-测试种类"><a class="markdownIt-Anchor" href="#四-测试种类"></a> 四、测试种类</h2>
+<h4 id="1-请列出你所知道的软件测试种类至少五项"><a class="markdownIt-Anchor" href="#1-请列出你所知道的软件测试种类至少五项"></a> 1. 请列出你所知道的「软件测试种类」，至少五项。</h4>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201108123501083.png" alt="image-20201108123501083" style="zoom:50%;" />
+<h4 id="2-黑盒测试和白盒测试的常用测试方法有举个例子"><a class="markdownIt-Anchor" href="#2-黑盒测试和白盒测试的常用测试方法有举个例子"></a> 2. 黑盒测试和白盒测试的常用测试方法有？举个例子？</h4>
+<p>1）黑盒：等价类划分法、边界值法、因果图法和错误猜测法</p>
+<p>2）白盒：逻辑覆盖法、循环测试路径选择、基本路径测试</p>
+<p>例子：在一次输入多个条件的完整性查询中。利用等价类划分法和边界分析法，首先利用等价类划分法，制定一个或多个结果是OK的测试用例，然后确认多个NG的测试用例。然后再用边界值分析法，对结果分别是OK和NG的测试用例进行拓展和补充。</p>
+<h4 id="3-简述黑盒测试和白盒测试的优缺点"><a class="markdownIt-Anchor" href="#3-简述黑盒测试和白盒测试的优缺点"></a> 3. 简述黑盒测试和白盒测试的优缺点？</h4>
+<p>1）黑盒</p>
+<ul>
+<li>优点：a. 比较简单，不用了解内部代码的实现；b. 从用户的角度出发，很容易知道用户会用到哪些功能，会遇到什么问题；c. 与软件内部无关；d. 在做软件自动化测试时较方便。</li>
+<li>缺点：代码覆盖率较低；自动化测试的复用性较低。</li>
+</ul>
+<p>2）白盒</p>
+<ul>
+<li>优点：代码覆盖率高，提高代码质量，发现隐藏的问题。</li>
+<li>缺点：a. 测试基于代码，只能测试开发人员的对与不对，而不能知道设计的正确与否，可能会漏掉一些功能需求；b. 系统庞大时，测试开销会很大；c. 测试有很多路径，不可能测试完所有的路径。</li>
+</ul>
+<h4 id="4-单元测试的策略有哪些主要内容有"><a class="markdownIt-Anchor" href="#4-单元测试的策略有哪些主要内容有"></a> 4. 单元测试的策略有哪些，主要内容有？</h4>
+<p>逻辑覆盖，循环覆盖，代码走查，静态数据流分析，代码评审，桌前检查，同行评审</p>
+<h4 id="5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"><a class="markdownIt-Anchor" href="#5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"></a> 5. 白盒测试逻辑覆盖有哪几种覆盖标准，覆盖率最高的是？</h4>
+<p>语句覆盖，分支覆盖，条件覆盖，路径覆盖，分支条件覆盖。最高的是路径覆盖。</p>
+<h2 id="五-用例设计"><a class="markdownIt-Anchor" href="#五-用例设计"></a> 五、用例设计</h2>
+<h4 id="1-什么是测试用例测试用例的基本要素"><a class="markdownIt-Anchor" href="#1-什么是测试用例测试用例的基本要素"></a> 1. 什么是测试用例，测试用例的基本要素？</h4>
+<p>测试用例是为某个测试目标编写的一组输入、执行条件与预期结果，以便测试某个程序是否符合特定要求。</p>
+<p>基本要素：测试索引，测试环境，测试输入，测试操作，预期结果，评价标准</p>
+<h4 id="2-描述测试用例设计的完整过程"><a class="markdownIt-Anchor" href="#2-描述测试用例设计的完整过程"></a> 2. 描述测试用例设计的完整过程</h4>
+<p>1）根据概要设计、需求文档、测试计划、测试方案细分出测试项</p>
+<p>2）根据测试项，按照详细设计与测试方案中测试的覆盖率细分出测试子项</p>
+<p>3）用测试设计方法（等价类划分，边界值，因果图等）编写测试用例</p>
+<p>注意：用例一定要及时更新（补充与删除），要全面（考虑功能、性能、兼容性等）</p>
+<h4 id="3-有个广告的纸杯子请设计测试用例"><a class="markdownIt-Anchor" href="#3-有个广告的纸杯子请设计测试用例"></a> 3. 有个广告的纸杯子，请设计测试用例</h4>
+<p>基本功能测试（逻辑功能测试）。</p>
+<p>1）硬度：是否达到设计标准。 装载能力:在杯子内分别装入少量的、半杯的、满杯的，看其装载量是否达到设计标准。 装载种类:开水(是否产生异味)、温水、冷水、冰水、咖啡。。</p>
+<p>2）界面测试(UI 测试)。</p>
+<p>看其形状、大小设计是否适合人方便拿起。</p>
+<p>外观是否吸引人(广告嘛)，赏心悦目。</p>
+<p>带广告的图案沾水受是否掉色、模糊。</p>
+<p>3）易用性测试。</p>
+<p>看其形状、大小设计是否适合人方便拿起。</p>
+<p>残疾人士用此杯去喝水的容程度。 杯子设计是否上大下小，在运输过程中可以套在一起有效利用空间，在使用时也容易拿开。</p>
+<p>4）稳定性测试（24 X 7 测试）。装入液体后记录其多少以后漏水。</p>
+<p>5）安全性测试。杯子所用的材料(包括纸基、涂层和广告颜料)是否符合食品卫生标准，在内外温度等环境因素下是否会与所盛各种饮料相反应，而产生对人体有害的物质。</p>
+<p>6）本地化测试。为国际化和本地化的需要，广告图案和文字是否在政治、宗教和文化方面具有广泛的适用性。</p>
+<p>7）对设计的改进建议。“如果是一次性杯子，能否标示已使用(比如变色)”和“杯子是否有使用者标贴(多人使用时防止混淆)”。</p>
+<h4 id="4-一个身份证号码输入框怎么设计用例"><a class="markdownIt-Anchor" href="#4-一个身份证号码输入框怎么设计用例"></a> 4. 一个身份证号码输入框，怎么设计用例?</h4>
+<p>校验身份证号的规则有效性（地址码、生日编码、顺序码、校验码）</p>
+<p>检验15位身份证和18位身份正好可用</p>
+<p>校验末尾是x的情况</p>
+<p>校验不足15位、16-17位和18位的情况</p>
+<p>如果是必输项，空白时是否有提示与流程是否正常进行</p>
+<p>如果不是必输项，校验不输入时流程能否正常进行</p>
+<p>检验非数字的情况，是否会有正确提示信息（包括大小写字母，汉字，特殊字符与标点符号）</p>
+<h4 id="5-登陆功能怎么设计测试用例"><a class="markdownIt-Anchor" href="#5-登陆功能怎么设计测试用例"></a> 5. 登陆功能怎么设计测试用例？</h4>
+<p>具体需求:有一个登录页面，有一个账号和一个密码输入框, 一个提交按钮。</p>
+<p>此题的考察目的：1. 了解需求(测什么都是从了解需求开始)；2. 是否有设计 Test Case 的能力；3. 是否熟悉各种测试方法； 4. 是否有丰富的 Web 测试经验;；5. 是否了解 Web 开发。</p>
+<p>了解需求：1. 登陆界面是弹出窗口式的，还是直接在网页里面；2. 账号长度和密码的强度要求（比如需要多少位、大小写敏感、特殊字符混搭）；3. 界面美观是否有特殊要求（是否要进行UI测试）</p>
+<p>用例设计：</p>
+<h5 id="1功能测试function-test"><a class="markdownIt-Anchor" href="#1功能测试function-test"></a> 1）功能测试：Function Test</h5>
+<ol>
+<li>
+<p>输入正确的账号密码，点击提交按钮，验证是否能正确登陆（正常输入）</p>
+</li>
+<li>
+<p>输入错误的账号密码，验证登陆会失败，与给出相应的错误提示（错误输入）</p>
+</li>
+<li>
+<p>登陆成功后能否正确跳转到正确界面</p>
+</li>
+<li>
+<p>账号和密码如果太长或太短，应该怎么处理（安全性，密码太短都有提示）</p>
+</li>
+<li>
+<p>账号和密码中，有特殊字符（比如空格）和其他非英文情况（是否做了顾虑）</p>
+</li>
+<li>
+<p>账号和密码前后都有空格的处理</p>
+</li>
+<li>
+<p>输入密码时，大写键盘有提示</p>
+</li>
+<li>
+<p>密码是否加密显示</p>
+</li>
+<li>
+<p>什么都不输，点击提交按钮，看提示信息</p>
+</li>
+<li>
+<p>记住账号功能</p>
+</li>
+<li>
+<p>登陆失败后，不能记录密码的功能</p>
+</li>
+<li>
+<p>牵涉到验证码的，还要考虑验证难度是否过大，刷新或者换一个的按钮是否好用</p>
+</li>
+<li>
+<p>登陆页面中的注册、忘记密码、登出、用另一账号等链接是否正确</p>
+</li>
+</ol>
+<h5 id="2界面测试ui-test"><a class="markdownIt-Anchor" href="#2界面测试ui-test"></a> 2）界面测试：UI Test</h5>
+<ol>
+<li>布局是否合理，2个Testbox和1个按钮是否对其</li>
+<li>Testbox和按钮的长度，高度是否符合要求</li>
+<li>界面的设计风格是否与UI的设计风格统一</li>
+<li>界面的文字简洁易懂，没有错别字</li>
+</ol>
+<h5 id="3性能测试-performance-test"><a class="markdownIt-Anchor" href="#3性能测试-performance-test"></a> 3）性能测试 Performance Test</h5>
+<ol>
+<li>打开登陆页面，需要几秒</li>
+<li>输入正确的账号密码后，登陆成功跳转到新页面，不超过5秒</li>
+</ol>
+<h5 id="4安全性测试-security-test"><a class="markdownIt-Anchor" href="#4安全性测试-security-test"></a> 4）安全性测试 Security Test</h5>
+<ol>
+<li>登陆成功后生成的 Cookie 是否有 HttpOnly（降低脚本盗取风险）</li>
+<li>账号密码是否通过加密的方式，发送到Web服务器</li>
+<li>账号和密码的验证，应该是用服务器端验证，而不只是用客户端的JS分析</li>
+<li>账号和密码的输入框，应该屏蔽SQL注入攻击</li>
+<li>账号和密码的输入框，要禁止输入脚本（防止XSS攻击）</li>
+<li>错误登陆的次数使用限制（防止暴力破解）</li>
+<li>考虑是否支持多用户在同一机器上登陆</li>
+<li>考虑一用户在多台机器登陆</li>
+</ol>
+<h5 id="5可用性测试-usability-test"><a class="markdownIt-Anchor" href="#5可用性测试-usability-test"></a> 5）可用性测试 Usability Test</h5>
+<ol>
+<li>是否可以用全键盘操作，是否有快捷键</li>
+<li>输入账号，密码后回车，是否可以登陆</li>
+<li>输入框是否可以用Tab切换</li>
+</ol>
+<h5 id="6兼容性测试-compatibility-test"><a class="markdownIt-Anchor" href="#6兼容性测试-compatibility-test"></a> 6）兼容性测试 Compatibility Test</h5>
+<ol>
+<li>主流浏览器功能是否正常</li>
+<li>不同系统平台是否工作正常（Macos pc）</li>
+<li>移动设备是否工作正常</li>
+<li>不同分辨率</li>
+</ol>
+<h5 id="7本地化测试-localization-test"><a class="markdownIt-Anchor" href="#7本地化测试-localization-test"></a> 7）本地化测试 Localization Test</h5>
+<p>不同语言环境，页面显示是否正确</p>
+<h5 id="8辅助性测试"><a class="markdownIt-Anchor" href="#8辅助性测试"></a> 8）辅助性测试</h5>
+<p>高对比度下是否显示正常（视力不好的人）</p>
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>面试</tag>
       </tags>
   </entry>
   <entry>
@@ -3303,201 +3404,100 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>面试宝典-01</title>
-    <url>/2020/10/27/%E9%9D%A2%E8%AF%95%E5%AE%9D%E5%85%B8-01/</url>
-    <content><![CDATA[<h2 id="一-软件工程"><a class="markdownIt-Anchor" href="#一-软件工程"></a> 一、软件工程</h2>
-<h4 id="1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"><a class="markdownIt-Anchor" href="#1-软件生命周期有哪些阶段常见的软件生命周期模型有哪些"></a> 1. 软件生命周期有哪些阶段？常见的软件生命周期模型有哪些？</h4>
-<p>软件生命周期有：初始构思、需求分析、功能设计、内部设计、文档计划、测试计划、文档准备、集成、测试、维护、升级、再测试、逐步淘汰等。</p>
-<p>常见模型有：瀑布模型、迭代模型、快速原型模型、螺旋模型。（1）瀑布是最常见的模型；（2）迭代约等于小型的瀑布流项目，每一次迭代都可以产生一个产品，这个产品是最终产品的一个子集；（3）快速原型模型是迅速构建一个可以运行的软件模型，以便理解和澄清问题；（4）而螺旋模型则大多用在大型管理软件系统中，具有前面三者没有的风险分析。</p>
+    <title>macOS让终端走代理，解决curl失败问题</title>
+    <url>/2022/02/09/macOS%E8%AE%A9%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%EF%BC%8C%E8%A7%A3%E5%86%B3curl%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205160123197.png" alt="image-20220205160123197" /></p>
 <a id="more"></a>
-<h4 id="2-什么是版本控制常用的系统有哪些"><a class="markdownIt-Anchor" href="#2-什么是版本控制常用的系统有哪些"></a> 2. 什么是版本控制，常用的系统有哪些？</h4>
-<p>是一种软体工程技巧，确保不同的人编辑的统一文档都能得到更新。</p>
-<p>1）Git：分布式的版本控制系统。</p>
-<p>2）SVN：subversion，分支管理系统。</p>
-<h2 id="二-测试模型"><a class="markdownIt-Anchor" href="#二-测试模型"></a> 二、测试模型</h2>
-<h4 id="1-常见的测试模型"><a class="markdownIt-Anchor" href="#1-常见的测试模型"></a> 1. 常见的测试模型</h4>
-<p>1）V字型：这是一种古老的瀑布模型，反映了实际和测试之间的关系。局限:仅仅把测试过程作为编码之后的一个阶段，忽视了测试对需求分析,系统设计的验证，如果前面设计错误， 得一直到后期的验收测试才被发现，耗时耗力。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123616102.png" alt="image-20201108123616102" style="zoom:50%;" />
-<p>2）W型：测试与开发同时进行，在 V 模型的基础上，增加了在开发阶段的同步测试。局限：仍然不支持迭代，减少了一定错误发生率，但是需按照流水线进行设计、编码和测试</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123631829.png" alt="image-20201108123631829" style="zoom:50%;" />
-<h4 id="2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"><a class="markdownIt-Anchor" href="#2-请根据v模型分别概述测试人员在软件的需求定义阶段-设计阶段-编码阶段-系统集成阶段的工作任务及其相应生成的文档"></a> 2. 请根据”V”模型分别概述测试人员在软件的需求定义阶段、设计阶段、编码阶段、系统集成阶段的「工作任务」及其相应「生成的文档」?</h4>
-<p>1）需求定义阶段：根据项目需求提取测试需求，形成「测试需求文档」；根据测试需求和项目计划生成「测试计划」。</p>
-<p>2）设计阶段：根据测试需求拟定测试方案并形成「测试方案文档」；根据测试方案文档指定测试用例，并形成「测试用例文档」</p>
-<p>3）编码阶段：执行测试并完善测试用例文档</p>
-<p>4）系统集成阶段：测试总结报告，阶段问题统计报告，测试问题报告</p>
-<h2 id="三-测试计划"><a class="markdownIt-Anchor" href="#三-测试计划"></a> 三、测试计划</h2>
-<h4 id="1-编写测试计划的目的是"><a class="markdownIt-Anchor" href="#1-编写测试计划的目的是"></a> 1. 编写测试计划的目的是？</h4>
-<p>使测试工作顺利进行；使项目参与人员沟通更顺畅；使测试工作更系统（人与系统）</p>
-<h4 id="2-测试计划编写六要素"><a class="markdownIt-Anchor" href="#2-测试计划编写六要素"></a> 2. 测试计划编写六要素</h4>
-<p>5W1H（谁、时间、地点、做了什么事、为什么、怎么做的H）</p>
-<h4 id="3-测试人员在软件开发过程中的任务是什么"><a class="markdownIt-Anchor" href="#3-测试人员在软件开发过程中的任务是什么"></a> 3. 测试人员在软件开发过程中的任务是什么？</h4>
-<p>寻找bug，衡量软件的品质，避免软件开发过程中的缺陷，关注用户体验。总的来说就是：确保软件质量。</p>
-<h2 id="四-测试种类"><a class="markdownIt-Anchor" href="#四-测试种类"></a> 四、测试种类</h2>
-<h4 id="1-请列出你所知道的软件测试种类至少五项"><a class="markdownIt-Anchor" href="#1-请列出你所知道的软件测试种类至少五项"></a> 1. 请列出你所知道的「软件测试种类」，至少五项。</h4>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201108123501083.png" alt="image-20201108123501083" style="zoom:50%;" />
-<h4 id="2-黑盒测试和白盒测试的常用测试方法有举个例子"><a class="markdownIt-Anchor" href="#2-黑盒测试和白盒测试的常用测试方法有举个例子"></a> 2. 黑盒测试和白盒测试的常用测试方法有？举个例子？</h4>
-<p>1）黑盒：等价类划分法、边界值法、因果图法和错误猜测法</p>
-<p>2）白盒：逻辑覆盖法、循环测试路径选择、基本路径测试</p>
-<p>例子：在一次输入多个条件的完整性查询中。利用等价类划分法和边界分析法，首先利用等价类划分法，制定一个或多个结果是OK的测试用例，然后确认多个NG的测试用例。然后再用边界值分析法，对结果分别是OK和NG的测试用例进行拓展和补充。</p>
-<h4 id="3-简述黑盒测试和白盒测试的优缺点"><a class="markdownIt-Anchor" href="#3-简述黑盒测试和白盒测试的优缺点"></a> 3. 简述黑盒测试和白盒测试的优缺点？</h4>
-<p>1）黑盒</p>
-<ul>
-<li>优点：a. 比较简单，不用了解内部代码的实现；b. 从用户的角度出发，很容易知道用户会用到哪些功能，会遇到什么问题；c. 与软件内部无关；d. 在做软件自动化测试时较方便。</li>
-<li>缺点：代码覆盖率较低；自动化测试的复用性较低。</li>
-</ul>
-<p>2）白盒</p>
-<ul>
-<li>优点：代码覆盖率高，提高代码质量，发现隐藏的问题。</li>
-<li>缺点：a. 测试基于代码，只能测试开发人员的对与不对，而不能知道设计的正确与否，可能会漏掉一些功能需求；b. 系统庞大时，测试开销会很大；c. 测试有很多路径，不可能测试完所有的路径。</li>
-</ul>
-<h4 id="4-单元测试的策略有哪些主要内容有"><a class="markdownIt-Anchor" href="#4-单元测试的策略有哪些主要内容有"></a> 4. 单元测试的策略有哪些，主要内容有？</h4>
-<p>逻辑覆盖，循环覆盖，代码走查，静态数据流分析，代码评审，桌前检查，同行评审</p>
-<h4 id="5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"><a class="markdownIt-Anchor" href="#5-白盒测试逻辑覆盖有哪几种覆盖标准覆盖率最高的是"></a> 5. 白盒测试逻辑覆盖有哪几种覆盖标准，覆盖率最高的是？</h4>
-<p>语句覆盖，分支覆盖，条件覆盖，路径覆盖，分支条件覆盖。最高的是路径覆盖。</p>
-<h2 id="五-用例设计"><a class="markdownIt-Anchor" href="#五-用例设计"></a> 五、用例设计</h2>
-<h4 id="1-什么是测试用例测试用例的基本要素"><a class="markdownIt-Anchor" href="#1-什么是测试用例测试用例的基本要素"></a> 1. 什么是测试用例，测试用例的基本要素？</h4>
-<p>测试用例是为某个测试目标编写的一组输入、执行条件与预期结果，以便测试某个程序是否符合特定要求。</p>
-<p>基本要素：测试索引，测试环境，测试输入，测试操作，预期结果，评价标准</p>
-<h4 id="2-描述测试用例设计的完整过程"><a class="markdownIt-Anchor" href="#2-描述测试用例设计的完整过程"></a> 2. 描述测试用例设计的完整过程</h4>
-<p>1）根据概要设计、需求文档、测试计划、测试方案细分出测试项</p>
-<p>2）根据测试项，按照详细设计与测试方案中测试的覆盖率细分出测试子项</p>
-<p>3）用测试设计方法（等价类划分，边界值，因果图等）编写测试用例</p>
-<p>注意：用例一定要及时更新（补充与删除），要全面（考虑功能、性能、兼容性等）</p>
-<h4 id="3-有个广告的纸杯子请设计测试用例"><a class="markdownIt-Anchor" href="#3-有个广告的纸杯子请设计测试用例"></a> 3. 有个广告的纸杯子，请设计测试用例</h4>
-<p>基本功能测试（逻辑功能测试）。</p>
-<p>1）硬度：是否达到设计标准。 装载能力:在杯子内分别装入少量的、半杯的、满杯的，看其装载量是否达到设计标准。 装载种类:开水(是否产生异味)、温水、冷水、冰水、咖啡。。</p>
-<p>2）界面测试(UI 测试)。</p>
-<p>看其形状、大小设计是否适合人方便拿起。</p>
-<p>外观是否吸引人(广告嘛)，赏心悦目。</p>
-<p>带广告的图案沾水受是否掉色、模糊。</p>
-<p>3）易用性测试。</p>
-<p>看其形状、大小设计是否适合人方便拿起。</p>
-<p>残疾人士用此杯去喝水的容程度。 杯子设计是否上大下小，在运输过程中可以套在一起有效利用空间，在使用时也容易拿开。</p>
-<p>4）稳定性测试（24 X 7 测试）。装入液体后记录其多少以后漏水。</p>
-<p>5）安全性测试。杯子所用的材料(包括纸基、涂层和广告颜料)是否符合食品卫生标准，在内外温度等环境因素下是否会与所盛各种饮料相反应，而产生对人体有害的物质。</p>
-<p>6）本地化测试。为国际化和本地化的需要，广告图案和文字是否在政治、宗教和文化方面具有广泛的适用性。</p>
-<p>7）对设计的改进建议。“如果是一次性杯子，能否标示已使用(比如变色)”和“杯子是否有使用者标贴(多人使用时防止混淆)”。</p>
-<h4 id="4-一个身份证号码输入框怎么设计用例"><a class="markdownIt-Anchor" href="#4-一个身份证号码输入框怎么设计用例"></a> 4. 一个身份证号码输入框，怎么设计用例?</h4>
-<p>校验身份证号的规则有效性（地址码、生日编码、顺序码、校验码）</p>
-<p>检验15位身份证和18位身份正好可用</p>
-<p>校验末尾是x的情况</p>
-<p>校验不足15位、16-17位和18位的情况</p>
-<p>如果是必输项，空白时是否有提示与流程是否正常进行</p>
-<p>如果不是必输项，校验不输入时流程能否正常进行</p>
-<p>检验非数字的情况，是否会有正确提示信息（包括大小写字母，汉字，特殊字符与标点符号）</p>
-<h4 id="5-登陆功能怎么设计测试用例"><a class="markdownIt-Anchor" href="#5-登陆功能怎么设计测试用例"></a> 5. 登陆功能怎么设计测试用例？</h4>
-<p>具体需求:有一个登录页面，有一个账号和一个密码输入框, 一个提交按钮。</p>
-<p>此题的考察目的：1. 了解需求(测什么都是从了解需求开始)；2. 是否有设计 Test Case 的能力；3. 是否熟悉各种测试方法； 4. 是否有丰富的 Web 测试经验;；5. 是否了解 Web 开发。</p>
-<p>了解需求：1. 登陆界面是弹出窗口式的，还是直接在网页里面；2. 账号长度和密码的强度要求（比如需要多少位、大小写敏感、特殊字符混搭）；3. 界面美观是否有特殊要求（是否要进行UI测试）</p>
-<p>用例设计：</p>
-<h5 id="1功能测试function-test"><a class="markdownIt-Anchor" href="#1功能测试function-test"></a> 1）功能测试：Function Test</h5>
-<ol>
-<li>
-<p>输入正确的账号密码，点击提交按钮，验证是否能正确登陆（正常输入）</p>
-</li>
-<li>
-<p>输入错误的账号密码，验证登陆会失败，与给出相应的错误提示（错误输入）</p>
-</li>
-<li>
-<p>登陆成功后能否正确跳转到正确界面</p>
-</li>
-<li>
-<p>账号和密码如果太长或太短，应该怎么处理（安全性，密码太短都有提示）</p>
-</li>
-<li>
-<p>账号和密码中，有特殊字符（比如空格）和其他非英文情况（是否做了顾虑）</p>
-</li>
-<li>
-<p>账号和密码前后都有空格的处理</p>
-</li>
-<li>
-<p>输入密码时，大写键盘有提示</p>
-</li>
-<li>
-<p>密码是否加密显示</p>
-</li>
-<li>
-<p>什么都不输，点击提交按钮，看提示信息</p>
-</li>
-<li>
-<p>记住账号功能</p>
-</li>
-<li>
-<p>登陆失败后，不能记录密码的功能</p>
-</li>
-<li>
-<p>牵涉到验证码的，还要考虑验证难度是否过大，刷新或者换一个的按钮是否好用</p>
-</li>
-<li>
-<p>登陆页面中的注册、忘记密码、登出、用另一账号等链接是否正确</p>
-</li>
-</ol>
-<h5 id="2界面测试ui-test"><a class="markdownIt-Anchor" href="#2界面测试ui-test"></a> 2）界面测试：UI Test</h5>
-<ol>
-<li>布局是否合理，2个Testbox和1个按钮是否对其</li>
-<li>Testbox和按钮的长度，高度是否符合要求</li>
-<li>界面的设计风格是否与UI的设计风格统一</li>
-<li>界面的文字简洁易懂，没有错别字</li>
-</ol>
-<h5 id="3性能测试-performance-test"><a class="markdownIt-Anchor" href="#3性能测试-performance-test"></a> 3）性能测试 Performance Test</h5>
-<ol>
-<li>打开登陆页面，需要几秒</li>
-<li>输入正确的账号密码后，登陆成功跳转到新页面，不超过5秒</li>
-</ol>
-<h5 id="4安全性测试-security-test"><a class="markdownIt-Anchor" href="#4安全性测试-security-test"></a> 4）安全性测试 Security Test</h5>
-<ol>
-<li>登陆成功后生成的 Cookie 是否有 HttpOnly（降低脚本盗取风险）</li>
-<li>账号密码是否通过加密的方式，发送到Web服务器</li>
-<li>账号和密码的验证，应该是用服务器端验证，而不只是用客户端的JS分析</li>
-<li>账号和密码的输入框，应该屏蔽SQL注入攻击</li>
-<li>账号和密码的输入框，要禁止输入脚本（防止XSS攻击）</li>
-<li>错误登陆的次数使用限制（防止暴力破解）</li>
-<li>考虑是否支持多用户在同一机器上登陆</li>
-<li>考虑一用户在多台机器登陆</li>
-</ol>
-<h5 id="5可用性测试-usability-test"><a class="markdownIt-Anchor" href="#5可用性测试-usability-test"></a> 5）可用性测试 Usability Test</h5>
-<ol>
-<li>是否可以用全键盘操作，是否有快捷键</li>
-<li>输入账号，密码后回车，是否可以登陆</li>
-<li>输入框是否可以用Tab切换</li>
-</ol>
-<h5 id="6兼容性测试-compatibility-test"><a class="markdownIt-Anchor" href="#6兼容性测试-compatibility-test"></a> 6）兼容性测试 Compatibility Test</h5>
-<ol>
-<li>主流浏览器功能是否正常</li>
-<li>不同系统平台是否工作正常（Macos pc）</li>
-<li>移动设备是否工作正常</li>
-<li>不同分辨率</li>
-</ol>
-<h5 id="7本地化测试-localization-test"><a class="markdownIt-Anchor" href="#7本地化测试-localization-test"></a> 7）本地化测试 Localization Test</h5>
-<p>不同语言环境，页面显示是否正确</p>
-<h5 id="8辅助性测试"><a class="markdownIt-Anchor" href="#8辅助性测试"></a> 8）辅助性测试</h5>
-<p>高对比度下是否显示正常（视力不好的人）</p>
+<p>前提是你得有代理</p>
+<p>我使用的是<code>ClashX.app</code>软件，可以看到HTTP端口是7892</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155421631.png" alt="image-20220205155421631" /></p>
+<p>那么我们要让终端走HTTP代理，在终端执行下面的代码即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export http_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892;export https_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892</span><br></pre></td></tr></table></figure>
+<p>注意：只是在当前页面终端页面有效。</p>
+<p>测试是否生效</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl ip.gs</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155734830.png" alt="image-20220205155734830" /></p>
+<p>现在就应该可以<code>curl</code>github的内容了。</p>
 ]]></content>
       <categories>
-        <category>软件测试</category>
+        <category>macOS</category>
       </categories>
       <tags>
-        <tag>软件测试</tag>
-        <tag>面试</tag>
+        <tag>macOS</tag>
       </tags>
   </entry>
   <entry>
-    <title>解决badboy出现“页面的脚本发生素错误”</title>
-    <url>/2020/10/29/%E8%A7%A3%E5%86%B3badboy%E5%87%BA%E7%8E%B0%E2%80%9C%E9%A1%B5%E9%9D%A2%E7%9A%84%E8%84%9A%E6%9C%AC%E5%8F%91%E7%94%9F%E7%B4%A0%E9%94%99%E8%AF%AF%E2%80%9D/</url>
-    <content><![CDATA[<h3 id="前言"><a class="markdownIt-Anchor" href="#前言"></a> 前言</h3>
-<p>学习 JMeter 接触了一下 badboy ，不过感觉这东西太旧了吧！事实证明，它是基于 ie 内核的……这玩意儿还是别用了吧。但问题还是要解决的，就当水一篇博文吧，也希望能帮助到有用的人。</p>
+    <title>中国移动电视盒子刷机｜当贝市场</title>
+    <url>/2021/12/05/%E4%B8%AD%E5%9B%BD%E7%A7%BB%E5%8A%A8%E7%94%B5%E8%A7%86%E7%9B%92%E5%AD%90%E5%88%B7%E6%9C%BA%EF%BD%9C%E5%BD%93%E8%B4%9D%E5%B8%82%E5%9C%BA%E9%9A%8F%E4%BE%BF%E8%A3%85APP/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205120819625.png" alt="image-20211205120819625" /></p>
 <a id="more"></a>
-<hr />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201102195628553.png" alt="image-20201102195628553" style="zoom:50%;" />
-<p>网上正常的几种方法都尝试过了，但无效。后来看到了<a href="https://blog.csdn.net/weixin_38470851/article/details/80687911">这篇CSDN的文章</a>，果然有用。记录一下。</p>
-<img src="https://picbed.tangspoon.cn/uPic/Xnip2020-11-02_19-45-07.jpg" alt="Xnip2020-11-02_19-45-07" style="zoom:50%;" />
+<h2 id="一-下载固件"><a class="markdownIt-Anchor" href="#一-下载固件"></a> 一、下载固件</h2>
+<blockquote>
+<p>这一步非常重要，搞不好会变砖。</p>
+</blockquote>
+<h3 id="1-确定机型"><a class="markdownIt-Anchor" href="#1-确定机型"></a> 1. 确定机型</h3>
+<p>我的是：魔百盒CM201-2</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/IMG_3714.JPG" alt="IMG_3714" /></p>
+<h3 id="2-确定芯片型号可跳过但有风险"><a class="markdownIt-Anchor" href="#2-确定芯片型号可跳过但有风险"></a> 2. 确定芯片型号（可跳过，但有风险）</h3>
+<blockquote>
+<p>为什么可跳过呢？因为会有一些型号通刷包，就像我这个CM201-2就有，但可能会有变砖风险。</p>
+</blockquote>
+<p>这一步需要拆开外壳，拧开两个隐藏在脚垫的螺丝就行。我的板子型号：M8273。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205121237365.png" alt="image-20211205121237365" /></p>
+<h3 id="3-寻找-下载固件"><a class="markdownIt-Anchor" href="#3-寻找-下载固件"></a> 3. 寻找、下载固件</h3>
+<p>带着机型、板子型号到搜索引擎搜索固件。在这里给两个比较靠谱的论坛：</p>
+<p>小白刷机网「免费」：<a href="http://xiaobaishuaji.com/">http://xiaobaishuaji.com/</a></p>
+<p>智能电视网「大多付费，但信息多」：<a href="https://www.znds.com/">https://www.znds.com/</a></p>
+<p>麒麟刷机网「内容非常详尽」：<a href="https://www.szjytx.com/">https://www.szjytx.com/</a></p>
+<h3 id="4-后路"><a class="markdownIt-Anchor" href="#4-后路"></a> 4. 后路</h3>
+<p>是在找不到固件的话，可以加入上面三个论坛的交流群，会有很多大佬直接甩个链接给你下载。</p>
+<p>我进了一个「魔百盒（IPTV盒子）技」，群号：517426928，氛围很好。（无广告哈）</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211205113956266.png" alt="image-20211205113956266" style="zoom:50%;" />
+<blockquote>
+<p>CM201-2 ZG M8273版本的固件</p>
+<p>百度云下载链接：<a href="https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY">https://pan.baidu.com/s/15Rv34NR4XMg-x2wVgCOPY</a> 提取码：5nir</p>
+<p>115：<a href="https://115.com/s/sw3vijh3z1i#">https://115.com/s/sw3vijh3z1i#</a>    访问码：ra18</p>
+<p>腾讯微云：<a href="https://share.weiyun.com/yXW7Czpr">https://share.weiyun.com/yXW7Czpr</a> 密码：o9tkro</p>
+</blockquote>
+<h2 id="二-备份原版固件可跳过"><a class="markdownIt-Anchor" href="#二-备份原版固件可跳过"></a> 二、备份原版固件（可跳过）</h2>
+<p>这一步我是跳过了的，因为需要ttl备份，花的时间太多，而且看了一下闲鱼这种破解好的机顶盒才几十一个。变砖了也不心疼。</p>
+<p>相关备份有很多教程，每个型号都不一样，请自行搜索。</p>
+<h2 id="三-开始刷机"><a class="markdownIt-Anchor" href="#三-开始刷机"></a> 三、开始刷机</h2>
+<blockquote>
+<ol>
+<li>准备一个8G或以下的U盘</li>
+<li>不要看刷机包里面的教程！！有问题！！</li>
+</ol>
+</blockquote>
+<h3 id="1-文件处理"><a class="markdownIt-Anchor" href="#1-文件处理"></a> 1. 文件处理</h3>
+<p>解压文件包后，如下。（第一个文件夹只有两个文件）</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20211205114147760.png" alt="image-20211205114147760" /></p>
+<blockquote>
+<p>这里一定要按照我的步骤操作，<strong>不要</strong>看压缩包里面的“免拆刷机步骤.txt”</p>
+</blockquote>
+<p>在U盘中新建一个LOST.DIR的文件夹，然后把上图中第一个文件夹里面的“full-CM201-2-002.460.006-20180324120441.zip”复制到U盘里刚刚新建的LOST.DIR里面，然后把update.zip直接复制在U盘根目录。（如下）</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-04-20211205110830145.jpg" alt="Xnip2021-12-03_23-07-04" /></p>
+<p><img src="https://picbed.tangspoon.cn/uPic/Xnip2021-12-03_23-07-14.jpg" alt="Xnip2021-12-03_23-07-14" /></p>
+<h3 id="2-机顶盒操作刷机"><a class="markdownIt-Anchor" href="#2-机顶盒操作刷机"></a> 2. 机顶盒操作刷机</h3>
+<p>盒子开机，连续顺序点按遥控菜单键和音量减键，进入Recovery刷机模式。</p>
+<p>选择从u盘刷入full-CM201-2-002.460.006-20180324120441.zip。</p>
+<p>刷完机后重新启动机器，按遥控器的<strong>设置按钮</strong>。</p>
+<p>无线/有线连接网络，查看网络信息，记下盒子的IP地址。（这一步可以直接路由器中查看盒子的ip）</p>
+<p>运行免拆目录里的-双击执行-文件，按要求输入盒子IP地址。（这一步尽量用Windows系统电脑，因为macOS电脑好像会有问题）</p>
+<p>批处理执行完毕后，盒子重启自动刷机直至完毕。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/IMG_3715.JPG" alt="IMG_3715" /></p>
+<h2 id="四-唠叨几句"><a class="markdownIt-Anchor" href="#四-唠叨几句"></a> 四、唠叨几句</h2>
+<p>刷机有风险，看自己承受能力折腾。</p>
+<p>魔百盒有很多代工厂，每个配件可能都会不一样，都会导致刷机的失败。所以，尽量找那种和所有硬件信息（cpu、wifi模块、闪存类型……）都匹配的固件。</p>
+<p>刷机过程可能不会和教程一模一样，就自己理解整个流程，灵活变通一下吧。而且反正几十块一个而已，变砖了大不了重新买一个，大胆搞，学多点东西。</p>
+<p>（我要看人生一串去了）</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/IMG_3716.JPG" alt="IMG_3716" /></p>
 ]]></content>
       <categories>
-        <category>troubleshooting</category>
+        <category>硬件</category>
       </categories>
       <tags>
-        <tag>软件测试</tag>
-        <tag>troubleshooting</tag>
+        <tag>硬件</tag>
       </tags>
   </entry>
 </search>
