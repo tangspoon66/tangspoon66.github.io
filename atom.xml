@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>tang&#39;s blog</title>
+  <title>ThompsonTang&#39;s blog</title>
   
   <subtitle>判断得与失的时限大概要拉长一些，或许是一辈子</subtitle>
   <link href="https://blog.tangspoon.cn/atom.xml" rel="self"/>
@@ -10,7 +10,7 @@
   <id>https://blog.tangspoon.cn/</id>
   
   <author>
-    <name>tang</name>
+    <name>ThompsonTang</name>
     
   </author>
   

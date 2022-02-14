@@ -445,13 +445,6 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/%E7%A1%AC%E4%BB%B6/</loc>
-    <lastmod>2022-02-14</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://blog.tangspoon.cn/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/</loc>
     <lastmod>2022-02-14</lastmod>
     <changefreq>daily</changefreq>
@@ -459,7 +452,7 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/supervisor/</loc>
+    <loc>https://blog.tangspoon.cn/tags/%E7%A1%AC%E4%BB%B6/</loc>
     <lastmod>2022-02-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -467,6 +460,13 @@
   
   <url>
     <loc>https://blog.tangspoon.cn/tags/troubleshooting/</loc>
+    <lastmod>2022-02-14</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tangspoon.cn/tags/supervisor/</loc>
     <lastmod>2022-02-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -494,14 +494,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/OrangePi/</loc>
+    <loc>https://blog.tangspoon.cn/tags/%E8%84%9A%E6%9C%AC/</loc>
     <lastmod>2022-02-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/%E8%84%9A%E6%9C%AC/</loc>
+    <loc>https://blog.tangspoon.cn/tags/OrangePi/</loc>
     <lastmod>2022-02-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -580,14 +580,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/%E7%A1%AC%E4%BB%B6/</loc>
+    <loc>https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/</loc>
     <lastmod>2022-02-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/</loc>
+    <loc>https://blog.tangspoon.cn/categories/%E7%A1%AC%E4%BB%B6/</loc>
     <lastmod>2022-02-14</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
