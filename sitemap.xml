@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.tangspoon.cn/2022/03/03/%E4%BD%BF%E7%94%A8Respeaker%E8%AF%AD%E9%9F%B3%E6%8E%A5%E6%94%B6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%A3%B0%E5%8D%A1%E9%85%8D%E7%BD%AE/</loc>
+    <loc>https://blog.tangspoon.cn/2022/03/03/Arduino%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-%E7%94%B5%E5%AD%90%E5%85%83%E5%99%A8%E4%BB%B6/</loc>
     
     <lastmod>2022-03-03</lastmod>
     
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/2022/03/03/Arduino%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-%E7%94%B5%E5%AD%90%E5%85%83%E5%99%A8%E4%BB%B6/</loc>
+    <loc>https://blog.tangspoon.cn/2022/03/03/%E4%BD%BF%E7%94%A8Respeaker%E8%AF%AD%E9%9F%B3%E6%8E%A5%E6%94%B6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%A3%B0%E5%8D%A1%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2022-03-03</lastmod>
     
@@ -580,14 +580,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/linux/</loc>
+    <loc>https://blog.tangspoon.cn/categories/Arduino/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</loc>
+    <loc>https://blog.tangspoon.cn/categories/linux/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -601,14 +601,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/JavaScript/</loc>
+    <loc>https://blog.tangspoon.cn/categories/%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/categories/%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/Python/</loc>
+    <loc>https://blog.tangspoon.cn/categories/JavaScript/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -623,6 +623,13 @@
   
   <url>
     <loc>https://blog.tangspoon.cn/categories/%E6%A0%91%E8%8E%93%E6%B4%BE/</loc>
+    <lastmod>2022-03-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://blog.tangspoon.cn/categories/%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/Python/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
