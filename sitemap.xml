@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.tangspoon.cn/2022/03/03/Arduino%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-%E7%94%B5%E5%AD%90%E5%85%83%E5%99%A8%E4%BB%B6/</loc>
+    
+    <lastmod>2022-03-03</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.tangspoon.cn/2022/03/03/%E4%BD%BF%E7%94%A8Respeaker%E8%AF%AD%E9%9F%B3%E6%8E%A5%E6%94%B6%E6%A8%A1%E5%9D%97%E7%9A%84%E5%A3%B0%E5%8D%A1%E9%85%8D%E7%BD%AE/</loc>
     
     <lastmod>2022-03-03</lastmod>
@@ -424,6 +431,13 @@
   </url>
   
   <url>
+    <loc>https://blog.tangspoon.cn/tags/Arduino/</loc>
+    <lastmod>2022-03-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
     <loc>https://blog.tangspoon.cn/tags/linux/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
@@ -473,14 +487,14 @@
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/supervisor/</loc>
+    <loc>https://blog.tangspoon.cn/tags/macOS/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://blog.tangspoon.cn/tags/macOS/</loc>
+    <loc>https://blog.tangspoon.cn/tags/supervisor/</loc>
     <lastmod>2022-03-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
