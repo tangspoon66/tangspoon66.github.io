@@ -1,6 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>About unittest</title>
+    <url>/2020/12/04/About-unittest/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
+<a id="more"></a>
+<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
+<p>该部分内容极为简单，不再赘述。</p>
+<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
+<ul>
+<li>作用：把测试用例组合到一起</li>
+<li>TestSuite()是一个类，需要实例化使用。</li>
+</ul>
+<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
+<p>格式：addTest(测试类名(‘测试用例’))</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
+<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
+<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
+<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
+<p>我们来看：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
+<ul>
+<li>start_dir ：要测试的模块名或测试用例目录。</li>
+<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
+<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
+</ul>
+<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
+<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
+<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
+<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
+<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
+<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
+]]></content>
+      <categories>
+        <category>软件测试</category>
+      </categories>
+      <tags>
+        <tag>软件测试</tag>
+        <tag>自动化测试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>About POM</title>
     <url>/2020/12/04/About-POM/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204165031981.png" alt="image-20201204165031981" style="zoom:50%;" />
@@ -40,52 +86,6 @@
 <h2 id="五-项目源代码下载"><a class="markdownIt-Anchor" href="#五-项目源代码下载"></a> 五、项目源代码下载</h2>
 <p>进入<a href="https://file.tangspoon.cn/d/nl3EA3Gg/q/AutoTest">AutoTest</a>文件夹下载POM_Get.zip文件。完成上面的todo后，整个项目将上传到<br />
 Github中。</p>
-]]></content>
-      <categories>
-        <category>软件测试</category>
-      </categories>
-      <tags>
-        <tag>软件测试</tag>
-        <tag>自动化测试</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>About unittest</title>
-    <url>/2020/12/04/About-unittest/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201204184242525.png" alt="image-20201204184242525" style="zoom:50%;" />
-<a id="more"></a>
-<h2 id="一-testfixture"><a class="markdownIt-Anchor" href="#一-testfixture"></a> 一、TestFixture</h2>
-<p>该部分内容极为简单，不再赘述。</p>
-<h2 id="二-testsuite"><a class="markdownIt-Anchor" href="#二-testsuite"></a> 二、TestSuite</h2>
-<ul>
-<li>作用：把测试用例组合到一起</li>
-<li>TestSuite()是一个类，需要实例化使用。</li>
-</ul>
-<h3 id="1-addtest-逐个加载用例"><a class="markdownIt-Anchor" href="#1-addtest-逐个加载用例"></a> 1. addTest() 「逐个」加载用例</h3>
-<p>格式：addTest(测试类名(‘测试用例’))</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> unittest</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AllTest</span>(<span class="params">unittest.TestCase</span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">setUp</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">tearDown</span>(<span class="params">self</span>) -&gt; <span class="keyword">None</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">        </span><br><span class="line">    <span class="comment"># 测试用例1</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_1</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 测试用例2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">test_2</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.assertEqual(<span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	<span class="comment"># 实例化TestSuite()</span></span><br><span class="line">    suite = unittest.TestSuite()</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_1&#x27;</span>))</span><br><span class="line">    suite.addTest(AllTest(<span class="string">&#x27;test_2&#x27;</span>))</span><br><span class="line">    unittest.TextTestRunner(verbosity=<span class="number">2</span>).run(suite)</span><br></pre></td></tr></table></figure>
-<h3 id="2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"><a class="markdownIt-Anchor" href="#2-loadtestsformtestcase测试类名-loadtestsfrommodule模块名py"></a> 2. loadTestsFormTestCase(测试类名)、loadTestsFromModule(‘<a href="http://xn--eqr79ejvx.py">模块名.py</a>’)</h3>
-<p>两个都是是继承<code>Testloader()</code>，只是前面是加载一个测试类，后者是加载模块名。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite=unittest.TestLoader().loadTestsFromTestCase(BaiduTest)</span><br><span class="line">suite=unittest.TestLoader().loadTestsFromModule(<span class="string">&#x27;unittest1.py&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="3-discover-批量加载用例"><a class="markdownIt-Anchor" href="#3-discover-批量加载用例"></a> 3. discover() 「批量」加载用例</h3>
-<p>使用discover()，其实和使用addTest()是类似的，都是要实例化才能使用。</p>
-<p>我们来看：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">suite = unittest.TestSuite().addTest(xxxx)</span><br><span class="line">discover = unittest.defaultTestLoader.discover(test_dir,pattern=<span class="string">&#x27;xxx&#x27;</span>,top_level_dir=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
-<p>其实<code>addTest</code>()是<code>unittest</code> 的<code>TestSuite()</code>类下面的一个子类而已，同样的，<code>discover()</code>是<code>unitest</code>的<code>defaultTestLoder()</code>类下的字类，所以都是需要实例化的。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201204231834582.png" alt="image-20201204231834582" /></p>
-<ul>
-<li>start_dir ：要测试的模块名或测试用例目录。</li>
-<li>pattern=‘test*.py’ ：表示用例文件名的匹配原则。星号“*”表示任意多个字符。</li>
-<li>top_level_dir=None：测试模块的顶层目录。如果没顶层目录（也就是说测试用例不是放在多级目录中），默认为 None。</li>
-</ul>
-<h2 id="三-测试断言"><a class="markdownIt-Anchor" href="#三-测试断言"></a> 三、测试断言</h2>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201204233159773.png" alt="image-20201204233159773" style="zoom:50%;" />
-<p>一个测试用例只有两种结果，要么 Pass，要么 Fail（代码错误也显示 Fail）。因此，在自动化测试的测试用例中，切记不要使用 if else 这类判 断代码来代替断言。</p>
-<p>另外，在自动化测试中尽量不要应用打印结果来判断测试 用例的情况，用例如，果在代码错误或者功能有 Bug 的情况下就让用例报错或 者失败，而不是结果显示 Pass，只有功能正常的测试用例结果才是 Pass 的。</p>
-<h2 id="四-生成测试报告"><a class="markdownIt-Anchor" href="#四-生成测试报告"></a> 四、生成测试报告</h2>
-<p>此处建议使用unittestreport，项目介绍：<a href="http://testingpai.com/article/1595507317340">http://testingpai.com/article/1595507317340</a></p>
-<p>需要注意的是，使用pip install的方式安装后，要在PyCharm的Interpreter中添加。使用使用更佳方便，效果也更加美观。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201207161245421.png" alt="image-20201207161245421" style="zoom:50%;" />
 ]]></content>
       <categories>
         <category>软件测试</category>
@@ -588,6 +588,43 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>Flask-学习笔记02-模版与表单</title>
+    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
+<p>应用于智能快递柜的密码校验web</p>
+<a id="more"></a>
+<p>最简单的flask项目</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
+<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
+<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
+<p>在视图函数<code>return</code>就行，如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>关注body内部：</p>
+<p><code>action</code>：post请求重定向到<code>result路由</code></p>
+<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
+<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
+]]></content>
+      <categories>
+        <category>智能快递柜</category>
+        <category>Python</category>
+      </categories>
+      <tags>
+        <tag>Flask</tag>
+        <tag>Python</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Flask 学习笔记 - Hello</title>
     <url>/2020/12/26/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B001-Hello/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
@@ -634,43 +671,6 @@ Github中。</p>
 <p>然后在浏览器访问：`http://localhost:8443</p>
 ]]></content>
       <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Flask</tag>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Flask-学习笔记02-模版与表单</title>
-    <url>/2021/12/27/Flask-%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B002-%E6%A8%A1%E7%89%88%E4%B8%8E%E8%A1%A8%E5%8D%95/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201226170026026.png" alt="image-20201226170026026" style="zoom:50%;" />
-<p>应用于智能快递柜的密码校验web</p>
-<a id="more"></a>
-<p>最简单的flask项目</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;Hello, World!&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8080</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="一-模版"><a class="markdownIt-Anchor" href="#一-模版"></a> 一、模版</h2>
-<p>在flask项目内新建一个<code>templates</code>文件夹放置html，新建static文件夹放置css。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20211227172852877.png" alt="image-20211227172852877" style="zoom:50%;" />
-<h3 id="1-html"><a class="markdownIt-Anchor" href="#1-html"></a> 1. html</h3>
-<p>在视图函数<code>return</code>就行，如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> render_template(<span class="string">&#x27;xxx.html&#x27;</span>,params)</span><br><span class="line"><span class="comment"># params为传递给html页面的参数</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-css"><a class="markdownIt-Anchor" href="#2-css"></a> 2. css</h3>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"># 在html <span class="tag">&lt;<span class="name">head</span>&gt;</span>内添加：</span><br><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-参数"><a class="markdownIt-Anchor" href="#3-参数"></a> 3. 参数</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># app.py</span></span><br><span class="line"><span class="keyword">from</span> flask <span class="keyword">import</span> Flask</span><br><span class="line">app = Flask(__name__)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">hello_world</span>():</span></span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>,name=<span class="string">&#x27;test&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ ==<span class="string">&quot;__main__&quot;</span>:</span><br><span class="line">    app.run(debug=<span class="literal">True</span>,port=<span class="number">8443</span>)</span><br></pre></td></tr></table></figure>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">h2</span>&gt;</span>Hello &#123;&#123; name &#125;&#125;.<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="二-表单"><a class="markdownIt-Anchor" href="#二-表单"></a> 二、表单</h2>
-<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="comment">&lt;!--index.html--&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="meta-keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span> <span class="attr">dir</span>=<span class="string">&quot;ltr&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;utf-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>智能快递柜<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span> <span class="attr">href</span>=<span class="string">&quot;&#123;&#123; url_for(&#x27;static&#x27;,filename=&#x27;style.css&#x27;) &#125;&#125;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">form</span> <span class="attr">class</span>=<span class="string">&quot;box&quot;</span> <span class="attr">action</span>=<span class="string">&quot;result&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">h1</span>&gt;</span>请联系收件人<span class="tag">&lt;<span class="name">br</span>&gt;</span>获取密码<span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">name</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;确认&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>关注body内部：</p>
-<p><code>action</code>：post请求重定向到<code>result路由</code></p>
-<p><code>input name</code>：input的name一定要写，用于app.py获取input里的值。</p>
-<p><code>form action</code>：处理form数据的路由页面（视图函数）</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="meta">@app.route(&#x27;/&#x27;,methods=[&#x27;GET&#x27;,&#x27;POST&#x27;])</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">index</span>():</span></span><br><span class="line">    <span class="keyword">if</span> request.method==<span class="string">&#x27;POST&#x27;</span>:</span><br><span class="line">        password = request.form[<span class="string">&#x27;password&#x27;</span>]</span><br><span class="line">        <span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;result&#x27;</span>),password=password)</span><br><span class="line">    <span class="keyword">return</span> render_template(<span class="string">&#x27;index.html&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="meta">@app.route(&#x27;/result&#x27;,methods=&#x27;GET&#x27;)</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">result</span>():</span></span><br><span class="line">    pwd=<span class="string">&#x27;123&#x27;</span></span><br><span class="line">    password=request.args.get(<span class="string">&#x27;password&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> password==pwd:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;correct.html&#x27;</span>,password=password)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> render_template(<span class="string">&#x27;error.html&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>其实整个流程很好理解：首先路由<code>'/'</code>首先渲染index.html，然后得先获取input里面的值，也就是<code>request.form[]</code>。当我们submit之后，<code>POST请求</code>得把我们获取到<code>input的值</code> <code>return</code>到新的路由<code>result</code>页面中，这就是<code>redirect(url_for(),args)</code>的作用。然后新的路由页面，得接收POST过来的信息，所以method是<code>GET</code>，获取信息的方法是<code>request.args.get['args']</code>。所以我们在html里的form的action中，必须得明确我们要把信息提交到那个路由<code>/result</code></p>
-]]></content>
-      <categories>
-        <category>智能快递柜</category>
         <category>Python</category>
       </categories>
       <tags>
@@ -1091,6 +1091,37 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>PyCharm远程连接树莓派同步编辑py文件</title>
+    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
+<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
+<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
+<a id="more"></a>
+<hr />
+<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
+<br/>
+<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
+<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
+<br/>
+<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
+<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
+<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
+<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
+<p>Done！</p>
+]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
+      <tags>
+        <tag>树莓派</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>N1盒子部署我的网易云闹钟折腾记</title>
     <url>/2021/12/18/N1%E7%9B%92%E5%AD%90%E9%83%A8%E7%BD%B2%E6%88%91%E7%9A%84%E7%BD%91%E6%98%93%E4%BA%91%E9%97%B9%E9%92%9F%E6%8A%98%E8%85%BE%E8%AE%B0/</url>
     <content><![CDATA[<p>前面N1盒子刷armbian的目的之一就是为了更好的安装我的网易云闹钟，早上更好的叫醒我。</p>
@@ -1139,34 +1170,28 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
-    <title>PyCharm远程连接树莓派同步编辑py文件</title>
-    <url>/2020/12/20/PyCharm%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%A0%91%E8%8E%93%E6%B4%BE%E5%90%8C%E6%AD%A5%E7%BC%96%E8%BE%91py%E6%96%87%E4%BB%B6/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201220115218956.png" alt="image-20201220115218956" style="zoom:30%;" />
-<p>直接在树莓派上面调试python脚本非常麻烦，作出一次修改就得删除然后上传重新覆盖，效率太低了。其实大部分编译器都会有远程连接服务器编辑代码的功能，PyCharm也不例外。</p>
-<p>网上大多数都是在创建project时添加remote，这里我们说更实用的场景：直接在project创建好后，再添加remote。</p>
+    <title>Python中的init()到底怎么理解？</title>
+    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
+<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
 <a id="more"></a>
+<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
+<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
+<p>那么<code>self</code>又是什么东西？</p>
+<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
 <hr />
-<p>我们打开project的Preferences（macOS的快捷键是<code>commond</code>+<code>,</code>），然后在左上角的搜索框输入interpreter（解释器），然后如下图，点击Add。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233324749.png" alt="image-20201219233324749" style="zoom:30%;" />
-<br/>
-<p>然后左侧栏选择SSH Interpreter，在右方填写好树莓派的ip、用户名，然后点击next。然后填写密码，<strong>记得Save password</strong></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220113238699.png" alt="image-20201220113238699" style="zoom:50%;" />
-<img src="https://picbed.tangspoon.cn/uPic/image-20201219233510656.png" alt="image-20201219233510656" style="zoom:33%;" />
-<br/>
-<p>接下来，Interpreter处要选择好树莓派的python版本，默认选择路径是<code>/usr/bin/python</code>，这个路径其实就是我们执行<code>python</code>这个命令时使用的python，此路径默认2.7。2020年了我们当然要使用py3啦，所以我们要提前把<code>/usr/bin/pyhton</code>这个路径的python版本改为python3的。</p>
-<p>剩下的我们就按照下图操作，然后点击Finish即可。</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114155921.png" alt="image-20201220114155921" style="zoom:50%;" />
-<p>然后我们在项目中新建一个<code>test.py</code>文件，里面输入<code>print('test')</code>测试一下。可以看到，是已经自动上传到树莓派中了。</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20201220114703381.png" alt="image-20201220114703381" /></p>
-<p>然后我们直接在FinalShell的的文件查看器中查看是否有<code>test.py</code>文件</p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20201220114834281.png" alt="image-20201220114834281" style="zoom:40%;" />
-<p>Done！</p>
+<blockquote>
+<p>参考资料</p>
+<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
+<p>最良心的Python教程：</p>
+<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
+</blockquote>
 ]]></content>
       <categories>
-        <category>树莓派</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>树莓派</tag>
+        <tag>Python</tag>
       </tags>
   </entry>
   <entry>
@@ -1251,31 +1276,6 @@ Github中。</p>
 <h3 id="5-strip"><a class="markdownIt-Anchor" href="#5-strip"></a> 5. strip()</h3>
 <p>去除两端指定符号</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">str&#x3D;&#39; tangspoon &#39;</span><br><span class="line">str.strip(&#39; &#39;)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>Python</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python中的init()到底怎么理解？</title>
-    <url>/2020/11/24/Python%E4%B8%AD%E7%9A%84init-%E5%88%B0%E5%BA%95%E6%80%8E%E4%B9%88%E7%90%86%E8%A7%A3%EF%BC%9F/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201119103811421.png" alt="image-20201119103811421" style="zoom:50%;" />
-<p>在<code>Person</code>类里面有一个<code>__init__(self,name,age)</code>，这里我们分成<code>__init__()</code>和<code>self</code>，和<code>age</code> <code>name</code>三个部分来看。</p>
-<a id="more"></a>
-<p><code>__init__()</code>是初始化函数。为什么需要初始化呢？简单来说，我们在创建<code>Person</code>这个对象的时候，我们仅仅只是创建了一个<strong>模具</strong>，这个模具什么都没有，没有作为一个person应该有的name和age。这显然是不合理的。</p>
-<p>所以我们在实例化对象<code>p=Person()</code>的时候，<code>Person</code>类马上开始初始化，创造出一个拥有<strong>属性</strong>的person。</p>
-<p>那么<code>self</code>又是什么东西？</p>
-<p><code>self</code>是必须的，缺少了会报错。在很多博客上都有说：“<code>self</code><strong>外部对象在类内部的表示</strong>”。这里我们说人话，注意听“<strong><em>谁调用，就表示谁</em></strong>”。这里我们把<code>Person</code>实例化给了<code>p</code>，所以就是<code>p</code>调用，简单理解就是这个<code>self</code>就是表示<code>p</code>。我们必须得把<code>p</code>传入到类里面，然后才能通过点<code>.</code>的方式去访问类的属性和方法呀。</p>
-<hr />
-<blockquote>
-<p>参考资料</p>
-<p>知乎回答： <a href="https://www.zhihu.com/question/46973549/answer/293788116">https://www.zhihu.com/question/46973549/answer/293788116</a></p>
-<p>最良心的Python教程：</p>
-<p><a href="https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md">https://github.com/TwoWater/Python/blob/master/Article/PythonBasis/python8/6.md</a></p>
-</blockquote>
 ]]></content>
       <categories>
         <category>Python</category>
@@ -1637,7 +1637,7 @@ Github中。</p>
   </entry>
   <entry>
     <title>Python学习日志-07｜数据结构</title>
-    <url>/2022/02/05/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-07%EF%BD%9C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <url>/2022/02/14/Python%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97-07%EF%BD%9C%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220212213658145.png" alt="image-20220212213658145" style="zoom:50%;" />
 <p>栈、单链表。</p>
 <p>会进修 Coursera 的 Data Structures 课程，日后完善丰富。</p>
@@ -1831,34 +1831,6 @@ Github中。</p>
 ]]></content>
   </entry>
   <entry>
-    <title>macOS重装Homebrew</title>
-    <url>/2022/02/12/macOS%E5%AE%89%E8%A3%85aira2%E5%AF%BC%E8%87%B4Homebrew%E5%8F%97%E6%8D%9F%EF%BD%9C%E4%BF%AE%E5%A4%8D/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220205152726453.png" alt="image-20220205152726453" style="zoom:50%;" />
-<p>Homebrew可谓是macOS的大杀器，aira2是下载届的大杀器。前两天安装aria2的时候，出现了openssl版本错误的问题，我就使用<code>brew install openssl</code>的命令升级到<code>openssl3</code>，结果越搞越乱，到最后直接brew命令都是用不了。刚好能不能通过重新安装brew来解决问题？可是一系列问题随之出现。</p>
-<a id="more"></a>
-<h2 id="一-解决方法一"><a class="markdownIt-Anchor" href="#一-解决方法一"></a> 一、解决方法一</h2>
-<p>使用官方命令重装Homebrew，无法连接到github。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;bin&#x2F;bash -c &quot;$(curl -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Homebrew&#x2F;install&#x2F;HEAD&#x2F;install.sh)&quot;</span><br></pre></td></tr></table></figure>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205153314436.png" alt="image-20220205153314436" /></p>
-<blockquote>
-<p>curl: (7) Failed to connect to <a href="http://raw.githubusercontent.com">raw.githubusercontent.com</a> port 443: Connection refused</p>
-</blockquote>
-<p>更换了阿里云的源也无法解决问题。</p>
-<p>最后bilibili一个up主<code>mintimate</code>，他自己写了一个自动安装脚本，一下子帮我完美解决问题。</p>
-<p>mintimate的blog地址：<a href="https://mintimate.cn/2020/04/05/Homebrew/">https://mintimate.cn/2020/04/05/Homebrew/</a></p>
-<img src="https://picbed.tangspoon.cn/uPic/image-20220205153750700.png" alt="image-20220205153750700" style="zoom:50%;" />
-<h2 id="一-解决方法二"><a class="markdownIt-Anchor" href="#一-解决方法二"></a> 一、解决方法二</h2>
-<p>详情请查看：<a href="https://blog.tangspoon.cn/2022/02/05/macOS%E8%AE%A9%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%EF%BC%8C%E8%A7%A3%E5%86%B3curl%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/">macOS 让终端走代理，解决 curl 失败问题</a></p>
-]]></content>
-      <categories>
-        <category>macOS</category>
-      </categories>
-      <tags>
-        <tag>troubleshooting</tag>
-        <tag>macOS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>linux使用supervisor实现开机自启</title>
     <url>/2022/01/04/linux%E4%BD%BF%E7%94%A8supervisor%E5%AE%9E%E7%8E%B0%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220104144501685.png" alt="image-20220104144501685" style="zoom:30%;" />
@@ -1893,6 +1865,34 @@ Github中。</p>
       <tags>
         <tag>linux</tag>
         <tag>supervisor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>macOS重装Homebrew</title>
+    <url>/2022/02/12/macOS%E5%AE%89%E8%A3%85aira2%E5%AF%BC%E8%87%B4Homebrew%E5%8F%97%E6%8D%9F%EF%BD%9C%E4%BF%AE%E5%A4%8D/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220205152726453.png" alt="image-20220205152726453" style="zoom:50%;" />
+<p>Homebrew可谓是macOS的大杀器，aira2是下载届的大杀器。前两天安装aria2的时候，出现了openssl版本错误的问题，我就使用<code>brew install openssl</code>的命令升级到<code>openssl3</code>，结果越搞越乱，到最后直接brew命令都是用不了。刚好能不能通过重新安装brew来解决问题？可是一系列问题随之出现。</p>
+<a id="more"></a>
+<h2 id="一-解决方法一"><a class="markdownIt-Anchor" href="#一-解决方法一"></a> 一、解决方法一</h2>
+<p>使用官方命令重装Homebrew，无法连接到github。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;bin&#x2F;bash -c &quot;$(curl -fsSL https:&#x2F;&#x2F;raw.githubusercontent.com&#x2F;Homebrew&#x2F;install&#x2F;HEAD&#x2F;install.sh)&quot;</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205153314436.png" alt="image-20220205153314436" /></p>
+<blockquote>
+<p>curl: (7) Failed to connect to <a href="http://raw.githubusercontent.com">raw.githubusercontent.com</a> port 443: Connection refused</p>
+</blockquote>
+<p>更换了阿里云的源也无法解决问题。</p>
+<p>最后bilibili一个up主<code>mintimate</code>，他自己写了一个自动安装脚本，一下子帮我完美解决问题。</p>
+<p>mintimate的blog地址：<a href="https://mintimate.cn/2020/04/05/Homebrew/">https://mintimate.cn/2020/04/05/Homebrew/</a></p>
+<img src="https://picbed.tangspoon.cn/uPic/image-20220205153750700.png" alt="image-20220205153750700" style="zoom:50%;" />
+<h2 id="一-解决方法二"><a class="markdownIt-Anchor" href="#一-解决方法二"></a> 一、解决方法二</h2>
+<p>详情请查看：<a href="https://blog.tangspoon.cn/2022/02/05/macOS%E8%AE%A9%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%EF%BC%8C%E8%A7%A3%E5%86%B3curl%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/">macOS 让终端走代理，解决 curl 失败问题</a></p>
+]]></content>
+      <categories>
+        <category>macOS</category>
+      </categories>
+      <tags>
+        <tag>troubleshooting</tag>
+        <tag>macOS</tag>
       </tags>
   </entry>
   <entry>
@@ -2071,6 +2071,9 @@ Github中。</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> capture.pcm &#123;</span><br><span class="line">	type plug</span><br><span class="line">	slave.pcm &quot;hw:1,0&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>如果出错，直接修改成上面csdn文章里的一样。</p>
 ]]></content>
+      <categories>
+        <category>树莓派</category>
+      </categories>
       <tags>
         <tag>linux</tag>
         <tag>树莓派</tag>
