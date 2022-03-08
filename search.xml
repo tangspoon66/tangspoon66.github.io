@@ -190,7 +190,7 @@ Github中。</p>
 <hr />
 <p>学习文档：</p>
 <blockquote>
-<p>链接: <a href="https://pan.baidu.com/s/1kl5SkgCXUjOVF9U4ORW-Yg">https://pan.baidu.com/s/1kl5SkgCXUjOVF9U4ORW-Yg</a>  密码: thmv</p>
+<p>链接: <a href="https://pan.baidu.com/s/1kl5SkgCXUjOVF9U4ORW-Yg">https://pan.baidu.com/s/1kl5SkgCXUjOVF9U4ORW-Yg</a></p>
 </blockquote>
 <hr />
 <p>最后，下面的例子写得非常清晰：</p>
@@ -1871,6 +1871,29 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>macOS让终端走代理，解决curl失败问题</title>
+    <url>/2022/02/09/macOS%E8%AE%A9%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%EF%BC%8C%E8%A7%A3%E5%86%B3curl%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205160123197.png" alt="image-20220205160123197" /></p>
+<a id="more"></a>
+<p>前提是你得有代理</p>
+<p>我使用的是<code>ClashX.app</code>软件，可以看到HTTP端口是7892</p>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155421631.png" alt="image-20220205155421631" /></p>
+<p>那么我们要让终端走HTTP代理，在终端执行下面的代码即可。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export http_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892;export https_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892</span><br></pre></td></tr></table></figure>
+<p>注意：只是在当前页面终端页面有效。</p>
+<p>测试是否生效</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl ip.gs</span><br></pre></td></tr></table></figure>
+<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155734830.png" alt="image-20220205155734830" /></p>
+<p>现在就应该可以<code>curl</code>github的内容了。</p>
+]]></content>
+      <categories>
+        <category>macOS</category>
+      </categories>
+      <tags>
+        <tag>macOS</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>macOS重装Homebrew</title>
     <url>/2022/02/12/macOS%E5%AE%89%E8%A3%85aira2%E5%AF%BC%E8%87%B4Homebrew%E5%8F%97%E6%8D%9F%EF%BD%9C%E4%BF%AE%E5%A4%8D/</url>
     <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220205152726453.png" alt="image-20220205152726453" style="zoom:50%;" />
@@ -1895,29 +1918,6 @@ Github中。</p>
       </categories>
       <tags>
         <tag>troubleshooting</tag>
-        <tag>macOS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>macOS让终端走代理，解决curl失败问题</title>
-    <url>/2022/02/09/macOS%E8%AE%A9%E7%BB%88%E7%AB%AF%E8%B5%B0%E4%BB%A3%E7%90%86%EF%BC%8C%E8%A7%A3%E5%86%B3curl%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205160123197.png" alt="image-20220205160123197" /></p>
-<a id="more"></a>
-<p>前提是你得有代理</p>
-<p>我使用的是<code>ClashX.app</code>软件，可以看到HTTP端口是7892</p>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155421631.png" alt="image-20220205155421631" /></p>
-<p>那么我们要让终端走HTTP代理，在终端执行下面的代码即可。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">export http_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892;export https_proxy&#x3D;http:&#x2F;&#x2F;127.0.0.1:7892</span><br></pre></td></tr></table></figure>
-<p>注意：只是在当前页面终端页面有效。</p>
-<p>测试是否生效</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl ip.gs</span><br></pre></td></tr></table></figure>
-<p><img src="https://picbed.tangspoon.cn/uPic/image-20220205155734830.png" alt="image-20220205155734830" /></p>
-<p>现在就应该可以<code>curl</code>github的内容了。</p>
-]]></content>
-      <categories>
-        <category>macOS</category>
-      </categories>
-      <tags>
         <tag>macOS</tag>
       </tags>
   </entry>
@@ -2161,8 +2161,8 @@ Github中。</p>
   </entry>
   <entry>
     <title>原创｜自建房没有丰巢？自己造一个！｜打造智能快递柜</title>
-    <url>/2022/02/14/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%87%AA%E5%BB%BA%E6%88%BF%E6%B2%A1%E6%9C%89%E4%B8%B0%E5%B7%A2%EF%BC%9F%E8%87%AA%E5%B7%B1%E9%80%A0%E4%B8%80%E4%B8%AA%EF%BC%81%EF%BD%9C%E6%89%93%E9%80%A0%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</url>
-    <content><![CDATA[<p><img src="https://picbed.tangspoon.cn/uPic/image-20220126161032850.png" alt="image-20220126161032850" /></p>
+    <url>/2022/01/14/%E5%8E%9F%E5%88%9B%EF%BD%9C%E8%87%AA%E5%BB%BA%E6%88%BF%E6%B2%A1%E6%9C%89%E4%B8%B0%E5%B7%A2%EF%BC%9F%E8%87%AA%E5%B7%B1%E9%80%A0%E4%B8%80%E4%B8%AA%EF%BC%81%EF%BD%9C%E6%89%93%E9%80%A0%E6%99%BA%E8%83%BD%E5%BF%AB%E9%80%92%E6%9F%9C/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20220126161032850.png" alt="image-20220126161032850" style="zoom:30%;" />
 <p>前些日子家里装修，网购了好多好多东西。但城中村里没有类似丰巢那样的投递柜（对，我这条村真的没有），放在村里的代收点1块一个小件，2块一个大件，比丰巢还贵？而且感觉要跑超过500m去那个快递很麻烦。所以，我为什么不能自己造一个“丰巢”呢？</p>
 <a id="more"></a>
 <p><img src="https://picbed.tangspoon.cn/uPic/image-20220126161110667.png" alt="image-20220126161110667" /></p>
@@ -3136,6 +3136,31 @@ Github中。</p>
       </tags>
   </entry>
   <entry>
+    <title>树莓派开启crontab日志</title>
+    <url>/2020/12/22/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
+    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223205438951.png" alt="image-20201223205438951" style="zoom:40%;" />
+<a id="more"></a>
+<p>今天的树莓派闹钟情况有点问题，想查看一下crontab任务完成情况，结果找了半天找不到log。原来是树莓派系统默认禁止了生成日志文件。解决办法也很简单。</p>
+<br/>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;rsyslog.conf</span><br></pre></td></tr></table></figure>
+<p>在文件中找到：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.*                     &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
+<p>把<code>#</code>去掉，然后’esc’，输入<code>:wq</code></p>
+<p>输入一下代码重新启动日志服务</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo service rsyslog restart</span><br></pre></td></tr></table></figure>
+<p>执行一个crontab任务，再到<code>/var/log/cron.log</code>就可以查看到执行情况</p>
+<hr />
+<p>参考资料：</p>
+<p><a href="https://my.oschina.net/u/4341499/blog/4280350">https://my.oschina.net/u/4341499/blog/4280350</a></p>
+]]></content>
+      <categories>
+        <category>linux</category>
+      </categories>
+      <tags>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>格式化时间</title>
     <url>/2020/12/21/%E6%A0%BC%E5%BC%8F%E5%8C%96%E6%97%B6%E9%97%B4/</url>
     <content><![CDATA[<p>在和风天气API获取日落时间时，没仔细看清楚官方文档，绕了一个大圈。但是也学到了时间格式化的一些操作，在这里继续记录下来。</p>
@@ -3174,31 +3199,6 @@ Github中。</p>
       <tags>
         <tag>Python</tag>
         <tag>正则表达式</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>树莓派开启crontab日志</title>
-    <url>/2020/12/22/%E6%A0%91%E8%8E%93%E6%B4%BE%E5%BC%80%E5%90%AFcrontab%E6%97%A5%E5%BF%97/</url>
-    <content><![CDATA[<img src="https://picbed.tangspoon.cn/uPic/image-20201223205438951.png" alt="image-20201223205438951" style="zoom:40%;" />
-<a id="more"></a>
-<p>今天的树莓派闹钟情况有点问题，想查看一下crontab任务完成情况，结果找了半天找不到log。原来是树莓派系统默认禁止了生成日志文件。解决办法也很简单。</p>
-<br/>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo vim &#x2F;etc&#x2F;rsyslog.conf</span><br></pre></td></tr></table></figure>
-<p>在文件中找到：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">#cron.*                     &#x2F;var&#x2F;log&#x2F;cron.log</span><br></pre></td></tr></table></figure>
-<p>把<code>#</code>去掉，然后’esc’，输入<code>:wq</code></p>
-<p>输入一下代码重新启动日志服务</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">sudo service rsyslog restart</span><br></pre></td></tr></table></figure>
-<p>执行一个crontab任务，再到<code>/var/log/cron.log</code>就可以查看到执行情况</p>
-<hr />
-<p>参考资料：</p>
-<p><a href="https://my.oschina.net/u/4341499/blog/4280350">https://my.oschina.net/u/4341499/blog/4280350</a></p>
-]]></content>
-      <categories>
-        <category>linux</category>
-      </categories>
-      <tags>
-        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
